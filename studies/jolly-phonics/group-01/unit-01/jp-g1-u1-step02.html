@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 2: Letter Formation — s, a, t</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.wrap{max-width:720px;margin:0 auto;padding:82px 36px 80px;}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:#CDEAFF;color:var(--b);border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:14px;}
+h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.sub{font-size:14px;color:var(--br);margin-bottom:28px;line-height:1.7;}
+.letter-tabs{display:flex;gap:8px;margin-bottom:28px;}
+.ltab{flex:1;padding:12px;border-radius:14px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;color:var(--br);transition:all .18s;text-align:center;}
+.ltab.on{background:var(--b);color:#fff;border-color:var(--b);}
+.letter-panel{display:none;}
+.letter-panel.show{display:block;}
+.case-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+@media(max-width:600px){.case-row{grid-template-columns:1fr;}}
+.case-card{background:#fff;border:2px solid #C8B8E8;border-radius:20px;overflow:hidden;box-shadow:0 2px 12px rgba(155,114,207,.1);}
+.case-header{padding:14px 18px 12px;border-bottom:1.5px solid var(--soft);display:flex;align-items:center;gap:12px;}
+.case-header.lower{background:#CDEAFF;}
+.case-header.upper{background:#E2D0FF;}
+.case-big-letter{font-size:52px;font-weight:800;line-height:1;}
+.case-header.lower .case-big-letter{color:var(--b);}
+.case-header.upper .case-big-letter{color:var(--p);}
+.case-label-en{font-size:13px;font-weight:800;}
+.case-header.lower .case-label-en{color:var(--b);}
+.case-header.upper .case-label-en{color:var(--p);}
+.case-label-ko{font-size:11px;color:var(--br);margin-top:2px;font-weight:600;}
+.case-body{padding:16px 18px;}
+.stroke-wrap{display:flex;align-items:flex-start;gap:12px;margin-bottom:14px;}
+.stroke-svg svg{border:1.5px solid var(--soft);border-radius:10px;background:#FAFAFA;display:block;}
+.stroke-guide{flex:1;}
+.stroke-guide-title{font-size:10px;font-weight:700;color:var(--br);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;}
+.stroke-step{display:flex;align-items:flex-start;gap:7px;margin-bottom:6px;font-size:12px;font-weight:600;line-height:1.4;}
+.snum{width:20px;height:20px;border-radius:6px;background:var(--b);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;flex-shrink:0;}
+.upper-card .snum{background:var(--p);}
+.anim-btn{margin-top:8px;padding:7px 14px;border-radius:10px;background:var(--b);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.upper-card .anim-btn{background:var(--p);}
+.trace-section{border-top:1.5px solid var(--soft);padding-top:12px;}
+.trace-label{font-size:12px;font-weight:700;color:var(--br);margin-bottom:7px;}
+canvas{border:1.5px solid var(--soft);border-radius:12px;background:#fff;cursor:crosshair;touch-action:none;display:block;width:100%;height:130px;}
+.clear-btn{margin-top:7px;padding:6px 14px;border-radius:10px;background:var(--warm);color:var(--br);border:none;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.done-btn{width:100%;padding:15px;border-radius:16px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
+.done-msg{display:none;background:var(--gl);border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:13px;font-weight:700;color:#1a5c3a;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:12px;padding-top:16px;border-top:1px solid var(--soft);}
+.nav-btn{flex:1;padding:11px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:1.5px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{background:var(--p);color:#fff;border:none;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G1');
+MommyAuth.checkLock('G1-U1-S02');</script>
+<nav>
+  <a href="../../jp-index.html" class="logo">Mommy<span>Time</span></a>
+  <a href="../../jp-index.html" class="back">← Unit 1</a>
+</nav>
+<div class="wrap">
+  <div class="step-badge">✍️ Step 2 / 10</div>
+  <h1>Letter Formation</h1>
+  <p class="sub">소문자와 대문자를 나란히 비교하면서 획순을 배워요 ✏️</p>
+  <div class="letter-tabs">
+    <button class="ltab on" onclick="showLetter('s',this)">s · S</button>
+    <button class="ltab" onclick="showLetter('a',this)">a · A</button>
+    <button class="ltab" onclick="showLetter('t',this)">t · T</button>
+  </div>
+
+  <!-- s 패널 -->
+  <div class="letter-panel show" id="panel-s">
+    <div class="case-row">
+      <div class="case-card" id="lower-s">
+        <div class="case-header lower">
+          <div class="case-big-letter">s</div>
+          <div><div class="case-label-en">소문자 lowercase</div><div class="case-label-ko">음가: 스</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="24" x2="90" y2="24" stroke="#D0EAFF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="66" x2="90" y2="66" stroke="#5BA4CF" stroke-width="1.2"/>
+                <text x="2" y="21" font-size="7" fill="#A0C8F0" font-family="Nunito">하늘</text>
+                <text x="2" y="63" font-size="7" fill="#5BA4CF" font-family="Nunito">땅</text>
+                <path d="M66 37 Q66 27 53 27 Q36 27 36 41 Q36 52 53 52 Q70 52 70 64 Q70 77 53 77 Q36 77 32 69" stroke="#D0EAFF" stroke-width="7" fill="none" stroke-linecap="round"/>
+                <path id="sLA" d="M66 37 Q66 27 53 27 Q36 27 36 41 Q36 52 53 52 Q70 52 70 64 Q70 77 53 77 Q36 77 32 69" stroke="#5BA4CF" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="200" stroke-dashoffset="200">
+                  <animate attributeName="stroke-dashoffset" from="200" to="0" dur="2s" begin="indefinite" id="sLAnim" fill="freeze"/>
+                </path>
+                <circle cx="66" cy="37" r="5" fill="#F4845F"/>
+                <text x="72" y="35" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>오른쪽 위 시작</div>
+              <div class="stroke-step"><div class="snum">2</div>위로 둥글게 왼쪽</div>
+              <div class="stroke-step"><div class="snum">3</div>중간 오른쪽</div>
+              <div class="stroke-step"><div class="snum">4</div>아래 둥글게 왼쪽</div>
+              <button class="anim-btn" onclick="document.getElementById('sLAnim').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 소문자 s 써봐요</div>
+            <canvas id="cvs-sl"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-sl','#5BA4CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+      <div class="case-card upper-card" id="upper-s">
+        <div class="case-header upper">
+          <div class="case-big-letter">S</div>
+          <div><div class="case-label-en">대문자 uppercase</div><div class="case-label-ko">문장 앞·이름에 써요</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="14" x2="90" y2="14" stroke="#E8D5FF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="84" x2="90" y2="84" stroke="#9B72CF" stroke-width="1.2"/>
+                <text x="2" y="11" font-size="7" fill="#D0B0FF" font-family="Nunito">하늘</text>
+                <text x="2" y="81" font-size="7" fill="#9B72CF" font-family="Nunito">땅</text>
+                <path d="M70 27 Q70 15 48 15 Q26 15 26 33 Q26 47 48 49 Q70 51 70 65 Q70 83 48 83 Q26 83 22 71" stroke="#E8D5FF" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path id="sUA" d="M70 27 Q70 15 48 15 Q26 15 26 33 Q26 47 48 49 Q70 51 70 65 Q70 83 48 83 Q26 83 22 71" stroke="#9B72CF" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="240" stroke-dashoffset="240">
+                  <animate attributeName="stroke-dashoffset" from="240" to="0" dur="2.2s" begin="indefinite" id="sUAnim" fill="freeze"/>
+                </path>
+                <circle cx="70" cy="27" r="5" fill="#F4845F"/>
+                <text x="76" y="25" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>오른쪽 위 시작</div>
+              <div class="stroke-step"><div class="snum">2</div>위 크게 왼쪽 호</div>
+              <div class="stroke-step"><div class="snum">3</div>중간 지나 오른쪽</div>
+              <div class="stroke-step"><div class="snum">4</div>아래 크게 왼쪽 호</div>
+              <button class="anim-btn" onclick="document.getElementById('sUAnim').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 대문자 S 써봐요</div>
+            <canvas id="cvs-su"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-su','#9B72CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- a 패널 -->
+  <div class="letter-panel" id="panel-a">
+    <div class="case-row">
+      <div class="case-card">
+        <div class="case-header lower">
+          <div class="case-big-letter">a</div>
+          <div><div class="case-label-en">소문자 lowercase</div><div class="case-label-ko">음가: 아</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="24" x2="90" y2="24" stroke="#D0EAFF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="66" x2="90" y2="66" stroke="#5BA4CF" stroke-width="1.2"/>
+                <text x="2" y="21" font-size="7" fill="#A0C8F0" font-family="Nunito">하늘</text>
+                <text x="2" y="63" font-size="7" fill="#5BA4CF" font-family="Nunito">땅</text>
+                <circle cx="50" cy="46" r="20" stroke="#D0EAFF" stroke-width="7" fill="none"/>
+                <line x1="70" y1="26" x2="70" y2="66" stroke="#D0EAFF" stroke-width="7" stroke-linecap="round"/>
+                <path id="aLA1" d="M70 46 A20 20 0 1 0 70 47" stroke="#5BA4CF" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-dasharray="130" stroke-dashoffset="130">
+                  <animate attributeName="stroke-dashoffset" from="130" to="0" dur="1.5s" begin="indefinite" id="aLAnim1" fill="freeze"/>
+                </path>
+                <line id="aLA2" x1="70" y1="26" x2="70" y2="66" stroke="#5BA4CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="40" stroke-dashoffset="40">
+                  <animate attributeName="stroke-dashoffset" from="40" to="0" dur="0.5s" begin="aLAnim1.end" fill="freeze"/>
+                </line>
+                <circle cx="70" cy="26" r="5" fill="#F4845F"/>
+                <text x="76" y="24" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>오른쪽 위 시작</div>
+              <div class="stroke-step"><div class="snum">2</div>반시계 동그라미</div>
+              <div class="stroke-step"><div class="snum">3</div>오른쪽 직선 아래로</div>
+              <button class="anim-btn" onclick="document.getElementById('aLAnim1').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 소문자 a 써봐요</div>
+            <canvas id="cvs-al"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-al','#5BA4CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+      <div class="case-card upper-card">
+        <div class="case-header upper">
+          <div class="case-big-letter">A</div>
+          <div><div class="case-label-en">대문자 uppercase</div><div class="case-label-ko">문장 앞·이름에 써요</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="14" x2="90" y2="14" stroke="#E8D5FF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="84" x2="90" y2="84" stroke="#9B72CF" stroke-width="1.2"/>
+                <text x="2" y="11" font-size="7" fill="#D0B0FF" font-family="Nunito">하늘</text>
+                <text x="2" y="81" font-size="7" fill="#9B72CF" font-family="Nunito">땅</text>
+                <line x1="48" y1="15" x2="18" y2="83" stroke="#E8D5FF" stroke-width="7" stroke-linecap="round"/>
+                <line x1="48" y1="15" x2="78" y2="83" stroke="#E8D5FF" stroke-width="7" stroke-linecap="round"/>
+                <line x1="30" y1="54" x2="66" y2="54" stroke="#E8D5FF" stroke-width="7" stroke-linecap="round"/>
+                <line id="aUS1" x1="48" y1="15" x2="18" y2="83" stroke="#9B72CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="74" stroke-dashoffset="74">
+                  <animate attributeName="stroke-dashoffset" from="74" to="0" dur="0.8s" begin="indefinite" id="aUAnim1" fill="freeze"/>
+                </line>
+                <line id="aUS2" x1="48" y1="15" x2="78" y2="83" stroke="#9B72CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="74" stroke-dashoffset="74">
+                  <animate attributeName="stroke-dashoffset" from="74" to="0" dur="0.8s" begin="aUAnim1.end" id="aUAnim2" fill="freeze"/>
+                </line>
+                <line id="aUS3" x1="30" y1="54" x2="66" y2="54" stroke="#9B72CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="36" stroke-dashoffset="36">
+                  <animate attributeName="stroke-dashoffset" from="36" to="0" dur="0.4s" begin="aUAnim2.end" fill="freeze"/>
+                </line>
+                <circle cx="48" cy="15" r="5" fill="#F4845F"/>
+                <text x="52" y="13" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>꼭대기→왼쪽 아래</div>
+              <div class="stroke-step"><div class="snum">2</div>꼭대기→오른쪽 아래</div>
+              <div class="stroke-step"><div class="snum">3</div>가운데 가로선</div>
+              <button class="anim-btn" onclick="document.getElementById('aUAnim1').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 대문자 A 써봐요</div>
+            <canvas id="cvs-au"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-au','#9B72CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- t 패널 -->
+  <div class="letter-panel" id="panel-t">
+    <div class="case-row">
+      <div class="case-card">
+        <div class="case-header lower">
+          <div class="case-big-letter">t</div>
+          <div><div class="case-label-en">소문자 lowercase</div><div class="case-label-ko">음가: 트</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="24" x2="90" y2="24" stroke="#D0EAFF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="66" x2="90" y2="66" stroke="#5BA4CF" stroke-width="1.2"/>
+                <line x1="6" y1="88" x2="90" y2="88" stroke="#D0EAFF" stroke-width="1" stroke-dasharray="3,3"/>
+                <text x="2" y="21" font-size="7" fill="#A0C8F0" font-family="Nunito">하늘</text>
+                <text x="2" y="63" font-size="7" fill="#5BA4CF" font-family="Nunito">땅</text>
+                <line x1="48" y1="17" x2="48" y2="82" stroke="#D0EAFF" stroke-width="7" stroke-linecap="round"/>
+                <line x1="32" y1="44" x2="64" y2="44" stroke="#D0EAFF" stroke-width="7" stroke-linecap="round"/>
+                <line id="tLS1" x1="48" y1="17" x2="48" y2="82" stroke="#5BA4CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="65" stroke-dashoffset="65">
+                  <animate attributeName="stroke-dashoffset" from="65" to="0" dur="0.8s" begin="indefinite" id="tLAnim1" fill="freeze"/>
+                </line>
+                <line id="tLS2" x1="32" y1="44" x2="64" y2="44" stroke="#5BA4CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="32" stroke-dashoffset="32">
+                  <animate attributeName="stroke-dashoffset" from="32" to="0" dur="0.4s" begin="tLAnim1.end" fill="freeze"/>
+                </line>
+                <circle cx="48" cy="17" r="5" fill="#F4845F"/>
+                <text x="54" y="15" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>위에서 아래로 쭉</div>
+              <div class="stroke-step"><div class="snum">2</div>가로선 왼→오른쪽</div>
+              <button class="anim-btn" onclick="document.getElementById('tLAnim1').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 소문자 t 써봐요</div>
+            <canvas id="cvs-tl"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-tl','#5BA4CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+      <div class="case-card upper-card">
+        <div class="case-header upper">
+          <div class="case-big-letter">T</div>
+          <div><div class="case-label-en">대문자 uppercase</div><div class="case-label-ko">문장 앞·이름에 써요</div></div>
+        </div>
+        <div class="case-body">
+          <div class="stroke-wrap">
+            <div class="stroke-svg">
+              <svg width="96" height="115" viewBox="0 0 96 115">
+                <line x1="6" y1="14" x2="90" y2="14" stroke="#E8D5FF" stroke-width="1" stroke-dasharray="3,3"/>
+                <line x1="6" y1="84" x2="90" y2="84" stroke="#9B72CF" stroke-width="1.2"/>
+                <text x="2" y="11" font-size="7" fill="#D0B0FF" font-family="Nunito">하늘</text>
+                <text x="2" y="81" font-size="7" fill="#9B72CF" font-family="Nunito">땅</text>
+                <line x1="18" y1="15" x2="78" y2="15" stroke="#E8D5FF" stroke-width="7" stroke-linecap="round"/>
+                <line x1="48" y1="15" x2="48" y2="83" stroke="#E8D5FF" stroke-width="7" stroke-linecap="round"/>
+                <line id="tUS1" x1="18" y1="15" x2="78" y2="15" stroke="#9B72CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="60" stroke-dashoffset="60">
+                  <animate attributeName="stroke-dashoffset" from="60" to="0" dur="0.6s" begin="indefinite" id="tUAnim1" fill="freeze"/>
+                </line>
+                <line id="tUS2" x1="48" y1="15" x2="48" y2="83" stroke="#9B72CF" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="68" stroke-dashoffset="68">
+                  <animate attributeName="stroke-dashoffset" from="68" to="0" dur="0.7s" begin="tUAnim1.end" fill="freeze"/>
+                </line>
+                <circle cx="18" cy="15" r="5" fill="#F4845F"/>
+                <text x="4" y="10" font-size="7" fill="#F4845F" font-family="Nunito" font-weight="700">시작</text>
+              </svg>
+            </div>
+            <div class="stroke-guide">
+              <div class="stroke-guide-title">획순</div>
+              <div class="stroke-step"><div class="snum">1</div>가로선 왼→오른쪽</div>
+              <div class="stroke-step"><div class="snum">2</div>가운데에서 아래로</div>
+              <button class="anim-btn" onclick="document.getElementById('tUAnim1').beginElement()">▶ 보기</button>
+            </div>
+          </div>
+          <div class="trace-section">
+            <div class="trace-label">✏️ 대문자 T 써봐요</div>
+            <canvas id="cvs-tu"></canvas>
+            <button class="clear-btn" onclick="clearC('cvs-tu','#9B72CF')">🗑 지우기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 2 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 멋지게 썼어요! Step 3으로!</div>
+    <div class="nav-btns">
+    <a href="../../group-02/unit-01/jp-g2-u1-step01.html" class="nav-btn sec">← 🔊 Sound Intro</a>
+    <a href="../../group-02/unit-01/jp-g2-u1-step03.html" class="nav-btn pri">👂 Sound Discrimination →</a>
+  </div>
+</div>
+<script>
+function showLetter(l,btn){
+  document.querySelectorAll('.ltab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.letter-panel').forEach(p=>p.classList.remove('show'));
+  document.getElementById('panel-'+l).classList.add('show');
+}
+function initC(id,color){
+  var cv=document.getElementById(id); if(!cv)return;
+  var ctx=cv.getContext('2d');
+  function resize(){
+    var w=cv.offsetWidth,h=cv.offsetHeight,dpr=window.devicePixelRatio||1;
+    cv.width=w*dpr;cv.height=h*dpr;ctx.scale(dpr,dpr);
+    drawG(ctx,w,h,color);
+  }
+  resize(); window.addEventListener('resize',resize);
+  var drawing=false;
+  function pos(e){var r=cv.getBoundingClientRect(),t=e.touches?e.touches[0]:e;return{x:t.clientX-r.left,y:t.clientY-r.top};}
+  cv.addEventListener('mousedown',function(e){drawing=true;var p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);});
+  cv.addEventListener('mousemove',function(e){if(!drawing)return;var p=pos(e);ctx.strokeStyle=color;ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';ctx.lineTo(p.x,p.y);ctx.stroke();});
+  cv.addEventListener('mouseup',function(){drawing=false;});
+  cv.addEventListener('touchstart',function(e){e.preventDefault();drawing=true;var p=pos(e);ctx.beginPath();ctx.moveTo(p.x,p.y);},{passive:false});
+  cv.addEventListener('touchmove',function(e){e.preventDefault();if(!drawing)return;var p=pos(e);ctx.strokeStyle=color;ctx.lineWidth=3;ctx.lineCap='round';ctx.lineJoin='round';ctx.lineTo(p.x,p.y);ctx.stroke();},{passive:false});
+  cv.addEventListener('touchend',function(){drawing=false;});
+}
+function drawG(ctx,w,h,color){
+  ctx.save();
+  ctx.strokeStyle=color+'44';ctx.lineWidth=1;ctx.setLineDash([4,3]);
+  ctx.beginPath();ctx.moveTo(10,h*0.3);ctx.lineTo(w-10,h*0.3);ctx.stroke();
+  ctx.strokeStyle=color+'88';ctx.setLineDash([]);ctx.lineWidth=1.2;
+  ctx.beginPath();ctx.moveTo(10,h*0.75);ctx.lineTo(w-10,h*0.75);ctx.stroke();
+  ctx.restore();
+}
+function clearC(id,color){
+  var cv=document.getElementById(id),ctx=cv.getContext('2d');
+  ctx.clearRect(0,0,cv.width,cv.height);
+  drawG(ctx,cv.offsetWidth,cv.offsetHeight,color);
+}
+[['cvs-sl','#5BA4CF'],['cvs-su','#9B72CF'],['cvs-al','#5BA4CF'],['cvs-au','#9B72CF'],['cvs-tl','#5BA4CF'],['cvs-tu','#9B72CF']].forEach(function(p){initC(p[0],p[1]);});
+function markDone(){
+  var done=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+  done.add(2);localStorage.setItem('jp_g1_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G1-U1-S02');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;
+  document.querySelector('.done-btn').style.opacity='.6';
+}
+var d=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+if(d.has(2)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+</script>
+<script>
+// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g1_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #fff;
+      border-right: 1.5px solid var(--soft);
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 15px; font-weight: 800; color: var(--p);
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: var(--soft); border-radius: 6px; height: 5px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: var(--p); border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: var(--warm); border-left-color: var(--soft);
+    }
+    .lnb-item.active {
+      background: var(--pl);
+      border-left-color: var(--p);
+      color: var(--p);
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: var(--soft); color: var(--br);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: var(--p); color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: var(--g); color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--p); color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 1 · Unit 1</div>
+      <div class="lnb-unit-title">s, a, t</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+
+</script>
+</body>
+</html>

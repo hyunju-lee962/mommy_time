@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vocabulary — Plant Seeds | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;
+  --o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;
+  --cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;overflow-x:hidden;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}
+.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.tabs{padding:76px 36px 0;display:flex;justify-content:center;gap:8px;flex-wrap:wrap;}
+.tab{padding:9px 20px;border-radius:28px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;color:var(--br);}
+.tab.on{background:var(--g);color:#fff;border-color:var(--g);}
+.hd{padding:18px 36px 22px;text-align:center;}
+.hd h1{font-size:24px;font-weight:800;margin-bottom:5px;}
+.hd p{font-size:13px;color:var(--br);}
+.prog-wrap{max-width:680px;margin:0 auto;padding:0 36px 16px;}
+.prog-track{background:var(--soft);border-radius:8px;height:7px;overflow:hidden;}
+.prog-bar{height:100%;background:var(--g);border-radius:8px;transition:width .5s;}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--br);font-weight:700;margin-top:4px;}
+
+/* STUDY */
+#sStudy{max-width:720px;margin:0 auto;padding:0 36px 80px;}
+.wcard{background:#fff;border:2px solid var(--soft);border-radius:18px;padding:20px;margin-bottom:14px;display:flex;gap:16px;align-items:flex-start;transition:border-color .2s;}
+.wcard:hover{border-color:var(--g);}
+.wsvg{width:84px;height:84px;border-radius:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.wbody{flex:1;}
+.wrow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:6px;}
+.wen{font-size:20px;font-weight:800;}
+.wph{font-size:12px;color:var(--br);font-style:italic;}
+.wko{font-size:12px;color:var(--br);background:var(--warm);padding:2px 9px;border-radius:9px;font-weight:700;}
+.wpos{font-size:10px;color:#fff;background:var(--g);padding:2px 7px;border-radius:7px;font-weight:700;}
+.wdef{font-size:13px;line-height:1.6;margin-bottom:6px;}
+.wex{font-size:12px;color:var(--br);font-style:italic;background:var(--gl);padding:8px 12px;border-radius:9px;line-height:1.6;margin-bottom:6px;}
+.wstory{font-size:11px;color:#555;line-height:1.65;padding:6px 12px;border-left:3px solid var(--y);background:var(--yl);border-radius:0 8px 8px 0;margin-bottom:9px;}
+.wbtns{display:flex;gap:7px;flex-wrap:wrap;align-items:center;}
+.tts{display:inline-flex;align-items:center;gap:4px;background:var(--b);color:#fff;border:none;border-radius:12px;padding:5px 12px;font-size:11px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:transform .15s;}
+.tts:hover{transform:scale(1.05);}
+.tts.speaking{background:var(--o);}
+.lbtn{padding:5px 13px;border-radius:12px;border:2px solid var(--g);background:#fff;color:var(--g);font-family:'Nunito',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .18s;}
+.lbtn.done{background:var(--g);color:#fff;}
+
+/* FLASHCARD */
+#sFlash{max-width:520px;margin:0 auto;padding:0 36px 80px;text-align:center;}
+.auto-badge{display:inline-flex;align-items:center;gap:5px;background:var(--gl);color:var(--g);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;margin-bottom:12px;}
+.auto-dot{width:7px;height:7px;border-radius:50%;background:var(--g);animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.fctr{font-size:13px;color:var(--br);font-weight:700;margin-bottom:12px;}
+.fcard{background:#fff;border:3px solid var(--soft);border-radius:26px;padding:36px 32px;min-height:290px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:transform .2s,box-shadow .2s;box-shadow:0 4px 18px rgba(0,0,0,.06);position:relative;}
+.fcard:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.1);}
+.fcard.flipped .ffront{display:none;}
+.fcard.flipped .fback{display:flex;}
+.ffront,.fback{display:flex;flex-direction:column;align-items:center;}
+.fback{display:none;}
+.fsvg{margin-bottom:10px;}
+.fw{font-size:28px;font-weight:800;margin-bottom:4px;}
+.fph{font-size:13px;color:var(--br);font-style:italic;margin-bottom:4px;}
+.fauto{font-size:11px;color:var(--g);font-weight:700;margin-bottom:8px;}
+.fhint{font-size:11px;color:#ccc;margin-top:8px;}
+.fko{font-size:24px;font-weight:800;color:var(--g);margin-bottom:8px;}
+.fdef{font-size:13px;line-height:1.6;max-width:340px;margin-bottom:10px;text-align:center;}
+.fex{font-size:12px;color:var(--br);font-style:italic;background:var(--gl);padding:9px 14px;border-radius:11px;line-height:1.6;max-width:340px;text-align:center;}
+.fknown{position:absolute;top:12px;right:12px;background:var(--g);color:#fff;border-radius:50%;width:28px;height:28px;display:none;align-items:center;justify-content:center;font-size:14px;}
+.fcard.known .fknown{display:flex;}
+.fnav{display:flex;gap:9px;justify-content:center;margin-top:18px;flex-wrap:wrap;}
+.fnbtn{padding:9px 20px;border-radius:26px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;border:2px solid var(--soft);background:#fff;color:var(--br);transition:all .18s;}
+.fnbtn.p{background:var(--g);color:#fff;border-color:var(--g);}
+.fnbtn:hover{transform:translateY(-2px);}
+.fmaster{text-align:center;margin-top:12px;font-size:12px;color:var(--br);}
+
+/* QUIZ */
+#sQuiz{max-width:660px;margin:0 auto;padding:0 36px 80px;}
+.qintro{background:var(--gl);border-radius:13px;padding:14px 18px;margin-bottom:22px;font-size:13px;color:#2a6b4a;line-height:1.7;font-weight:600;}
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+.mcol{display:flex;flex-direction:column;gap:7px;}
+.mitem{padding:11px 14px;border:2px solid var(--soft);border-radius:11px;background:#fff;cursor:pointer;font-size:12px;font-weight:700;transition:all .18s;text-align:center;line-height:1.5;display:flex;align-items:center;gap:8px;justify-content:center;}
+.mitem:hover{border-color:var(--b);}
+.mitem.sel{border-color:var(--o);background:var(--ol);color:var(--o);}
+.mitem.ok{border-color:var(--g);background:var(--gl);color:var(--g);pointer-events:none;}
+.mitem.no{border-color:#E24B4A;background:#FCEBEB;color:#E24B4A;}
+.qres{text-align:center;padding:32px;background:#fff;border-radius:18px;border:2px solid var(--soft);}
+
+@media(max-width:680px){
+  nav,.tabs,.hd{padding-left:20px;padding-right:20px;}
+  #sStudy,#sFlash,#sQuiz,.prog-wrap{padding-left:20px;padding-right:20px;}
+  .wcard{flex-direction:column;gap:10px;}
+  .wsvg{width:100%;height:120px;}
+  .mgrid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html" class="logo">Mommy<span>Time</span></a>
+  <a href="index.html" class="back">← Week 1</a>
+</nav>
+<div class="tabs">
+  <button class="tab on" onclick="go('Study',this)">📖 Study</button>
+  <button class="tab" onclick="go('Flash',this)">🃏 Flashcards</button>
+  <button class="tab" onclick="go('Quiz',this)">🎯 Match!</button>
+</div>
+<div class="hd">
+  <h1>🌱 Plant Seeds — Key Words</h1>
+  <p>12 words · Auto-play pronunciation · Learn with Mom!</p>
+</div>
+<div class="prog-wrap">
+  <div class="prog-track"><div class="prog-bar" id="pb" style="width:0%"></div></div>
+  <div class="prog-row"><span>Words learned</span><span id="pt">0 / 12</span></div>
+</div>
+<div id="sStudy"></div>
+<div id="sFlash" style="display:none"></div>
+<div id="sQuiz" style="display:none"></div>
+
+<script>
+// ── SVG 그림 (인라인, 외부 연결 없음) ──
+const IMGS = {
+  pollen: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#FFFBEC"/>
+    <circle cx="42" cy="42" r="18" fill="#F9C74F" opacity=".9"/>
+    <circle cx="42" cy="18" r="7" fill="#F9C74F"/>
+    <circle cx="42" cy="66" r="7" fill="#F9C74F"/>
+    <circle cx="18" cy="42" r="7" fill="#F9C74F"/>
+    <circle cx="66" cy="42" r="7" fill="#F9C74F"/>
+    <circle cx="24" cy="24" r="5" fill="#F9C74F" opacity=".7"/>
+    <circle cx="60" cy="24" r="5" fill="#F9C74F" opacity=".7"/>
+    <circle cx="24" cy="60" r="5" fill="#F9C74F" opacity=".7"/>
+    <circle cx="60" cy="60" r="5" fill="#F9C74F" opacity=".7"/>
+    <circle cx="42" cy="42" r="8" fill="#F4845F" opacity=".5"/>
+  </svg>`,
+
+  petal: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#FFF0EB"/>
+    <ellipse cx="42" cy="22" rx="10" ry="16" fill="#F4845F" opacity=".85"/>
+    <ellipse cx="42" cy="62" rx="10" ry="16" fill="#F4845F" opacity=".85"/>
+    <ellipse cx="22" cy="42" rx="16" ry="10" fill="#F4845F" opacity=".85"/>
+    <ellipse cx="62" cy="42" rx="16" ry="10" fill="#F4845F" opacity=".85"/>
+    <ellipse cx="26" cy="26" rx="9" ry="13" fill="#F9C74F" opacity=".7" transform="rotate(-45 26 26)"/>
+    <ellipse cx="58" cy="26" rx="9" ry="13" fill="#F9C74F" opacity=".7" transform="rotate(45 58 26)"/>
+    <ellipse cx="26" cy="58" rx="9" ry="13" fill="#F9C74F" opacity=".7" transform="rotate(45 26 58)"/>
+    <ellipse cx="58" cy="58" rx="9" ry="13" fill="#F9C74F" opacity=".7" transform="rotate(-45 58 58)"/>
+    <circle cx="42" cy="42" r="10" fill="#F9C74F"/>
+  </svg>`,
+
+  stigma: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#F3EEFF"/>
+    <rect x="38" y="44" width="8" height="26" rx="4" fill="#9B72CF"/>
+    <ellipse cx="42" cy="40" rx="14" ry="10" fill="#9B72CF" opacity=".8"/>
+    <circle cx="34" cy="36" r="4" fill="#F9C74F"/>
+    <circle cx="42" cy="30" r="4" fill="#F9C74F"/>
+    <circle cx="50" cy="36" r="4" fill="#F9C74F"/>
+    <text x="42" y="76" text-anchor="middle" font-size="9" fill="#9B72CF" font-family="Nunito,sans-serif" font-weight="700">sticky!</text>
+  </svg>`,
+
+  pistil: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#E8F8EF"/>
+    <ellipse cx="42" cy="58" rx="12" ry="14" fill="#52B788" opacity=".7"/>
+    <rect x="38" y="28" width="8" height="30" rx="4" fill="#52B788"/>
+    <ellipse cx="42" cy="26" rx="10" ry="8" fill="#52B788" opacity=".9"/>
+    <text x="42" y="76" text-anchor="middle" font-size="9" fill="#52B788" font-family="Nunito,sans-serif" font-weight="700">female part</text>
+  </svg>`,
+
+  nectar: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#FFFBEC"/>
+    <path d="M30 55 Q42 20 54 55 Q54 68 42 68 Q30 68 30 55Z" fill="#F9C74F" opacity=".9"/>
+    <path d="M34 52 Q42 28 50 52" fill="none" stroke="#F4845F" stroke-width="2" opacity=".6"/>
+    <circle cx="58" cy="26" r="9" fill="#F9C74F" opacity=".6"/>
+    <path d="M54 30 L62 22 M54 22 L62 30" stroke="#F4845F" stroke-width="2" stroke-linecap="round"/>
+    <text x="42" y="14" text-anchor="middle" font-size="9" fill="#F4845F" font-family="Nunito,sans-serif" font-weight="700">sweet!</text>
+  </svg>`,
+
+  anther: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#E8F8EF"/>
+    <rect x="36" y="44" width="6" height="22" rx="3" fill="#52B788"/>
+    <ellipse cx="39" cy="40" rx="11" ry="8" fill="#F9C74F" opacity=".9"/>
+    <circle cx="32" cy="37" r="3" fill="#F9C74F"/>
+    <circle cx="39" cy="32" r="3" fill="#F9C74F"/>
+    <circle cx="46" cy="37" r="3" fill="#F9C74F"/>
+    <rect x="52" y="44" width="6" height="22" rx="3" fill="#52B788"/>
+    <ellipse cx="55" cy="40" rx="11" ry="8" fill="#F9C74F" opacity=".9"/>
+    <text x="44" y="76" text-anchor="middle" font-size="9" fill="#52B788" font-family="Nunito,sans-serif" font-weight="700">makes pollen</text>
+  </svg>`,
+
+  pollen_tube: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#EBF4FF"/>
+    <circle cx="42" cy="14" r="8" fill="#F9C74F"/>
+    <rect x="38" y="22" width="8" height="40" rx="4" fill="#5BA4CF" opacity=".8"/>
+    <circle cx="42" cy="68" r="10" fill="#52B788" opacity=".7"/>
+    <circle cx="42" cy="68" r="5" fill="#F9C74F"/>
+    <text x="42" y="12" text-anchor="middle" font-size="8" fill="#F4845F" font-family="Nunito,sans-serif" font-weight="700">pollen</text>
+  </svg>`,
+
+  ovule: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#F3EEFF"/>
+    <ellipse cx="42" cy="46" rx="20" ry="24" fill="#9B72CF" opacity=".25"/>
+    <ellipse cx="42" cy="46" rx="20" ry="24" fill="none" stroke="#9B72CF" stroke-width="2"/>
+    <ellipse cx="42" cy="46" rx="9" ry="11" fill="#9B72CF" opacity=".7"/>
+    <circle cx="42" cy="46" r="4" fill="#F9C74F"/>
+    <text x="42" y="14" text-anchor="middle" font-size="9" fill="#9B72CF" font-family="Nunito,sans-serif" font-weight="700">future seed!</text>
+  </svg>`,
+
+  ovary: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#FFF0EB"/>
+    <ellipse cx="42" cy="50" rx="22" ry="20" fill="#F4845F" opacity=".25"/>
+    <ellipse cx="42" cy="50" rx="22" ry="20" fill="none" stroke="#F4845F" stroke-width="2.5"/>
+    <circle cx="32" cy="52" r="6" fill="#F9C74F" opacity=".8"/>
+    <circle cx="42" cy="44" r="6" fill="#F9C74F" opacity=".8"/>
+    <circle cx="52" cy="52" r="6" fill="#F9C74F" opacity=".8"/>
+    <rect x="39" y="22" width="6" height="16" rx="3" fill="#52B788"/>
+    <text x="42" y="78" text-anchor="middle" font-size="8" fill="#F4845F" font-family="Nunito,sans-serif" font-weight="700">→ becomes fruit</text>
+  </svg>`,
+
+  seed: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#E8F8EF"/>
+    <ellipse cx="38" cy="50" rx="20" ry="24" fill="#8B6F5E" opacity=".7" transform="rotate(-20 38 50)"/>
+    <ellipse cx="38" cy="50" rx="13" ry="17" fill="#F9C74F" opacity=".8" transform="rotate(-20 38 50)"/>
+    <path d="M54 30 Q62 20 66 14" stroke="#52B788" stroke-width="3" stroke-linecap="round" fill="none"/>
+    <circle cx="66" cy="14" r="5" fill="#52B788"/>
+    <text x="42" y="78" text-anchor="middle" font-size="9" fill="#52B788" font-family="Nunito,sans-serif" font-weight="700">baby plant!</text>
+  </svg>`,
+
+  fertilized: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#FFFBEC"/>
+    <circle cx="28" cy="42" r="12" fill="#F9C74F" opacity=".8"/>
+    <text x="28" y="46" text-anchor="middle" font-size="9" fill="#8B4513" font-family="Nunito,sans-serif" font-weight="700">🌸</text>
+    <text x="42" y="46" text-anchor="middle" font-size="14" fill="#F4845F" font-weight="800">+</text>
+    <circle cx="56" cy="42" r="12" fill="#9B72CF" opacity=".5"/>
+    <text x="56" y="46" text-anchor="middle" font-size="9" fill="#4a2080" font-family="Nunito,sans-serif" font-weight="700">egg</text>
+    <text x="42" y="68" text-anchor="middle" font-size="9" fill="#52B788" font-family="Nunito,sans-serif" font-weight="700">= new seed! 🌱</text>
+  </svg>`,
+
+  soil: `<svg width="84" height="84" viewBox="0 0 84 84"><rect width="84" height="84" rx="12" fill="#E8F8EF"/>
+    <rect x="10" y="48" width="64" height="26" rx="8" fill="#8B6F5E" opacity=".8"/>
+    <rect x="10" y="52" width="64" height="8" rx="0" fill="#6B4F3E" opacity=".5"/>
+    <ellipse cx="25" cy="48" rx="6" ry="4" fill="#52B788"/>
+    <ellipse cx="42" cy="44" rx="7" ry="5" fill="#52B788"/>
+    <ellipse cx="60" cy="47" rx="5" ry="4" fill="#52B788"/>
+    <path d="M42 44 L42 22" stroke="#52B788" stroke-width="3" stroke-linecap="round"/>
+    <path d="M38 30 L42 24 L46 30" stroke="#52B788" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <text x="42" y="78" text-anchor="middle" font-size="9" fill="#6B4F3E" font-family="Nunito,sans-serif" font-weight="700">plants grow here</text>
+  </svg>`,
+};
+
+const W=[
+  {key:'pollen',w:'pollen',p:'/ˈpɒlən/',k:'꽃가루',pos:'noun',
+   d:'A fine yellow powder made by flowers that helps create new seeds.',
+   x:'The bee was covered in yellow pollen when it visited the flower.',
+   s:'The class shrinks and gets covered in pollen — just like a bee! 🐝'},
+  {key:'petal',w:'petal',p:'/ˈpetəl/',k:'꽃잎',pos:'noun',
+   d:'A colorful part of a flower that attracts insects and animals.',
+   x:'The bright pink petals attracted many butterflies to the garden.',
+   s:'Ms. Frizzle\'s bus lands right on a giant flower petal!'},
+  {key:'stigma',w:'stigma',p:'/ˈstɪɡmə/',k:'암술머리',pos:'noun',
+   d:'The sticky top of the pistil where pollen first lands.',
+   x:'The pollen landed right on the sticky stigma of the flower.',
+   s:'Arnold slides down and finds the stigma — it\'s super sticky!'},
+  {key:'pistil',w:'pistil',p:'/ˈpɪstɪl/',k:'암술',pos:'noun',
+   d:'The female part of a flower that receives pollen and helps make seeds.',
+   x:'The pistil is found right in the center of most flowers.',
+   s:'The whole class explores the inside of the pistil!'},
+  {key:'nectar',w:'nectar',p:'/ˈnektər/',k:'꿀(꽃꿀)',pos:'noun',
+   d:'A sweet liquid inside flowers that attracts insects and birds.',
+   x:'Bees collect nectar from flowers to make delicious honey.',
+   s:'"This stuff tastes sweet!" — the bus slides into a lake of nectar!'},
+  {key:'anther',w:'anther',p:'/ˈænθər/',k:'꽃밥',pos:'noun',
+   d:'The part of a flower that makes and releases pollen.',
+   x:'The yellow anther was completely covered in tiny pollen grains.',
+   s:'Dorothy Ann reads about the anther — even upside down!'},
+  {key:'pollen_tube',w:'pollen tube',p:'/ˈpɒlən tjuːb/',k:'꽃가루관',pos:'noun',
+   d:'A thin tube that grows from pollen all the way down to the egg cell.',
+   x:'The pollen grows a long tube down into the flower to reach the egg.',
+   s:'Arnold finds a pollen tube — and everyone slides all the way down!'},
+  {key:'ovule',w:'ovule',p:'/ˈɒvjuːl/',k:'밑씨',pos:'noun',
+   d:'A tiny structure inside the flower that becomes a seed after fertilization.',
+   x:'The ovule will grow into a seed when pollen finally reaches it.',
+   s:'"Hey, are those rocks?" "No, they\'re egg cells!" 😄'},
+  {key:'ovary',w:'ovary',p:'/ˈoʊvəri/',k:'씨방',pos:'noun',
+   d:'The part of the flower that holds the ovules and later becomes the fruit.',
+   x:'After fertilization, the ovary slowly grows into a juicy fruit.',
+   s:'The bus drives inside the ovary — then seeds start growing!'},
+  {key:'seed',w:'seed',p:'/siːd/',k:'씨앗',pos:'noun',
+   d:'The part of a plant that can grow into a whole new plant.',
+   x:'Carlos planted tiny seeds in the soil and watered them every day.',
+   s:'"To think these beautiful tomatoes started from tiny seeds!" — Carlos'},
+  {key:'fertilized',w:'fertilized',p:'/ˈfɜːrtɪlaɪzd/',k:'수정된',pos:'adj',
+   d:'When pollen joins with the egg cell to start making a new seed.',
+   x:'Once the flower is fertilized, it begins to form a brand new seed.',
+   s:'Pollen + egg cell = fertilized! A seed begins its journey. 🌱'},
+  {key:'soil',w:'soil',p:'/sɔɪl/',k:'토양',pos:'noun',
+   d:'The top layer of the ground where plants grow.',
+   x:'A seed needs soil, water, sunlight, and time to grow.',
+   s:'Mr. Seedplot has amazing garden soil — perfect for Phoebe\'s plants!'},
+];
+
+let known=new Set(), fi=0, flipped=false, autoTimer=null;
+
+function upd(){
+  const p=(known.size/W.length*100).toFixed(0);
+  document.getElementById('pb').style.width=p+'%';
+  document.getElementById('pt').textContent=known.size+' / '+W.length;
+}
+
+// ── STUDY ──
+function buildStudy(){
+  const c=document.getElementById('sStudy'); c.innerHTML='';
+  W.forEach((w,i)=>{
+    const d=document.createElement('div');
+    d.className='wcard';
+    const isDone=known.has(i);
+    d.innerHTML=`
+      <div class="wsvg">${IMGS[w.key]}</div>
+      <div class="wbody">
+        <div class="wrow">
+          <span class="wen">${w.w}</span>
+          <span class="wph">${w.p}</span>
+          <span class="wpos">${w.pos}</span>
+          <span class="wko">${w.k}</span>
+        </div>
+        <div class="wdef">${w.d}</div>
+        <div class="wex">"${w.x}"</div>
+        <div class="wstory">📚 In the story: ${w.s}</div>
+        <div class="wbtns">
+          <button class="tts" onclick="sp(this,'${w.w}')">🔊 Word</button>
+          <button class="tts" onclick="sp(this,\`${w.x}\`)">🔊 Sentence</button>
+          <button class="lbtn${isDone?' done':''}" id="lb${i}" onclick="toggleLearned(${i})">
+            ${isDone?'✓ Learned! (tap to undo)':'Mark as learned'}
+          </button>
+        </div>
+      </div>`;
+    c.appendChild(d);
+  });
+}
+
+function toggleLearned(i){
+  const b=document.getElementById('lb'+i);
+  if(known.has(i)){
+    known.delete(i);
+    b.textContent='Mark as learned';
+    b.classList.remove('done');
+  } else {
+    known.add(i);
+    b.textContent='✓ Learned! (tap to undo)';
+    b.classList.add('done');
+  }
+  upd();
+}
+
+// ── FLASHCARD ──
+function renderFlash(){
+  document.getElementById('sFlash').innerHTML=`
+    <div class="auto-badge"><div class="auto-dot"></div>Auto-plays pronunciation</div>
+    <p class="fctr" id="fctr">Card 1 of ${W.length}</p>
+    <div class="fcard" id="fc" onclick="flip()">
+      <div class="ffront" id="ff"></div>
+      <div class="fback" id="fb"></div>
+      <div class="fknown">✓</div>
+    </div>
+    <div class="fnav">
+      <button class="fnbtn" onclick="prv()">← Prev</button>
+      <button class="fnbtn p" onclick="flip()">Flip Card</button>
+      <button class="fnbtn" onclick="mkKnown()">✓ Got it!</button>
+      <button class="fnbtn" onclick="nxt()">Next →</button>
+    </div>
+    <div class="fmaster" id="fm">0 / ${W.length} mastered 🌟</div>`;
+  fi=0; flipped=false;
+  showCard();
+}
+
+function showCard(){
+  const w=W[fi];
+  const card=document.getElementById('fc');
+  card.classList.remove('flipped','known');
+  if(known.has(fi)) card.classList.add('known');
+  flipped=false;
+  document.getElementById('ff').innerHTML=`
+    <div class="fsvg">${IMGS[w.key]}</div>
+    <div class="fw">${w.w}</div>
+    <div class="fph">${w.p}</div>
+    <div class="fauto">🔊 Playing...</div>
+    <div class="fhint">Tap to see meaning 👆</div>`;
+  document.getElementById('fb').innerHTML=`
+    <div class="fsvg">${IMGS[w.key]}</div>
+    <div class="fko">${w.k}</div>
+    <div class="fdef">${w.d}</div>
+    <div class="fex">"${w.x}"</div>
+    <button class="tts" onclick="event.stopPropagation();sp(this,\`${w.x}\`)" style="margin-top:8px">🔊 Sentence</button>`;
+  document.getElementById('fctr').textContent=`Card ${fi+1} of ${W.length}`;
+  document.getElementById('fm').textContent=known.size+' / '+W.length+' mastered 🌟';
+  if(autoTimer) clearTimeout(autoTimer);
+  autoTimer=setTimeout(()=>spAuto(w.w), 400);
+}
+
+function flip(){ flipped=!flipped; document.getElementById('fc').classList.toggle('flipped',flipped); }
+function nxt(){ fi=(fi+1)%W.length; showCard(); }
+function prv(){ fi=(fi-1+W.length)%W.length; showCard(); }
+function mkKnown(){ known.add(fi); upd(); showCard(); setTimeout(nxt,200); }
+
+// ── QUIZ ──
+function buildQuiz(){
+  const sh=[...W].sort(()=>Math.random()-.5).slice(0,6);
+  const df=[...sh].sort(()=>Math.random()-.5);
+  let wSel=null,dSel=null,matched=new Set(),score=0;
+  const c=document.getElementById('sQuiz');
+  c.innerHTML=`
+    <div class="qintro">🎮 Tap a word on the left, then its meaning on the right!<br>
+    <strong>Take turns with Mom — who scores more? 🏆</strong></div>
+    <div class="mgrid">
+      <div class="mcol" id="wCol"></div>
+      <div class="mcol" id="dCol"></div>
+    </div>
+    <div id="qres"></div>`;
+
+  sh.forEach(w=>{
+    const b=document.createElement('div');
+    b.className='mitem';
+    b.innerHTML=`<span style="display:inline-block;width:32px;height:32px">${IMGS[w.key].replace('width="84" height="84"','width="32" height="32"')}</span>${w.w}`;
+    b.onclick=()=>pick(b,w,'w');
+    document.getElementById('wCol').appendChild(b);
+  });
+  df.forEach(w=>{
+    const b=document.createElement('div');
+    b.className='mitem';
+    const short=w.d.length>58?w.d.slice(0,58)+'…':w.d;
+    b.textContent=short;
+    b.onclick=()=>pick(b,w,'d');
+    document.getElementById('dCol').appendChild(b);
+  });
+
+  function pick(btn,word,type){
+    if(matched.has(word.w)) return;
+    if(type==='w'){
+      document.querySelectorAll('#wCol .mitem:not(.ok)').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel'); wSel={btn,word};
+    } else {
+      document.querySelectorAll('#dCol .mitem:not(.ok)').forEach(b=>b.classList.remove('sel'));
+      btn.classList.add('sel'); dSel={btn,word};
+    }
+    if(wSel&&dSel){
+      if(wSel.word.w===dSel.word.w){
+        wSel.btn.classList.replace('sel','ok');
+        dSel.btn.classList.replace('sel','ok');
+        matched.add(wSel.word.w); score++;
+        spAuto(wSel.word.w);
+        if(matched.size===sh.length) setTimeout(done,500);
+      } else {
+        wSel.btn.classList.replace('sel','no');
+        dSel.btn.classList.replace('sel','no');
+        setTimeout(()=>{
+          if(wSel) wSel.btn.classList.remove('no');
+          if(dSel) dSel.btn.classList.remove('no');
+        },600);
+      }
+      wSel=null; dSel=null;
+    }
+  }
+
+  function done(){
+    document.getElementById('qres').innerHTML=`
+      <div class="qres">
+        <div style="font-size:48px;margin-bottom:10px">🏆</div>
+        <div style="font-size:20px;font-weight:800;margin-bottom:8px">All matched! ${score}/${sh.length}</div>
+        <div style="font-size:13px;color:var(--br);line-height:1.7;margin-bottom:18px">
+          Amazing! Try again to beat your time! ⏱️</div>
+        <button onclick="buildQuiz()" style="padding:10px 24px;border-radius:24px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">
+          Play Again 🔄</button>
+      </div>`;
+  }
+}
+
+// ── TTS ──
+let spk=false;
+function sp(btn,txt){
+  if(!window.speechSynthesis) return;
+  if(spk){window.speechSynthesis.cancel();spk=false;document.querySelectorAll('.tts.speaking').forEach(b=>b.classList.remove('speaking'));return;}
+  const u=new SpeechSynthesisUtterance(txt);
+  u.lang='en-US';u.rate=0.85;u.pitch=1.1;
+  const vs=window.speechSynthesis.getVoices();
+  const v=vs.find(v=>v.lang.startsWith('en'))||null;
+  if(v)u.voice=v;
+  u.onstart=()=>{spk=true;if(btn)btn.classList.add('speaking');};
+  u.onend=u.onerror=()=>{spk=false;if(btn)btn.classList.remove('speaking');};
+  window.speechSynthesis.speak(u);
+}
+function spAuto(txt){
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  setTimeout(()=>{
+    const u=new SpeechSynthesisUtterance(txt);
+    u.lang='en-US';u.rate=0.85;u.pitch=1.1;
+    const vs=window.speechSynthesis.getVoices();
+    const v=vs.find(v=>v.lang.startsWith('en'))||null;
+    if(v)u.voice=v;
+    window.speechSynthesis.speak(u);
+  },100);
+}
+window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+
+function go(mode,btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  ['Study','Flash','Quiz'].forEach(m=>{
+    document.getElementById('s'+m).style.display=m===mode?'block':'none';
+  });
+  if(mode==='Flash') renderFlash();
+  if(mode==='Quiz') buildQuiz();
+}
+
+buildStudy();
+upd();
+</script>
+</body>
+</html>

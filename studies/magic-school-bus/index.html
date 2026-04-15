@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매직스쿨버스 — 엄마시간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/main.css">
+<style>
+.hero { padding: 110px 40px 56px; background: linear-gradient(135deg, #FFF4E8, #FFF9F4); }
+.hero-inner { max-width: 700px; margin: 0 auto; }
+.series-badge { display:inline-flex;align-items:center;gap:6px;background:var(--accent);color:#fff;font-size:12px;padding:5px 14px;border-radius:20px;margin-bottom:18px; }
+.series-title { font-family:'Noto Serif KR',serif;font-size:38px;font-weight:300;margin-bottom:12px; }
+.series-desc { font-size:16px;color:var(--brown);line-height:1.9;margin-bottom:28px; }
+.series-meta { display:flex;gap:12px;flex-wrap:wrap; }
+.meta-pill { background:var(--white);border:1px solid var(--soft);border-radius:20px;padding:6px 14px;font-size:13px;color:var(--brown); }
+
+.content { max-width: 760px; margin: 0 auto; padding: 48px 40px 80px; }
+.week-label { font-size:11px;letter-spacing:.12em;color:var(--accent);text-transform:uppercase;margin-bottom:16px;font-weight:500; }
+
+.week-item {
+  display: flex; gap: 18px; align-items: center;
+  padding: 20px 24px; background: var(--white);
+  border: 1px solid var(--soft); border-radius: 18px;
+  margin-bottom: 10px; text-decoration: none; color: var(--dark);
+  transition: transform .15s, border-color .2s; cursor: pointer;
+}
+.week-item:hover { transform: translateX(6px); border-color: var(--accent); }
+.week-item.locked { opacity: .45; pointer-events: none; cursor: default; }
+.week-item.locked:hover { transform: none; }
+.week-num { width: 50px; height: 50px; border-radius: 50%; background: linear-gradient(135deg, #FFF0E0, #FFE4C4); display: flex; align-items: center; justify-content: center; font-family:'Noto Serif KR',serif; font-size:17px; font-weight:600; color:var(--accent); flex-shrink:0; }
+.week-info { flex: 1; }
+.week-title-ko { font-size:16px;font-weight:500;margin-bottom:3px; }
+.week-title-en { font-size:13px;color:var(--brown);font-style:italic; }
+.week-topic { font-size:12px;color:var(--accent);margin-top:4px; }
+.week-status { font-size:12px;color:var(--soft); }
+.week-arrow { color:var(--peach);font-size:20px; }
+
+@media(max-width:768px){ .content{padding:32px 24px 60px;} .hero{padding:100px 24px 48px;} }
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="../../index.html" class="nav-logo">엄마<span>시간</span></a>
+  <a href="../../pages/studies.html" class="nav-back">← 스터디 목록</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="series-badge">🚌 진행중</span>
+    <h1 class="series-title">매직스쿨버스<br><span style="font-size:22px;color:var(--brown);font-weight:300">The Magic School Bus</span></h1>
+    <p class="series-desc">프리즐 선생님의 마법 버스를 타고 우주, 인체, 날씨 속으로!<br>매주 한 권, 영어로 읽고 과학을 신나게 배워요.</p>
+    <div class="series-meta">
+      <span class="meta-pill">📚 총 13권</span>
+      <span class="meta-pill">🎯 6~10세</span>
+      <span class="meta-pill">🌐 영어+한국어</span>
+      <span class="meta-pill">⏱ 주 1회</span>
+    </div>
+  </div>
+</div>
+
+<div class="content">
+  <p class="week-label">주차별 커리큘럼</p>
+
+  <a href="week-01/index.html" class="week-item">
+    <div class="week-num">1</div>
+    <div class="week-info">
+      <div class="week-title-ko">🚀 태양계로 날아라</div>
+      <div class="week-title-en">Lost in the Solar System</div>
+      <div class="week-topic">태양계 · 행성 · 중력</div>
+    </div>
+    <div class="week-arrow">→</div>
+  </a>
+
+  <div class="week-item locked">
+    <div class="week-num">2</div>
+    <div class="week-info">
+      <div class="week-title-ko">🧬 인체 속으로</div>
+      <div class="week-title-en">Inside the Human Body</div>
+      <div class="week-topic">다음 주 오픈</div>
+    </div>
+    <div class="week-status">🔒</div>
+  </div>
+
+  <div class="week-item locked">
+    <div class="week-num">3</div>
+    <div class="week-info">
+      <div class="week-title-ko">💡 빛과 소리의 세계</div>
+      <div class="week-title-en">In the Blink of an Eye</div>
+      <div class="week-topic">준비중</div>
+    </div>
+    <div class="week-status">🔒</div>
+  </div>
+
+  <div class="week-item locked">
+    <div class="week-num">4</div>
+    <div class="week-info">
+      <div class="week-title-ko">🌊 물의 순환</div>
+      <div class="week-title-en">Wet All Over</div>
+      <div class="week-topic">준비중</div>
+    </div>
+    <div class="week-status">🔒</div>
+  </div>
+
+  <div class="week-item locked">
+    <div class="week-num">5</div>
+    <div class="week-info">
+      <div class="week-title-ko">🦕 공룡 시대로</div>
+      <div class="week-title-en">In the Time of the Dinosaurs</div>
+      <div class="week-topic">준비중</div>
+    </div>
+    <div class="week-status">🔒</div>
+  </div>
+</div>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

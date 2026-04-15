@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>1주차: 태양계로 날아라 — 엄마시간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/main.css">
+<link rel="stylesheet" href="../../../assets/css/components.css">
+<style>
+.hero { padding: 120px 48px 48px; text-align: center; }
+.breadcrumb { font-size: 13px; color: var(--brown); margin-bottom: 12px; }
+.breadcrumb a { color: var(--brown); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); }
+.week-title { font-family: 'Noto Serif KR', serif; font-size: 36px; font-weight: 300; margin-bottom: 12px; }
+.week-topic-badge { display: inline-block; background: var(--warm); color: var(--brown); font-size: 13px; padding: 5px 16px; border-radius: 20px; }
+.materials { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; max-width: 860px; margin: 48px auto; padding: 0 48px; }
+.mat-card { background: #fff; border: 1.5px solid var(--soft); border-radius: 18px; padding: 28px 24px; text-align: center; text-decoration: none; color: var(--dark); transition: transform .2s, border-color .2s; }
+.mat-card:hover { transform: translateY(-4px); border-color: var(--accent); }
+.mat-card.disabled { opacity: 0.45; pointer-events: none; }
+.mat-icon { font-size: 36px; margin-bottom: 12px; }
+.mat-title { font-size: 16px; font-weight: 500; margin-bottom: 6px; }
+.mat-desc { font-size: 12px; color: var(--brown); line-height: 1.5; }
+.attend-section { text-align: center; padding: 0 48px 80px; }
+.attend-btn { background: var(--green); color: #fff; border: none; padding: 18px 48px; border-radius: 32px; font-size: 16px; font-weight: 500; cursor: pointer; font-family: inherit; transition: transform .2s; }
+.attend-btn:hover { transform: translateY(-2px); }
+.attend-hint { font-size: 13px; color: var(--brown); margin-top: 10px; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="../../../index.html" class="nav-logo">엄마<span>시간</span></a>
+</nav>
+<div class="hero">
+  <p class="breadcrumb"><a href="../index.html">매직스쿨버스</a> › 1주차</p>
+  <h1 class="week-title">🚀 태양계로 날아라</h1>
+  <span class="week-topic-badge">태양계 · 우주 · 행성</span>
+</div>
+<div class="materials">
+  <a href="vocabulary.html" class="mat-card">
+    <div class="mat-icon">📖</div>
+    <div class="mat-title">단어 카드</div>
+    <div class="mat-desc">핵심 영어 단어 10개</div>
+  </a>
+  <a href="quiz.html" class="mat-card">
+    <div class="mat-icon">❓</div>
+    <div class="mat-title">이해력 퀴즈</div>
+    <div class="mat-desc">내용 확인 5문제</div>
+  </a>
+  <a href="knowledge.html" class="mat-card">
+    <div class="mat-icon">🔬</div>
+    <div class="mat-title">관련 지식</div>
+    <div class="mat-desc">태양계와 행성 이야기</div>
+  </a>
+  <a href="activity.html" class="mat-card disabled">
+    <div class="mat-icon">🎨</div>
+    <div class="mat-title">활동지</div>
+    <div class="mat-desc">준비 중이에요</div>
+  </a>
+</div>
+<div class="attend-section">
+  <button class="attend-btn" onclick="doAttend()">✅ 이번 주 학습 완료!</button>
+  <p class="attend-hint">버튼을 누르면 출석이 기록돼요</p>
+</div>
+<script src="../../../assets/js/main.js"></script>
+<script src="../../../assets/js/attendance.js"></script>
+<script>
+function doAttend() {
+  const name = prompt('이름을 입력해주세요 (예: 도윤맘)');
+  if (name) checkAttendance(name, '매직스쿨버스', 1);
+}
+</script>
+</body>
+</html>

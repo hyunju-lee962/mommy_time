@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blending Practice — ai, ay (장모음 a) | G3 U1 | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.95);backdrop-filter:blur(14px);border-bottom:2px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:700;padding:6px 14px;border:1.5px solid var(--soft);border-radius:10px;background:#fff;}
+.wrap{max-width:720px;margin:0 auto;padding:82px 36px 80px;}
+.card{background:#fff;border:2px solid #9B72CF44;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.card-title{font-size:15px;font-weight:800;color:#9B72CF;margin-bottom:12px;display:flex;align-items:center;gap:6px;padding-bottom:10px;border-bottom:1.5px solid var(--soft);}
+.done-btn{width:100%;padding:15px;border-radius:16px;color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;background:#9B72CF;}
+.done-msg{display:none;background:#F3EEFF;border:1.5px solid #9B72CF88;border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:14px;font-weight:700;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--soft);}
+.nav-btn{flex:1;padding:11px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:1.5px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{color:#fff;border:none;background:#9B72CF;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}</style>
+</head>
+<body>
+<script>MommyAuth.guard('G3');
+MommyAuth.checkLock('G3-U1-S05');</script>
+<nav><a href="../../../../index.html" class="logo">Mommy<span>Time</span></a>
+<a href="jp-g3-u1-index.html" class="back">← Unit 1</a></nav>
+<div class="wrap">
+  <div style="display:inline-flex;align-items:center;gap:6px;background:#F3EEFF;color:#9B72CF;border:1.5px solid #9B72CF88;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:14px;">🔤 Step 5 / 10</div>
+  <h1 style="font-size:24px;font-weight:800;margin-bottom:8px;">Blending Practice</h1>
+  <p style="font-size:14px;color:var(--br);margin-bottom:22px;line-height:1.7;">"에이" 소리! rain, play — 두 모음이 만나면 첫 모음이 길게!</p>
+
+  <div class="card"><div class="card-title">🔊 소리 블렌더</div>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;" id="bwR"></div>
+  <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;" id="phR"></div>
+  <div id="rb5" style="min-height:56px;border:2px dashed #9B72CF88;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:800;max-width:180px;margin:0 auto;padding:8px 20px;">?</div>
+  </div>
+  <div class="card"><div class="card-title">🧩 단어 조립</div>
+  <div id="btT" style="font-size:14px;font-weight:800;color:var(--br);margin-bottom:10px">목표: <span style="color:#9B72CF">rain</span></div>
+  <div id="btDZ" style="display:flex;gap:8px;min-height:54px;padding:8px;background:#F3EEFF;border-radius:12px;border:2px dashed #9B72CF;margin-bottom:10px;flex-wrap:wrap;"></div>
+  <div id="btPool" style="display:flex;flex-wrap:wrap;gap:8px;padding:8px;background:var(--warm);border-radius:12px;margin-bottom:10px;"></div>
+  <button onclick="chkBt()" style="padding:9px 20px;border-radius:10px;background:#9B72CF;color:#fff;border:none;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-right:6px;">✅ 확인</button>
+  <button onclick="clrBt()" style="padding:9px 16px;border-radius:10px;background:var(--warm);color:var(--br);border:none;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;">🗑 지우기</button>
+  <div id="btFB" style="font-size:13px;font-weight:700;margin-top:8px;min-height:18px;"></div>
+  <button id="btN" onclick="nxtBt()" style="display:none;padding:9px 20px;border-radius:10px;background:var(--g);color:#fff;border:none;font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:8px;">다음 단어 →</button>
+  </div>
+  <button class="done-btn" onclick="markDone()">✅ Step 5 완료!</button>
+  <div class="done-msg" id="doneMsg" style="color:#5A28A0;">🎉 완료! 다음 스텝으로!</div>
+  <div class="nav-btns">
+    <a href="jp-g3-u1-step04.html" class="nav-btn sec">← 📖 Word Cards</a>
+    <a href="jp-g3-u1-step06.html" class="nav-btn pri">📚 Decodable Story →</a>
+  </div>
+</div>
+<script>
+function markDone(){
+  var done=new Set(JSON.parse(localStorage.getItem('jp_g3_u1_done')||'[]'));
+  done.add(5);localStorage.setItem('jp_g3_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G3-U1-S05');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';
+}
+var _d=new Set(JSON.parse(localStorage.getItem('jp_g3_u1_done')||'[]'));
+if(_d.has(5)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+
+var BW5=[{word:"rain",phonemes:["r", "a", "i", "n"],ko:["r", "a", "i", "n"]},{word:"tail",phonemes:["t", "a", "i", "l"],ko:["t", "a", "i", "l"]},{word:"sail",phonemes:["s", "a", "i", "l"],ko:["s", "a", "i", "l"]},{word:"train",phonemes:["t", "r", "a", "i", "n"],ko:["t", "r", "a", "i", "n"]},{word:"stay",phonemes:["s", "t", "a", "y"],ko:["s", "t", "a", "y"]}];var BT5=["rain", "tail", "sail", "train", "stay"];var cBW=BW5[0],tp=new Set(),btI=0;
+function bBWRow(){var r=document.getElementById('bwR');r.innerHTML='';BW5.forEach(function(w,i){var btn=document.createElement('button');btn.style.cssText='padding:8px 14px;border-radius:10px;border:2px solid #9B72CF44;background:'+(i===0?'#9B72CF':'#fff')+';color:'+(i===0?'#fff':'var(--dark)')+';font-family:Nunito,sans-serif;font-size:13px;font-weight:700;cursor:pointer;';btn.textContent=w.word;btn.onclick=function(){selBW(i,btn);};r.appendChild(btn);});}
+function selBW(i,btn){document.querySelectorAll('#bwR button').forEach(function(b){b.style.background='#fff';b.style.color='var(--dark)';});btn.style.background='#9B72CF';btn.style.color='#fff';cBW=BW5[i];tp=new Set();bPhRow();var rb=document.getElementById('rb5');rb.textContent='?';rb.style.background='transparent';rb.style.borderStyle='dashed';}
+function bPhRow(){var r=document.getElementById('phR');r.innerHTML='';cBW.phonemes.forEach(function(ph,i){var btn=document.createElement('button');btn.style.cssText='width:56px;height:64px;border-radius:12px;background:#fff;border:2.5px solid #9B72CF88;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;font-family:Nunito,sans-serif;';btn.id='ph5-'+i;btn.innerHTML='<span style="font-size:22px;font-weight:800;color:#9B72CF">'+ph+'</span><span style="font-size:10px;color:var(--br);font-weight:700">'+cBW.ko[i]+'</span>';btn.onclick=function(){tPh(i,btn);};r.appendChild(btn);if(i<cBW.phonemes.length-1){var s=document.createElement('span');s.style.cssText='font-size:16px;color:var(--soft);align-self:center;';s.textContent='+';r.appendChild(s);}});}
+function tPh(i,btn){if(tp.has(i))return;tp.add(i);btn.style.background='#F3EEFF';btn.style.borderColor='#9B72CF';if(tp.size===cBW.phonemes.length){setTimeout(function(){var rb=document.getElementById('rb5');rb.textContent=cBW.word;rb.style.background='#F3EEFF';rb.style.borderStyle='solid';rb.style.borderColor='#9B72CF';var u=new SpeechSynthesisUtterance(cBW.word);u.lang='en-GB';u.rate=0.8;var vs=window.speechSynthesis.getVoices();var v=vs.find(function(v){return v.lang==='en-GB';})||vs.find(function(v){return v.lang.startsWith('en');})||null;if(v)u.voice=v;window.speechSynthesis.speak(u);},200);}}
+function bBt(){var t=BT5[btI];document.getElementById('btT').innerHTML='목표: <span style="color:#9B72CF;font-weight:800">'+t+'</span>';document.getElementById('btDZ').innerHTML='';document.getElementById('btFB').textContent='';document.getElementById('btN').style.display='none';var pool=document.getElementById('btPool');pool.innerHTML='';var ex=['x','q','v','j','z'];var lts=[...t,...ex.slice(0,2)].sort(function(){return Math.random()-.5;});lts.forEach(function(l){var tile=document.createElement('div');tile.style.cssText='width:42px;height:46px;border-radius:10px;background:#9B72CF;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;cursor:pointer;user-select:none;';tile.dataset.letter=l;tile.textContent=l;tile.onclick=function(){if(tile.dataset.used)return;tile.dataset.used='1';tile.style.opacity='.3';var drop=document.createElement('div');drop.style.cssText='width:42px;height:46px;border-radius:10px;background:#9B72CF;color:#fff;display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:800;cursor:pointer;';drop.dataset.letter=l;drop.textContent=l;drop.onclick=function(){tile.dataset.used='';tile.style.opacity='1';document.getElementById('btDZ').removeChild(drop);};document.getElementById('btDZ').appendChild(drop);};pool.appendChild(tile);});}
+function chkBt(){var t=BT5[btI];var built=[...document.getElementById('btDZ').children].map(function(c){return c.dataset.letter;}).join('');if(built===t){document.getElementById('btFB').innerHTML='🎉 <strong style="color:#9B72CF">'+t+'</strong> 완성!';document.getElementById('btN').style.display='inline-block';var u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=0.8;var vs=window.speechSynthesis.getVoices();var v=vs.find(function(v){return v.lang==='en-GB';})||vs.find(function(v){return v.lang.startsWith('en');})||null;if(v)u.voice=v;window.speechSynthesis.speak(u);}else document.getElementById('btFB').innerHTML='🤔 다시! 목표: <strong>'+t+'</strong>';}
+function clrBt(){var z=document.getElementById('btDZ');[...z.children].forEach(function(d){var tiles=document.querySelectorAll('#btPool > div');for(var i=0;i<tiles.length;i++){if(tiles[i].dataset.letter===d.dataset.letter&&tiles[i].dataset.used){tiles[i].dataset.used='';tiles[i].style.opacity='1';break;}}});z.innerHTML='';document.getElementById('btFB').textContent='';document.getElementById('btN').style.display='none';}
+function nxtBt(){btI=(btI+1)%BT5.length;bBt();}
+bBWRow();bPhRow();bBt();window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+</script>
+<script>// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g3_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #FEFCFF;
+      border-right: 2px solid #9B72CF66;
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 16px; font-weight: 800; color: #5A28A0;
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: #E0D0FF; border-radius: 6px; height: 6px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: #5A28A0; border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: #F3EEFFdd; border-left-color: #9B72CF88;
+    }
+    .lnb-item.active {
+      background: #F3EEFF;
+      border-left-color: #5A28A0;
+      color: #5A28A0;
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: #F3EEFF; color: #5A28A0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: #5A28A0; color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: #2D9E68; color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--p); color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 3 · Unit 1</div>
+      <div class="lnb-unit-title">ai, ay (장모음 a)</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+</script>
+</body></html>

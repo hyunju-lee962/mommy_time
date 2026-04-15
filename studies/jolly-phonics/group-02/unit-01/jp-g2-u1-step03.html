@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 3: Sound Discrimination — Group 2 | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--teal:#38B2AC;--teal-l:#E6FFFA;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.95);backdrop-filter:blur(14px);border-bottom:2px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:700;padding:6px 14px;border:1.5px solid var(--soft);border-radius:10px;background:#fff;}
+.wrap{max-width:720px;margin:0 auto;padding:82px 36px 80px;}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--teal-l);color:var(--teal);border:1.5px solid #B2E8E0;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:14px;}
+h1{font-size:24px;font-weight:800;margin-bottom:8px;}
+.sub{font-size:14px;color:var(--br);margin-bottom:24px;line-height:1.7;}
+/* 섹션 카드 */
+.card{background:#fff;border:2px solid #C8E8E0;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(56,178,172,.07);}
+.card-title{font-size:15px;font-weight:800;color:var(--teal);margin-bottom:12px;display:flex;align-items:center;gap:6px;padding-bottom:10px;border-bottom:1.5px solid #D0F0EC;}
+/* Rule highlight */
+.rule-highlight{background:linear-gradient(135deg,#1a6a64,#2D9E98);color:#fff;border-radius:14px;padding:16px 20px;margin-bottom:16px;}
+.rh-title{font-size:12px;font-weight:700;opacity:.8;letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px;}
+.rh-rule{font-size:18px;font-weight:800;line-height:1.5;}
+.rh-rule em{background:rgba(255,255,255,.2);border-radius:6px;padding:1px 8px;font-style:normal;color:#FFE066;}
+/* 완료 버튼 */
+.done-btn{width:100%;padding:15px;border-radius:16px;background:var(--teal);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;transition:all .2s;}
+.done-btn:hover{background:#2D9E98;}
+.done-msg{display:none;background:var(--teal-l);border:1.5px solid #B2E8E0;border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:14px;font-weight:700;color:#1a6a64;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--soft);}
+.nav-btn{flex:1;padding:11px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:1.5px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{background:var(--teal);color:#fff;border:none;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G2');
+MommyAuth.checkLock('G2-U1-S03');</script>
+<nav><a href="../../jp-index.html" class="logo">Mommy<span>Time</span></a><a href="../../jp-index.html" class="back">← Unit 1</a></nav>
+
+<div class="wrap">
+  <div class="step-badge">👂 Step 3 / 10</div>
+  <h1>Sound Discrimination</h1>
+  <p class="sub">단모음인지 확인하고 Floss Rule을 적용해야 하는지 판단해봐요! 🔍</p>
+
+  <div class="card">
+    <div class="card-title">🎯 Game 1 — Floss Rule 적용 판단</div>
+    <p style="font-size:13px;color:var(--br);margin-bottom:16px;line-height:1.6;">아래 단어의 빈칸에 <strong>f / ff</strong> 중 맞는 것을 골라요!<br>
+    짧은 모음 뒤에는 ff, 긴 모음이나 다른 자음 뒤에는 f!</p>
+
+    <div style="display:flex;flex-direction:column;gap:10px;" id="flossGame"></div>
+    <div id="flossResult" style="margin-top:12px;font-size:14px;font-weight:700;min-height:20px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📍 Game 2 — 끝소리 위치 찾기</div>
+    <p style="font-size:13px;color:var(--br);margin-bottom:14px;">단어에서 ff·ll·ss·zz·ck 가 어디 있나요?</p>
+    <div style="display:flex;flex-direction:column;gap:10px;" id="posGame"></div>
+  </div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 3 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 소리 구별 완료! 📖 Word Cards로 가요!</div>
+  <div class="nav-btns">
+    <a href="jp-g2-u1-step02.html" class="nav-btn sec">← ✍️ Letter Formation</a>
+    <a href="jp-g2-u1-step04.html" class="nav-btn pri">📖 Word Cards →</a>
+  </div>
+</div>
+<script>
+function markDone(){
+  var done=new Set(JSON.parse(localStorage.getItem('jp_g2_u1_done')||'[]'));
+  done.add(3);localStorage.setItem('jp_g2_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G2-U1-S03');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';
+}
+var d=new Set(JSON.parse(localStorage.getItem('jp_g2_u1_done')||'[]'));
+if(d.has(3)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+</script>
+<script>// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g2_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #FEFCFF;
+      border-right: 2px solid #B2E8E0;
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 16px; font-weight: 800; color: #1a8a84;
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: #E0D0FF; border-radius: 6px; height: 6px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: #1a8a84; border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: #F0FFFD; border-left-color: #80D0C8;
+    }
+    .lnb-item.active {
+      background: #D0F5F0;
+      border-left-color: #1a8a84;
+      color: #1a8a84;
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: #D0F5F0; color: #1a8a84;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: #1a8a84; color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: #2D9E68; color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: #38B2AC; color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 2 · Unit 1</div>
+      <div class="lnb-unit-title">Floss Rule</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+</script>
+</body></html>
+<script>
+var FLOSS_QS = [
+  {word:'o__',opts:['f','ff'],ans:1,hint:'o는 짧은 모음!'},
+  {word:'lea',opts:['f','ff'],ans:0,hint:'ea는 긴 모음!'},
+  {word:'stu__',opts:['f','ff'],ans:1,hint:'u는 짧은 모음!'},
+  {word:'hi__',opts:['l','ll'],ans:1,hint:'i는 짧은 모음!'},
+  {word:'fee',opts:['l','ll'],ans:0,hint:'ee는 긴 모음!'},
+  {word:'mi__',opts:['s','ss'],ans:1,hint:'i는 짧은 모음!'},
+  {word:'bu__',opts:['z','zz'],ans:1,hint:'u는 짧은 모음!'},
+  {word:'ba__',opts:['k','ck'],ans:1,hint:'a는 짧은 모음!'},
+];
+var fg = document.getElementById('flossGame');
+var score=0,total=FLOSS_QS.length;
+FLOSS_QS.forEach(function(q,i){
+  var div=document.createElement('div');
+  div.style.cssText='display:flex;align-items:center;gap:12px;background:var(--warm);border-radius:12px;padding:12px 16px;';
+  div.innerHTML='<span style="font-size:18px;font-weight:800;min-width:80px;color:var(--dark)">'+q.word.replace('__','<span style=color:var(--teal)>__</span>')+'</span>'+
+    q.opts.map(function(o,j){return '<button onclick="checkFloss(this,'+i+','+j+')" style="padding:8px 20px;border-radius:10px;border:2px solid #C8E8E0;background:#fff;font-family:Nunito,sans-serif;font-size:15px;font-weight:800;cursor:pointer;color:var(--teal)">'+o+'</button>';}).join('')+
+    '<span id="fh'+i+'" style="font-size:12px;color:var(--br);"></span>';
+  fg.appendChild(div);
+});
+function checkFloss(btn,qi,oi){
+  var btns=btn.parentElement.querySelectorAll('button');
+  btns.forEach(function(b){b.disabled=true;});
+  var q=FLOSS_QS[qi];
+  if(oi===q.ans){btn.style.background='var(--gl)';btn.style.borderColor='var(--g)';score++;document.getElementById('fh'+qi).textContent='✅ '+q.hint;}
+  else{btn.style.background='#FCEBEB';btn.style.borderColor='#E24B4A';btns[q.ans].style.background='var(--gl)';btns[q.ans].style.borderColor='var(--g)';document.getElementById('fh'+qi).textContent='💡 '+q.hint;}
+  var done=document.querySelectorAll('#flossGame button:disabled').length/2;
+  if(done>=total){document.getElementById('flossResult').textContent='🎉 '+score+' / '+total+' 정답!';}
+}
+var POS_ITEMS=[
+  {word:'off',hl:'ff',phonics:'아-프',pos:'끝소리'},
+  {word:'hill',hl:'ll',phonics:'히-을',pos:'끝소리'},
+  {word:'miss',hl:'ss',phonics:'미-스',pos:'끝소리'},
+  {word:'buzz',hl:'zz',phonics:'버-즈',pos:'끝소리'},
+  {word:'back',hl:'ck',phonics:'배-크',pos:'끝소리'},
+  {word:'duck',hl:'ck',phonics:'더-크',pos:'끝소리'},
+];
+var pg=document.getElementById('posGame');
+POS_ITEMS.forEach(function(item){
+  var div=document.createElement('div');
+  div.style.cssText='background:var(--warm);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:14px;';
+  var display=item.word.replace(item.hl,'<span style="color:var(--o);font-weight:800">'+item.hl+'</span>');
+  div.innerHTML='<span style="font-size:22px;font-weight:800">'+display+'</span>'+
+    '<span style="font-size:13px;color:var(--br);font-weight:600">('+item.phonics+')</span>'+
+    '<span style="margin-left:auto;background:var(--teal-l);color:var(--teal);border-radius:8px;padding:4px 12px;font-size:12px;font-weight:700">'+item.pos+'</span>';
+  pg.appendChild(div);
+});
+</script>

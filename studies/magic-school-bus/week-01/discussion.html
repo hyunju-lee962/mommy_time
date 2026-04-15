@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk Together — Plant Seeds | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#52B788;--gl:#E8F8EF;
+  --y:#F9C74F;--yl:#FFFBEC;
+  --o:#F4845F;--ol:#FFF0EB;
+  --b:#5BA4CF;--bl:#EBF4FF;
+  --p:#9B72CF;--pl:#F3EEFF;
+  --r:#E8737A;--rl:#FFEFF0;
+  --cream:#FFFDF8;--warm:#F5EDE0;
+  --dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;overflow-x:hidden;}
+
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}
+.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.back:hover{color:var(--o);}
+
+/* 헤더 */
+.hd{padding:82px 36px 24px;text-align:center;}
+.hd h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.hd p{font-size:13px;color:var(--br);line-height:1.7;}
+
+/* ── 카드 선택 화면 ── */
+#pickScreen{max-width:760px;margin:0 auto;padding:0 36px 80px;}
+.pick-guide{background:var(--yl);border-radius:14px;padding:14px 18px;margin-bottom:24px;display:flex;gap:12px;align-items:center;}
+.pick-guide-icon{font-size:28px;flex-shrink:0;}
+.pick-guide-text{font-size:13px;color:#5a4a00;line-height:1.7;font-weight:600;}
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:14px;}
+.pick-card{background:#fff;border:2.5px solid var(--soft);border-radius:20px;padding:20px 16px;cursor:pointer;transition:all .2s;text-align:center;position:relative;overflow:hidden;}
+.pick-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .2s;}
+.pick-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.1);}
+.pick-card:hover::before{opacity:1;}
+.pick-card.used{opacity:.5;}
+.pick-card.used::after{content:'✓';position:absolute;top:8px;right:12px;font-size:14px;color:var(--g);font-weight:800;}
+.card-emoji{font-size:40px;margin-bottom:10px;display:block;}
+.card-theme{font-size:12px;font-weight:700;margin-bottom:6px;}
+.card-preview{font-size:12px;color:var(--br);line-height:1.5;}
+.card-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:8px;margin-top:8px;}
+
+/* 색상 테마 */
+.theme-o{border-color:var(--o);}.theme-o:hover{border-color:var(--o);box-shadow:0 10px 24px rgba(244,132,95,.2);}
+.theme-o .card-theme{color:var(--o);}
+.theme-o .card-tag{background:var(--ol);color:var(--o);}
+.theme-g{border-color:var(--g);}.theme-g:hover{border-color:var(--g);box-shadow:0 10px 24px rgba(82,183,136,.2);}
+.theme-g .card-theme{color:var(--g);}
+.theme-g .card-tag{background:var(--gl);color:var(--g);}
+.theme-b{border-color:var(--b);}.theme-b:hover{border-color:var(--b);box-shadow:0 10px 24px rgba(91,164,207,.2);}
+.theme-b .card-theme{color:var(--b);}
+.theme-b .card-tag{background:var(--bl);color:var(--b);}
+.theme-p{border-color:var(--p);}.theme-p:hover{border-color:var(--p);box-shadow:0 10px 24px rgba(155,114,207,.2);}
+.theme-p .card-theme{color:var(--p);}
+.theme-p .card-tag{background:var(--pl);color:var(--p);}
+.theme-y{border-color:var(--y);}.theme-y:hover{border-color:var(--y);box-shadow:0 10px 24px rgba(249,199,79,.2);}
+.theme-y .card-theme{color:#8B6F00;}
+.theme-y .card-tag{background:var(--yl);color:#8B6F00;}
+.theme-r{border-color:var(--r);}.theme-r:hover{border-color:var(--r);box-shadow:0 10px 24px rgba(232,115,122,.2);}
+.theme-r .card-theme{color:var(--r);}
+.theme-r .card-tag{background:var(--rl);color:var(--r);}
+
+/* ── 질문 화면 ── */
+#talkScreen{max-width:640px;margin:0 auto;padding:0 36px 80px;display:none;}
+
+.talk-card{background:#fff;border-radius:24px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.08);margin-bottom:20px;}
+.talk-header{padding:18px 22px;display:flex;align-items:center;gap:10px;}
+.talk-header-emoji{font-size:28px;}
+.talk-header-title{font-weight:800;font-size:16px;}
+.talk-header-sub{font-size:11px;opacity:.7;margin-top:2px;}
+
+/* 엄마 질문 영역 */
+.mom-section{padding:0 22px 18px;}
+.mom-label{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.mom-av{width:36px;height:36px;border-radius:50%;background:var(--ol);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.mom-label-text{font-size:12px;font-weight:700;color:var(--o);}
+.mom-label-sub{font-size:10px;color:var(--br);margin-top:1px;}
+.question-box{background:var(--ol);border-radius:6px 18px 18px 18px;padding:16px 18px;margin-bottom:12px;}
+.question-en{font-size:16px;font-weight:800;line-height:1.6;color:#5a2800;margin-bottom:6px;}
+.question-ko{font-size:13px;color:#8B5E3C;line-height:1.6;font-weight:600;}
+.tts-row{display:flex;gap:8px;flex-wrap:wrap;}
+.tts{display:inline-flex;align-items:center;gap:4px;background:var(--b);color:#fff;border:none;border-radius:10px;padding:6px 13px;font-size:11px;font-family:'Nunito',sans-serif;font-weight:700;cursor:pointer;transition:transform .15s;}
+.tts:hover{transform:scale(1.05);}
+.tts.speaking{background:var(--o);}
+
+/* 아이 답변 영역 */
+.kid-section{padding:0 22px 18px;border-top:1px solid var(--soft);}
+.kid-label{display:flex;align-items:center;gap:8px;margin:14px 0 10px;}
+.kid-av{width:36px;height:36px;border-radius:50%;background:var(--gl);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.kid-label-text{font-size:12px;font-weight:700;color:var(--g);}
+.kid-label-sub{font-size:10px;color:var(--br);margin-top:1px;}
+.answer-input{width:100%;border:2px solid var(--soft);border-radius:14px;padding:12px 14px;font-size:14px;font-family:'Nunito',sans-serif;resize:vertical;min-height:80px;background:var(--cream);color:var(--dark);outline:none;transition:border-color .2s;line-height:1.6;font-weight:600;}
+.answer-input:focus{border-color:var(--g);}
+.answer-input::placeholder{color:#ccc;font-weight:400;}
+
+/* 힌트 버튼 & 박스 */
+.hint-trigger{display:flex;align-items:center;gap:6px;margin-top:10px;background:none;border:1.5px dashed var(--y);color:#8B6F00;padding:8px 14px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s;width:100%;justify-content:center;}
+.hint-trigger:hover{background:var(--yl);}
+.hint-box{background:var(--yl);border-radius:14px;padding:14px 16px;margin-top:10px;display:none;animation:slideUp .3s ease;}
+.hint-box.show{display:block;}
+.hint-title{font-size:11px;font-weight:700;color:#8B6F00;margin-bottom:8px;display:flex;align-items:center;gap:4px;}
+.hint-text{font-size:13px;color:#5a4a00;line-height:1.7;font-weight:600;}
+.hint-en{font-size:12px;color:#8B6F00;font-style:italic;margin-top:6px;padding-top:6px;border-top:1px dashed rgba(139,111,0,.3);}
+
+/* 완료 버튼 */
+.done-btn{width:100%;padding:14px;border-radius:14px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;margin-top:14px;}
+.done-btn:hover{background:#3d9e6a;transform:translateY(-1px);}
+
+/* 완료 팝업 */
+.well-done{background:var(--gl);border-radius:16px;padding:18px 20px;margin-top:14px;display:none;text-align:center;}
+.well-done.show{display:block;animation:slideUp .3s ease;}
+.wd-emoji{font-size:40px;margin-bottom:8px;}
+.wd-text{font-size:15px;font-weight:800;color:#1a5c3a;margin-bottom:4px;}
+.wd-sub{font-size:12px;color:#2d7a50;line-height:1.6;}
+
+/* 하단 버튼 */
+.bottom-nav{display:flex;gap:10px;flex-wrap:wrap;}
+.bnav-btn{flex:1;padding:12px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .18s;text-align:center;}
+.bnav-btn.secondary{border:2px solid var(--soft);background:#fff;color:var(--br);}
+.bnav-btn.secondary:hover{border-color:var(--o);color:var(--o);}
+.bnav-btn.primary{background:var(--o);color:#fff;border:none;}
+.bnav-btn.primary:hover{background:#e06e48;}
+
+/* 진행 상황 */
+.progress-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:20px;}
+.prog-track{flex:1;background:var(--soft);border-radius:8px;height:6px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--g);border-radius:8px;transition:width .4s;}
+.prog-text{font-size:11px;color:var(--br);font-weight:700;white-space:nowrap;}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes pop{0%{transform:scale(.8);opacity:0}60%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
+.pop{animation:pop .35s ease;}
+
+@media(max-width:680px){
+  nav,.hd{padding-left:20px;padding-right:20px;}
+  #pickScreen,#talkScreen{padding-left:20px;padding-right:20px;}
+  .cards-grid{grid-template-columns:1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html" class="logo">Mommy<span>Time</span></a>
+  <a href="index.html" class="back">← Week 1</a>
+</nav>
+
+<div class="hd">
+  <h1>💬 Talk Together!</h1>
+  <p>Pick a card · Mom asks · Child answers<br>No wrong answers — just share your thoughts! 💛</p>
+</div>
+
+<!-- 카드 선택 화면 -->
+<div id="pickScreen">
+  <div class="pick-guide">
+    <div class="pick-guide-icon">👧</div>
+    <div class="pick-guide-text">
+      Choose any card that looks interesting!<br>
+      <span style="font-size:12px;opacity:.8">마음에 드는 카드를 하나 골라봐요!</span>
+    </div>
+  </div>
+  <div class="progress-bar-wrap">
+    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+    <div class="prog-text" id="progText">0 / 8 done</div>
+  </div>
+  <div class="cards-grid" id="cardsGrid"></div>
+</div>
+
+<!-- 질문 화면 -->
+<div id="talkScreen">
+  <div class="talk-card" id="talkCard"></div>
+  <div class="bottom-nav">
+    <button class="bnav-btn secondary" onclick="goBack()">← Choose another</button>
+    <button class="bnav-btn primary" onclick="goBack()">More cards! →</button>
+  </div>
+</div>
+
+<script>
+const CARDS = [
+  {
+    id:0, theme:'o', emoji:'🐝',
+    title:'Bee & Flower',
+    preview:'Why do bees visit flowers?',
+    tag:'Thinking',
+    qEn:"Bees and flowers help each other. What do you think the bee gets from the flower, and what does the flower get from the bee?",
+    qKo:"벌과 꽃은 서로 도와요. 벌은 꽃에서 무엇을 얻고, 꽃은 벌에게서 무엇을 얻을까요?",
+    hintKo:"꿀벌은 꽃에서 달콤한 꿀(nectar)을 마셔요. 그리고 꽃은 벌의 몸에 꽃가루(pollen)를 묻혀서 다른 꽃으로 옮겨요. 둘이 서로 도와주는 거예요!",
+    hintEn:"The bee drinks sweet nectar from the flower. And the flower puts pollen on the bee's body to carry to another flower. They help each other!"
+  },
+  {
+    id:1, theme:'g', emoji:'🌱',
+    title:'Tiny Seed',
+    preview:'A seed is a baby plant!',
+    tag:'Imagine',
+    qEn:"A seed looks small and dry — but a whole plant is hiding inside! If you were a seed waiting underground, what would you be thinking about?",
+    qKo:"씨앗은 작고 말라 보이지만, 안에 식물이 숨어 있어요! 만약 네가 땅속에서 기다리는 씨앗이라면 어떤 생각을 하고 있을까요?",
+    hintKo:"'따뜻한 햇빛이 언제 올까? 빨리 쑥 자라고 싶어!' 같은 생각을 할 것 같아요. 씨앗은 조건이 맞을 때까지 기다리는 아주 인내심 있는 아기 식물이에요.",
+    hintEn:"Maybe thinking 'When will the warm sun come? I want to grow fast!' A seed is like a very patient baby plant, waiting for just the right moment."
+  },
+  {
+    id:2, theme:'b', emoji:'🚌',
+    title:'Magic Bus',
+    preview:'The class shrinks tiny!',
+    tag:'Story',
+    qEn:"The Magic School Bus shrank down to the size of a pollen grain! If YOUR class could shrink and explore inside a flower, what would you want to discover?",
+    qKo:"마법의 스쿨버스가 꽃가루만큼 작아졌어요! 만약 우리 반이 꽃 속으로 들어갈 수 있다면 무엇을 발견하고 싶어요?",
+    hintKo:"책에서 아이들은 암술머리(stigma), 꽃가루관(pollen tube), 씨방(ovary)을 탐험했어요. 꽃 속이 마치 미로 같은 세계예요!",
+    hintEn:"In the book they explored the stigma, pollen tube, and ovary. The inside of a flower is like a whole hidden world!"
+  },
+  {
+    id:3, theme:'p', emoji:'🍅',
+    title:'Seed → Fruit',
+    preview:'Ovary becomes a tomato!',
+    tag:'Science',
+    qEn:"After a flower is fertilized, the ovary grows into a fruit — like a tomato! Can you think of other fruits that have seeds inside? What do YOU think the fruit is for?",
+    qKo:"꽃이 수정되면 씨방이 열매로 자라요 — 토마토처럼요! 씨앗이 들어있는 다른 과일들이 뭐가 있을까요? 열매는 왜 있는 걸까요?",
+    hintKo:"사과, 포도, 수박, 딸기 다 씨앗이 있어요! 열매는 동물이 맛있게 먹고 씨앗을 다른 곳에 퍼뜨려 주도록 만들어진 거예요.",
+    hintEn:"Apples, grapes, watermelon, strawberries — all have seeds! Fruits are designed so animals eat them and spread the seeds to new places."
+  },
+  {
+    id:4, theme:'y', emoji:'🌬️',
+    title:'Seeds Travel',
+    preview:'How do seeds move?',
+    tag:'Imagine',
+    qEn:"Seeds can travel by wind, water, or animals! If YOU were a seed and could choose how to travel to a new home, which way would you pick and why?",
+    qKo:"씨앗은 바람, 물, 동물로 여행할 수 있어요! 만약 네가 씨앗이라면 어떤 방법으로 새 집을 찾아 여행할 건가요? 왜요?",
+    hintKo:"바람을 타면 민들레 씨앗처럼 높이 날 수 있어요. 물을 타면 코코넛처럼 먼 섬까지 갈 수 있어요. 동물 털에 붙으면 온갖 모험을 할 수 있어요!",
+    hintEn:"By wind you can fly high like a dandelion! By water you can travel to a faraway island like a coconut! Hitching on an animal means going on all kinds of adventures!"
+  },
+  {
+    id:5, theme:'r', emoji:'☀️',
+    title:'What Plants Need',
+    preview:'Soil, water, light, time!',
+    tag:'Thinking',
+    qEn:"A seed needs soil, water, sunlight, and time to grow. Which one do YOU think is most important? Could a plant survive without any of them?",
+    qKo:"씨앗이 자라려면 흙, 물, 햇빛, 시간이 필요해요. 그 중에서 가장 중요한 것은 무엇일까요? 하나라도 없으면 어떻게 될까요?",
+    hintKo:"사실 네 가지 모두 꼭 필요해요! 물이 없으면 말라죽고, 햇빛이 없으면 음식을 못 만들고, 흙이 없으면 뿌리를 내릴 수 없어요. 하나라도 빠지면 안 돼요.",
+    hintEn:"Actually all four are essential! Without water it dries up, without sunlight it can't make food, without soil the roots have nowhere to grow. It needs them all!"
+  },
+  {
+    id:6, theme:'g', emoji:'👩‍🔬',
+    title:'Ms. Frizzle',
+    preview:'"Take chances, make mistakes!"',
+    tag:'Story',
+    qEn:"Ms. Frizzle always says: 'Take chances, make mistakes, get messy!' Do you think that's good advice? Can YOU think of a time when making a mistake helped you learn something?",
+    qKo:"프리즐 선생님은 항상 말해요: '도전하고, 실수하고, 엉망이 되어봐!' 이게 좋은 말 같아요? 실수를 해서 배운 적이 있나요?",
+    hintKo:"실수는 나쁜 게 아니에요! 책에서도 아이들이 꽃 속에서 길을 잃고 실수를 많이 했지만, 그 덕분에 꽃의 구조를 다 알게 됐어요.",
+    hintEn:"Mistakes aren't bad! In the book the kids got lost inside the flower and made lots of mistakes — but that's exactly how they learned about the whole flower structure."
+  },
+  {
+    id:7, theme:'b', emoji:'🌍',
+    title:'Plants & Us',
+    preview:'Why are plants so important?',
+    tag:'Big Question',
+    qEn:"Plants make seeds, fruits, and oxygen. They give us food and clean air. What do you think would happen if there were NO plants left on Earth?",
+    qKo:"식물은 씨앗, 열매, 산소를 만들어요. 우리에게 먹을 것과 깨끗한 공기를 줘요. 만약 지구에 식물이 하나도 없다면 어떻게 될까요?",
+    hintKo:"우리가 먹는 채소, 과일이 모두 사라져요. 동물들도 먹을 것이 없어져요. 공기가 더러워져서 숨쉬기도 힘들어져요. 식물은 정말 소중해요!",
+    hintEn:"All our vegetables and fruits would disappear. Animals would have nothing to eat. The air would get dirty and hard to breathe. Plants are so incredibly important!"
+  },
+];
+
+let doneCards = new Set();
+
+function buildGrid(){
+  const grid = document.getElementById('cardsGrid');
+  grid.innerHTML = '';
+  CARDS.forEach(c => {
+    const div = document.createElement('div');
+    div.className = `pick-card theme-${c.theme}${doneCards.has(c.id)?' used':''}`;
+    div.innerHTML = `
+      <span class="card-emoji">${c.emoji}</span>
+      <div class="card-theme">${c.title}</div>
+      <div class="card-preview">${c.preview}</div>
+      <span class="card-tag">${c.tag}</span>`;
+    div.onclick = () => openCard(c.id);
+    grid.appendChild(div);
+  });
+  updateProg();
+}
+
+function updateProg(){
+  const pct = (doneCards.size / CARDS.length * 100).toFixed(0);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progText').textContent = doneCards.size + ' / ' + CARDS.length + ' done';
+}
+
+function openCard(id){
+  const c = CARDS[id];
+  document.getElementById('pickScreen').style.display = 'none';
+  const ts = document.getElementById('talkScreen');
+  ts.style.display = 'block';
+
+  const colors = {
+    o: {header:'#FFF0EB', border:'var(--o)', titleColor:'#5a2800'},
+    g: {header:'#E8F8EF', border:'var(--g)', titleColor:'#1a5c3a'},
+    b: {header:'#EBF4FF', border:'var(--b)', titleColor:'#0a3d6b'},
+    p: {header:'#F3EEFF', border:'var(--p)', titleColor:'#3d1a7a'},
+    y: {header:'#FFFBEC', border:'var(--y)', titleColor:'#5a4000'},
+    r: {header:'#FFEFF0', border:'var(--r)', titleColor:'#6b1a1e'},
+  };
+  const col = colors[c.theme];
+
+  document.getElementById('talkCard').innerHTML = `
+    <div class="talk-header" style="background:${col.header}">
+      <div class="talk-header-emoji">${c.emoji}</div>
+      <div>
+        <div class="talk-header-title" style="color:${col.titleColor}">${c.title}</div>
+        <div class="talk-header-sub" style="color:${col.titleColor}">${c.tag}</div>
+      </div>
+    </div>
+
+    <!-- 엄마 질문 -->
+    <div class="mom-section" style="padding-top:18px">
+      <div class="mom-label">
+        <div class="mom-av">👩</div>
+        <div>
+          <div class="mom-label-text">Mom asks 👇</div>
+          <div class="mom-label-sub">Read this question to your child!</div>
+        </div>
+      </div>
+      <div class="question-box" style="background:${col.header}">
+        <div class="question-en" style="color:${col.titleColor}">${c.qEn}</div>
+        <div class="question-ko">${c.qKo}</div>
+      </div>
+      <div class="tts-row">
+        <button class="tts" onclick="speak(this, \`${c.qEn}\`)">🔊 Read in English</button>
+        <button class="tts" onclick="speak(this, \`${c.qKo}\`, 'ko')">🔊 한국어로 읽기</button>
+      </div>
+    </div>
+
+    <!-- 아이 답변 -->
+    <div class="kid-section">
+      <div class="kid-label">
+        <div class="kid-av">👧</div>
+        <div>
+          <div class="kid-label-text">Child answers 💭</div>
+          <div class="kid-label-sub">Take your time — there's no wrong answer!</div>
+        </div>
+      </div>
+      <textarea class="answer-input" id="answerInput${id}" placeholder="What do you think? 🤔 어떻게 생각해요?"></textarea>
+
+      <!-- 힌트 버튼 -->
+      <button class="hint-trigger" onclick="toggleHint('hint${id}')">
+        💡 I need a hint! (힌트 보기)
+      </button>
+      <div class="hint-box" id="hint${id}">
+        <div class="hint-title">💡 Example answer · 예시 답안</div>
+        <div class="hint-text">${c.hintKo}</div>
+        <div class="hint-en">${c.hintEn}</div>
+      </div>
+
+      <!-- 완료 버튼 -->
+      <button class="done-btn" style="background:${col.border}" onclick="markDone(${id})">
+        ✅ Great talk! We're done with this card
+      </button>
+
+      <!-- 완료 팝업 -->
+      <div class="well-done" id="wellDone${id}">
+        <div class="wd-emoji">🎉</div>
+        <div class="wd-text">Amazing conversation!</div>
+        <div class="wd-sub">You two just did Havruta learning — talking and thinking together.<br>
+        That's the best kind of learning! 💛</div>
+      </div>
+    </div>`;
+
+  // 화면 위로 스크롤
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toggleHint(id){
+  const box = document.getElementById(id);
+  box.classList.toggle('show');
+}
+
+function markDone(id){
+  doneCards.add(id);
+  const wd = document.getElementById('wellDone'+id);
+  wd.classList.add('show');
+  // 완료 버튼 비활성화
+  const btn = wd.previousElementSibling;
+  btn.disabled = true;
+  btn.style.opacity = '.5';
+  btn.style.cursor = 'default';
+  updateProg();
+}
+
+function goBack(){
+  document.getElementById('talkScreen').style.display = 'none';
+  document.getElementById('pickScreen').style.display = 'block';
+  buildGrid();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// TTS
+let spk = false;
+function speak(btn, txt, lang){
+  if(!window.speechSynthesis) return;
+  if(spk){window.speechSynthesis.cancel();spk=false;document.querySelectorAll('.tts.speaking').forEach(b=>b.classList.remove('speaking'));return;}
+  const u = new SpeechSynthesisUtterance(txt);
+  u.lang = lang==='ko' ? 'ko-KR' : 'en-US';
+  u.rate = 0.85; u.pitch = 1.05;
+  const vs = window.speechSynthesis.getVoices();
+  const v = lang==='ko'
+    ? vs.find(v=>v.lang.startsWith('ko'))
+    : vs.find(v=>v.lang.startsWith('en'));
+  if(v) u.voice = v;
+  u.onstart = ()=>{spk=true; if(btn)btn.classList.add('speaking');};
+  u.onend = u.onerror = ()=>{spk=false; if(btn)btn.classList.remove('speaking');};
+  window.speechSynthesis.speak(u);
+}
+window.speechSynthesis.onvoiceschanged = ()=>window.speechSynthesis.getVoices();
+
+buildGrid();
+</script>
+</body>
+</html>

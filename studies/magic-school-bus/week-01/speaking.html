@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>같이 읽기 & 말하기 — 태양계로 날아라</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../../assets/css/main.css">
+<style>
+.page-header { padding:110px 40px 32px;text-align:center; }
+.back-link { display:inline-flex;align-items:center;gap:4px;color:var(--brown);text-decoration:none;font-size:14px;margin-bottom:16px; }
+.page-title { font-family:'Noto Serif KR',serif;font-size:30px;font-weight:300;margin-bottom:6px; }
+.lang-bar { display:flex;justify-content:center;gap:12px;padding:16px 40px;background:var(--warm);border-bottom:1px solid var(--soft);align-items:center; }
+
+.content { max-width: 720px; margin: 0 auto; padding: 32px 40px 80px; }
+
+.sentence-card {
+  background: var(--white); border: 1.5px solid var(--soft);
+  border-radius: 20px; padding: 28px; margin-bottom: 16px;
+  box-shadow: var(--shadow); transition: border-color .2s;
+}
+.sentence-card.active { border-color: var(--accent); }
+.sentence-card.done-card { border-color: var(--green); background: #FAFFF8; }
+
+.sentence-num { font-size:11px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px; }
+.sentence-speaker { display:flex;align-items:center;gap:6px;margin-bottom:10px;font-size:13px;color:var(--brown); }
+.speaker-badge { padding:3px 10px;border-radius:12px;font-size:11px;font-weight:500; }
+.speaker-badge.kid { background:#FFF4E8;color:var(--accent); }
+.speaker-badge.mom { background:#E8F4FF;color:#185FA5; }
+.speaker-badge.both { background:#EAF3DE;color:#27500A; }
+
+.sentence-en { font-size:20px;font-weight:500;color:var(--dark);line-height:1.5;margin-bottom:8px; }
+.sentence-ko { font-size:15px;color:var(--brown);line-height:1.6; }
+.sentence-actions { display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;align-items:center; }
+.done-check { margin-left:auto;font-size:20px;display:none; }
+.sentence-card.done-card .done-check { display:block; }
+
+.nav-btns { display:flex;gap:10px;justify-content:center;margin-top:32px;flex-wrap:wrap; }
+
+@media(max-width:768px){ .content{padding:24px 24px 60px;} .page-header{padding:100px 24px 28px;} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="../../../index.html" class="nav-logo">엄마<span>시간</span></a>
+  <a href="index.html" class="nav-back">← 1주차로</a>
+</nav>
+
+<div class="page-header">
+  <a href="index.html" class="back-link">← 1주차로 돌아가기</a>
+  <h1 class="page-title">🎤 <span data-ko="같이 읽기 & 말하기" data-en="Read Aloud Together">같이 읽기 & 말하기</span></h1>
+  <p style="font-size:14px;color:var(--brown)" data-ko="엄마랑 번갈아 읽어요. 발음이 틀려도 괜찮아요, 같이 웃으면 그게 추억이에요 😄" data-en="Take turns reading with Mom. Wrong pronunciation? That's okay — laughing together is the memory 😄">엄마랑 번갈아 읽어요. 발음이 틀려도 괜찮아요, 같이 웃으면 그게 추억이에요 😄</p>
+</div>
+
+<div class="lang-bar">
+  <div class="lang-toggle">
+    <button class="lang-btn active" data-lang="ko" onclick="setLang('ko')">한국어</button>
+    <button class="lang-btn" data-lang="en" onclick="setLang('en')">English</button>
+  </div>
+</div>
+
+<div class="content">
+  <div class="together-box reveal" style="margin-bottom:28px">
+    <div class="together-icon">🎯</div>
+    <div>
+      <div class="together-title" data-ko="이렇게 해봐요!" data-en="How to play!">이렇게 해봐요!</div>
+      <div class="together-text" data-ko="👧 아이가 읽는 문장, 👩 엄마가 읽는 문장이 표시돼 있어요. 먼저 원어민 발음을 듣고, 따라 읽어보세요. 발음이 틀려도 절대 괜찮아요!" data-en="👧 marks sentences for the child, 👩 for Mom. First listen to the native pronunciation, then try reading it aloud. It's perfectly fine to mispronounce!">👧 아이가 읽는 문장, 👩 엄마가 읽는 문장이 표시돼 있어요. 먼저 원어민 발음을 듣고, 따라 읽어보세요. 발음이 틀려도 절대 괜찮아요!</div>
+    </div>
+  </div>
+
+  <div id="sentenceList"></div>
+
+  <div class="nav-btns">
+    <a href="writing.html" class="btn btn-primary">✏️ <span data-ko="따라 쓰기로 →" data-en="Writing Practice →">따라 쓰기로 →</span></a>
+    <a href="index.html" class="btn btn-secondary" data-ko="← 1주차로" data-en="← Back">← 1주차로</a>
+  </div>
+</div>
+
+<script src="../../../assets/js/main.js"></script>
+<script>
+const sentences = [
+  { speaker:'both', en:"Let's go on the Magic School Bus!", ko:"마법의 스쿨버스를 타러 가요!", tip:"'Let's'를 [렛츠]로 힘차게 읽어봐요!" },
+  { speaker:'kid', en:"Our solar system has eight planets.", ko:"우리 태양계에는 8개의 행성이 있어요.", tip:"'eight'는 [에이트]로 발음해요!" },
+  { speaker:'mom', en:"The Sun is a giant star in the center.", ko:"태양은 중심에 있는 거대한 별이에요.", tip:"'giant'는 [자이언트]예요!" },
+  { speaker:'kid', en:"Gravity pulls everything toward the ground.", ko:"중력은 모든 것을 땅으로 당겨요.", tip:"'gravity'는 [그래비티]예요!" },
+  { speaker:'mom', en:"Earth is the third planet from the Sun.", ko:"지구는 태양에서 세 번째 행성이에요.", tip:"'third'는 [써드]로 혀를 살짝 물고 읽어요!" },
+  { speaker:'kid', en:"Look at all those craters on the Moon!", ko:"달에 있는 저 크레이터들을 봐!", tip:"'craters'는 [크레이터즈]예요!" },
+  { speaker:'mom', en:"An astronaut floats in zero gravity.", ko:"우주비행사는 무중력 상태에서 떠다녀요.", tip:"'floats'는 [플로우츠]예요!" },
+  { speaker:'both', en:"Space is amazing and full of mysteries!", ko:"우주는 놀랍고 신비로움으로 가득해요!", tip:"같이 신나게 읽어봐요!" },
+];
+
+const speakerInfo = {
+  kid:  { badge:'아이', badgeEn:'Child', class:'kid', avatar:'👧' },
+  mom:  { badge:'엄마', badgeEn:'Mom',   class:'mom', avatar:'👩' },
+  both: { badge:'같이!', badgeEn:'Together!', class:'both', avatar:'👨‍👩‍👧' },
+};
+
+const list = document.getElementById('sentenceList');
+let done = new Set();
+
+sentences.forEach((s, i) => {
+  const info = speakerInfo[s.speaker];
+  const card = document.createElement('div');
+  card.className = 'sentence-card reveal';
+  card.id = 'sc' + i;
+  card.innerHTML = `
+    <div class="sentence-num">문장 ${i+1} / ${sentences.length}</div>
+    <div class="sentence-speaker">
+      <span>${info.avatar}</span>
+      <span class="speaker-badge ${info.class}" data-ko="${info.badge}" data-en="${info.badgeEn}">${info.badge}</span>
+      <span style="font-size:12px" data-ko="가 읽어요" data-en="reads this">가 읽어요</span>
+    </div>
+    <div class="sentence-en">${s.en}</div>
+    <div class="sentence-ko" data-ko="${s.ko}" data-en="${s.en}" style="font-size:14px;color:var(--brown)">${s.ko}</div>
+    <div class="sentence-actions">
+      <button class="tts-btn" onclick="speakBtn(this,'${s.en}')">🔊 <span data-ko="듣기" data-en="Listen">듣기</span></button>
+      <button class="btn btn-secondary btn-sm" onclick="markDone(${i})">
+        <span data-ko="읽었어요 ✓" data-en="Done ✓">읽었어요 ✓</span>
+      </button>
+      <div class="done-check">✅</div>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:var(--accent)">💡 ${s.tip}</div>`;
+  list.appendChild(card);
+});
+
+function markDone(i) {
+  done.add(i);
+  document.getElementById('sc'+i).classList.add('done-card');
+}
+</script>
+</body>
+</html>
