@@ -1,0 +1,7 @@
+{
+  "magic-school-bus": [
+    { "week": 1, "title": "태양계로 날아라", "titleEn": "Lost in the Solar System", "topic": "태양계·우주" },
+    { "week": 2, "title": "인체 속으로", "titleEn": "Inside the Human Body", "topic": "인체·생물" },
+    { "week": 3, "title": "빛과 소리", "titleEn": "In the Blink of an Eye", "topic": "빛·과학" }
+  ]
+}

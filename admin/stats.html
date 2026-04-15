@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>학습 현황 — Mommy Time Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/admin.css">
+<script src="/assets/js/admin.js"></script>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-text">Mommy<span>Time</span></div><div class="sb-sub">⚙️ 관리자 패널</div></div>
+  <div class="sb-section">메뉴</div>
+  <a href="/admin/index.html"    class="sb-link"><span class="icon">📊</span>대시보드</a>
+  <a href="/admin/students.html" class="sb-link"><span class="icon">👩‍👧</span>수강생 관리</a>
+  <a href="/admin/content.html"  class="sb-link"><span class="icon">📚</span>콘텐츠 잠금</a>
+  <a href="/admin/stats.html"    class="sb-link active"><span class="icon">📈</span>학습 현황</a>
+  <a href="/admin/settings.html" class="sb-link"><span class="icon">⚙️</span>사이트 설정</a>
+  <div class="sb-bottom"><button class="sb-logout" onclick="doLogout()">🚪 로그아웃</button></div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">📈 학습 현황</div>
+    <div class="page-sub">수강생별 진행 상황을 확인해요</div>
+  </div>
+
+  <!-- 안내 배너 -->
+  <div style="background:rgba(249,199,79,.1);border:1.5px solid rgba(249,199,79,.3);border-radius:14px;padding:16px 20px;margin-bottom:24px;">
+    <div style="font-size:13px;font-weight:700;color:#F9C74F;margin-bottom:6px;">💡 학습 현황 수집 방식</div>
+    <div style="font-size:13px;color:var(--sub);line-height:1.7;">
+      현재 진행 상황은 <strong>수강생 브라우저의 localStorage</strong>에 저장돼요.<br>
+      실시간 서버 전송을 위해서는 Google Sheets <code>progress</code> 탭이 설정되어 있어야 해요.<br>
+      (수강생이 Step 완료 버튼을 누르면 자동으로 Sheets에 기록돼요)
+    </div>
+  </div>
+
+  <!-- 수강생별 진행 현황 테이블 -->
+  <div class="card">
+    <div class="card-title">👩‍👧 수강생별 진행 현황
+      <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="loadProgress()">🔄 새로고침</button>
+    </div>
+
+    <div class="search-bar">
+      <input class="search-input" id="statsSearch" placeholder="🔍 이름 또는 코드 검색..." oninput="filterStats()">
+    </div>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>수강생</th>
+            <th>코드</th>
+            <th>접근 그룹</th>
+            <th>완료 Steps</th>
+            <th>진행률</th>
+            <th>최근 완료</th>
+          </tr>
+        </thead>
+        <tbody id="statsTbody">
+          <tr><td colspan="6" style="text-align:center;color:var(--sub);padding:32px">불러오는 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Group별 완료 현황 -->
+  <div class="card">
+    <div class="card-title">📊 Group별 완료 현황</div>
+    <div id="groupStats" style="color:var(--sub);font-size:13px;padding:12px 0">수강생 데이터를 불러온 후 표시돼요.</div>
+  </div>
+
+</main>
+
+<div id="adminLoading"><div class="al-spinner"></div><div class="al-msg">불러오는 중...</div></div>
+
+<script>
+AdminAuth.guard();
+function doLogout(){ AdminAuth.logout(); window.location.replace('/admin.html'); }
+
+var allStudents = [];
+var progressData = {};
+var today = new Date().toISOString().slice(0,10);
+
+// Group별 총 Step 수
+var GROUP_STEPS = {G1:60, G2:50, G3:60, G4:60, G5:60, G6:60, G7:60};
+var TOTAL_STEPS = 410;
+
+function loadProgress(){
+  AdminUtil.showLoading('학습 현황 불러오는 중...');
+
+  SheetsRead.getStudents(function(err, students){
+    if(err){ AdminUtil.hideLoading(); AdminUtil.toast('수강생 오류: '+err,'error'); return; }
+    allStudents = students.filter(function(s){ return s.active && s.expires >= today; });
+
+    // progress 탭 읽기 시도
+    SheetsRead.getRange('progress','A2:E1000', function(perr, rows){
+      AdminUtil.hideLoading();
+
+      if(!perr && rows.length){
+        // progress 시트가 있는 경우
+        rows.forEach(function(r){
+          if(!r[0]) return;
+          var code = r[0];
+          if(!progressData[code]) progressData[code] = {steps:[], lastActivity:''};
+          progressData[code].steps.push(r[1]); // step ID
+          if(r[2] > progressData[code].lastActivity) progressData[code].lastActivity = r[2];
+        });
+      }
+
+      renderStats(allStudents);
+    });
+  });
+}
+
+function renderStats(students){
+  var tbody = document.getElementById('statsTbody');
+  if(!students.length){
+    tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--sub);padding:32px">활성 수강생이 없어요.</td></tr>';
+    return;
+  }
+
+  // 그룹별 완료수 집계
+  var groupComplete = {G1:0,G2:0,G3:0,G4:0,G5:0,G6:0,G7:0};
+
+  tbody.innerHTML = students.map(function(s){
+    var prog = progressData[s.code] || {steps:[], lastActivity:''};
+    var completedSteps = prog.steps.length;
+
+    // 접근 가능한 총 Step 수 계산
+    var maxSteps = TOTAL_STEPS;
+    if(s.groups !== 'ALL'){
+      maxSteps = s.groups.split(',').reduce(function(acc, g){
+        return acc + (GROUP_STEPS[g.trim()] || 0);
+      }, 0);
+    }
+
+    var pct = maxSteps > 0 ? Math.min(100, Math.round(completedSteps / maxSteps * 100)) : 0;
+    var barColor = pct >= 80 ? '#52B788' : pct >= 40 ? '#F9C74F' : '#5BA4CF';
+
+    // 그룹별 집계
+    Object.keys(groupComplete).forEach(function(g){
+      var gc = prog.steps.filter(function(id){ return id.startsWith(g); }).length;
+      groupComplete[g] += gc;
+    });
+
+    var progressBar = '<div style="display:flex;align-items:center;gap:8px;">'
+      + '<div style="flex:1;background:rgba(255,255,255,.08);border-radius:4px;height:8px;overflow:hidden;">'
+      + '<div style="width:'+pct+'%;height:100%;background:'+barColor+';border-radius:4px;transition:width .5s"></div>'
+      + '</div>'
+      + '<span style="font-size:12px;font-weight:700;color:'+barColor+';min-width:34px">'+pct+'%</span>'
+      + '</div>';
+
+    var lastAct = prog.lastActivity ? prog.lastActivity.slice(0,10) : '기록 없음';
+
+    return '<tr>'
+      + '<td><strong>'+s.name+'</strong></td>'
+      + '<td><code style="font-family:monospace;font-size:12px;background:rgba(255,255,255,.08);padding:3px 8px;border-radius:6px">'+s.code+'</code></td>'
+      + '<td><span class="badge blue">'+s.groups+'</span></td>'
+      + '<td style="font-weight:800">'+completedSteps+' / '+maxSteps+'</td>'
+      + '<td style="min-width:140px">'+progressBar+'</td>'
+      + '<td style="font-size:12px;color:var(--sub)">'+lastAct+'</td>'
+      + '</tr>';
+  }).join('');
+
+  // Group별 현황
+  var gHtml = '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;">';
+  var gColors = {G1:'#9B72CF',G2:'#38B2AC',G3:'#9B72CF',G4:'#F4845F',G5:'#52B788',G6:'#5BA4CF',G7:'#E8737A'};
+  Object.keys(GROUP_STEPS).forEach(function(g){
+    var total = GROUP_STEPS[g] * students.length;
+    var done  = groupComplete[g];
+    var pct   = total > 0 ? Math.round(done/total*100) : 0;
+    gHtml += '<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:16px;">'
+      + '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">'
+      + '<span style="font-size:13px;font-weight:800;color:#fff">'+g+'</span>'
+      + '<span style="font-size:13px;font-weight:800;color:'+gColors[g]+'">'+pct+'%</span>'
+      + '</div>'
+      + '<div style="background:rgba(255,255,255,.08);border-radius:6px;height:8px;overflow:hidden;">'
+      + '<div style="width:'+pct+'%;height:100%;background:'+gColors[g]+';border-radius:6px;transition:width .5s"></div>'
+      + '</div>'
+      + '<div style="font-size:11px;color:var(--sub);margin-top:6px">'+done+' / '+total+' steps</div>'
+      + '</div>';
+  });
+  gHtml += '</div>';
+  document.getElementById('groupStats').innerHTML = gHtml;
+}
+
+function filterStats(){
+  var q = document.getElementById('statsSearch').value.toLowerCase();
+  if(!q){ renderStats(allStudents); return; }
+  var filtered = allStudents.filter(function(s){
+    return s.name.toLowerCase().includes(q) || s.code.toLowerCase().includes(q);
+  });
+  renderStats(filtered);
+}
+
+loadProgress();
+</script>
+</body>
+</html>
