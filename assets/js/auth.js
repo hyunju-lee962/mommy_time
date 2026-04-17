@@ -12,9 +12,9 @@
   'use strict';
 
   window.MT_CONFIG = {
-    SHEET_ID: 'YOUR_SHEET_ID_HERE',
-    API_KEY:  'YOUR_GOOGLE_API_KEY_HERE',
-    GAS_URL:  'YOUR_GAS_URL_HERE',
+    SHEET_ID: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms',
+    API_KEY:  'AIzaSyAXJD6JGwpbujmeGqvQnkXWCpThIdS1KBY',
+    GAS_URL:  'https://with-mommy.netlify.app/',
   };
 
   window.MommyAuth = {
@@ -25,8 +25,8 @@
 
       // 설정 미완료 시 테스트 모드
       if (cfg.SHEET_ID === 'YOUR_SHEET_ID_HERE') {
-        if (code.toUpperCase() === 'TEST0000') {
-          return cb(null, { code:'TEST0000', name:'테스트', expires:'2099-12-31', groups:'ALL', active:true });
+        if (code.toUpperCase() === 'floralhj') {
+          return cb(null, { code:'floralhj', name:'serina', expires:'2099-12-31', groups:'ALL', active:true });
         }
         return cb('코드가 올바르지 않아요. 다시 확인해주세요.');
       }

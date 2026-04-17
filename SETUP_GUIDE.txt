@@ -41,9 +41,8 @@
    G1,G2,G3  → Group 1~3만 접근 가능 (체험판 등)
    G1        → Group 1만 접근 가능
 
-6. URL에서 Sheets ID 복사:
+6. URL에서 Sheets ID 복사: 19QbpmskE5-BJTMAgHF9hbUtG5iVqltiJP2nhN1WqkyM
    https://docs.google.com/spreadsheets/d/[여기가 ID]/edit
-   예: 1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms
 
 
 ────────────────────────────────────────
@@ -72,11 +71,12 @@
 5. 좌측 메뉴 → [API 및 서비스] → [사용자 인증 정보]
 6. [+ 사용자 인증 정보 만들기] → [API 키]
 7. 생성된 API 키 복사 (예: AIzaSyXXXXXXXXXXXXXXXXXX)
+   AIzaSyAXJD6JGwpbujmeGqvQnkXWCpThIdS1KBY
 
 ★ API 키 보안 설정 (권장):
    [키 수정] → [애플리케이션 제한사항] → [HTTP 리퍼러]
    → Netlify 도메인 입력: https://your-site.netlify.app/*
-
+https://with-mommy.netlify.app/
 
 ────────────────────────────────────────
  STEP 4. auth.js 설정값 교체
@@ -88,12 +88,12 @@
 
   SHEET_ID:  'YOUR_SHEET_ID_HERE',
   API_KEY:   'YOUR_GOOGLE_API_KEY_HERE',
-
+  GAS_URL : 'YOUR_GAS_URL'
 교체 후:
 
   SHEET_ID:  '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms',
   API_KEY:   'AIzaSyXXXXXXXXXXXXXXXXXX',
-
+  GAS_URL : 'https://your-site.netlify.app/gate.html'
 
 ────────────────────────────────────────
  STEP 5. 배포 및 테스트
