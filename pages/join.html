@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>참여 안내 — 엄마시간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/css/common.css">
+<style>
+body { padding-top: 64px; }
+
+.hero {
+  padding:80px 40px 64px; text-align:center;
+  background:linear-gradient(180deg, var(--warm) 0%, var(--cream) 100%);
+}
+.hero-inner { max-width:520px; margin:0 auto; }
+.hero-label { font-size:11px; letter-spacing:.14em; color:var(--accent); text-transform:uppercase; margin-bottom:16px; }
+.hero-title {
+  font-family:'Noto Serif KR',serif;
+  font-size:clamp(26px,4vw,40px);
+  font-weight:300; line-height:1.5; margin-bottom:16px;
+}
+.hero-title strong { font-weight:600; color:var(--accent); }
+.hero-desc { font-size:14px; color:var(--brown); line-height:2; }
+
+.section { padding:80px 40px; }
+.section-inner { max-width:680px; margin:0 auto; }
+
+/* 준비중 배너 */
+.coming-wrap { text-align:center; padding:80px 40px; }
+.coming-emoji { font-size:64px; margin-bottom:24px; display:block; }
+.coming-title {
+  font-family:'Noto Serif KR',serif;
+  font-size:clamp(22px,3vw,30px);
+  font-weight:300; margin-bottom:14px; line-height:1.5;
+}
+.coming-title strong { font-weight:600; color:var(--accent); }
+.coming-desc {
+  font-size:14px; color:var(--brown);
+  line-height:2; margin-bottom:36px;
+}
+
+/* 카카오 버튼 */
+.kakao-btn {
+  display:inline-flex; align-items:center; gap:10px;
+  background:#FEE500; color:#3C1E1E;
+  border:none; border-radius:14px;
+  padding:16px 32px; font-family:inherit;
+  font-size:15px; font-weight:500; cursor:pointer;
+  text-decoration:none;
+  transition:all .2s;
+  box-shadow:0 4px 16px rgba(254,229,0,.4);
+}
+.kakao-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(254,229,0,.5); }
+.kakao-icon { font-size:20px; }
+
+.divider {
+  margin:48px 0;
+  border:none; border-top:1px solid var(--soft);
+}
+
+/* FAQ */
+.faq-list { display:flex; flex-direction:column; gap:0; }
+.faq-item {
+  padding:24px 0; border-bottom:1px solid var(--soft);
+}
+.faq-item:last-child { border-bottom:none; }
+.faq-q {
+  font-size:15px; font-weight:500;
+  margin-bottom:10px; cursor:pointer;
+  display:flex; justify-content:space-between; align-items:center;
+  gap:12px;
+}
+.faq-q-icon { font-size:12px; color:var(--accent); transition:transform .2s; flex-shrink:0; }
+.faq-q.open .faq-q-icon { transform:rotate(180deg); }
+.faq-a {
+  font-size:14px; color:var(--brown); line-height:1.9;
+  display:none; padding-top:4px;
+}
+.faq-a.open { display:block; }
+
+/* 푸터 */
+.site-footer { padding:36px 40px; border-top:1px solid var(--soft); }
+.footer-inner { max-width:960px; margin:0 auto; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; }
+.footer-logo { font-family:'Noto Serif KR',serif; font-size:16px; font-weight:600; color:var(--brown); }
+.footer-logo span { color:var(--accent); }
+.footer-copy { font-size:12px; color:var(--brown); opacity:.55; }
+
+@media(max-width:768px){
+  .hero { padding:56px 24px 48px; }
+  .section { padding:60px 24px; }
+  .coming-wrap { padding:60px 24px; }
+  .site-footer { padding:28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <p class="hero-label">How to Join</p>
+    <h1 class="hero-title">
+      엄마시간과<br>
+      <strong>함께 시작해요</strong>
+    </h1>
+    <p class="hero-desc">
+      아이와 함께하는 시간을<br>
+      조금 더 의미 있게 만들고 싶다면요.
+    </p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-inner">
+
+    <div class="coming-wrap reveal">
+      <span class="coming-emoji">🌸</span>
+      <h2 class="coming-title">
+        참여 안내 페이지를<br>
+        <strong>준비하고 있어요</strong>
+      </h2>
+      <p class="coming-desc">
+        더 자세한 내용은 카카오톡으로 편하게 문의해주세요.<br>
+        함께하고 싶은 마음만 있으면 돼요.
+      </p>
+      <a href="https://pf.kakao.com" class="kakao-btn" target="_blank" rel="noopener">
+        <span class="kakao-icon">💬</span>
+        카카오톡으로 문의하기
+      </a>
+    </div>
+
+    <hr class="divider">
+
+    <!-- FAQ -->
+    <div class="reveal">
+      <p style="font-size:11px;letter-spacing:.14em;color:var(--accent);text-transform:uppercase;margin-bottom:24px;">FAQ</p>
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            영어를 못해도 참여할 수 있나요?
+            <span class="faq-q-icon">▼</span>
+          </div>
+          <div class="faq-a">
+            물론이에요! 엄마시간은 영어를 잘하는 분을 위한 곳이 아니에요.
+            아이와 함께 배워가는 과정 자체가 엄마시간의 핵심이에요.
+            발음이 틀려도, 모르는 단어가 있어도 전혀 상관없어요.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            몇 살 아이부터 참여할 수 있나요?
+            <span class="faq-q-icon">▼</span>
+          </div>
+          <div class="faq-a">
+            파닉스는 5~8세, 원서 읽기는 6~10세 아이들에게 적합해요.
+            하지만 아이마다 다르니 먼저 무료로 체험해보시고 결정하셔도 돼요.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            하루에 얼마나 시간이 필요한가요?
+            <span class="faq-q-icon">▼</span>
+          </div>
+          <div class="faq-a">
+            10~20분이면 충분해요. 매일 하지 않아도 괜찮아요.
+            엄마와 아이가 여유 있을 때, 하고 싶을 때 함께하는 게 가장 좋아요.
+          </div>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q" onclick="toggleFaq(this)">
+            수강 코드는 어떻게 받나요?
+            <span class="faq-q-icon">▼</span>
+          </div>
+          <div class="faq-a">
+            카카오톡으로 문의해주시면 안내드릴게요.
+            각 프로그램의 첫 번째 활동은 코드 없이도 바로 체험할 수 있어요.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">엄마<span>시간</span></div>
+    <div class="footer-copy">© 2025 엄마시간 · 아이와 함께 만드는 시간</div>
+  </div>
+</footer>
+
+<script src="../assets/js/auth.js"></script>
+<script src="../assets/js/nav.js"></script>
+<script>
+function toggleFaq(el) {
+  var answer = el.nextElementSibling;
+  var isOpen = answer.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(function(a) { a.classList.remove('open'); });
+  document.querySelectorAll('.faq-q').forEach(function(q) { q.classList.remove('open'); });
+  if (!isOpen) { answer.classList.add('open'); el.classList.add('open'); }
+}
+</script>
+</body>
+</html>

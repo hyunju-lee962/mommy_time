@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>사이트 설정 — Mommy Time Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/admin.css">
+<script src="/assets/js/admin.js"></script>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-text">Mommy<span>Time</span></div><div class="sb-sub">⚙️ 관리자 패널</div></div>
+  <div class="sb-section">메뉴</div>
+  <a href="/admin/index.html"    class="sb-link"><span class="icon">📊</span>대시보드</a>
+  <a href="/admin/students.html" class="sb-link"><span class="icon">👩‍👧</span>수강생 관리</a>
+  <a href="/admin/content.html"  class="sb-link"><span class="icon">📚</span>콘텐츠 잠금</a>
+  <a href="/admin/stats.html"    class="sb-link"><span class="icon">📈</span>학습 현황</a>
+  <a href="/admin/settings.html" class="sb-link active"><span class="icon">⚙️</span>사이트 설정</a>
+  <div class="sb-bottom"><button class="sb-logout" onclick="doLogout()">🚪 로그아웃</button></div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">⚙️ 사이트 설정</div>
+    <div class="page-sub">공지사항 · 연락처 · API 설정</div>
+  </div>
+
+  <!-- 공지 배너 설정 -->
+  <div class="card">
+    <div class="card-title">📢 공지사항 배너</div>
+    <div class="form-group">
+      <label class="form-label">배너 표시 여부</label>
+      <label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-top:6px">
+        <label class="toggle-switch">
+          <input type="checkbox" id="bannerActive">
+          <span class="toggle-slider"></span>
+        </label>
+        <span id="bannerActiveLabel" style="font-size:13px;font-weight:700;color:var(--sub)">비활성</span>
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="form-label">배너 메시지</label>
+      <input class="form-input" id="bannerMsg" placeholder="예: 🎉 새로운 콘텐츠가 업데이트됐어요!">
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">배너 색상</label>
+        <select class="form-select" id="bannerColor">
+          <option value="green">초록 (공지)</option>
+          <option value="orange">주황 (중요)</option>
+          <option value="blue">파랑 (정보)</option>
+          <option value="red">빨강 (경고)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label">링크 (선택)</label>
+        <input class="form-input" id="bannerLink" placeholder="https://...">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="saveSetting('banner')">💾 배너 저장</button>
+  </div>
+
+  <!-- 연락처 설정 -->
+  <div class="card">
+    <div class="card-title">📞 연락처 설정</div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">카카오톡 채널</label>
+        <input class="form-input" id="kakaoChannel" placeholder="@엄마시간">
+      </div>
+      <div class="form-group">
+        <label class="form-label">이메일</label>
+        <input class="form-input" id="contactEmail" placeholder="hello@mommytime.kr">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">인스타그램</label>
+      <input class="form-input" id="instagram" placeholder="@mommytime_kr">
+    </div>
+    <button class="btn btn-primary" onclick="saveSetting('contact')">💾 연락처 저장</button>
+  </div>
+
+  <!-- API 설정 확인 -->
+  <div class="card">
+    <div class="card-title">🔑 API 연결 상태</div>
+    <div style="display:flex;flex-direction:column;gap:12px;" id="apiStatus">
+      <div style="font-size:13px;color:var(--sub)">확인 중...</div>
+    </div>
+    <div style="margin-top:16px;display:flex;gap:10px;">
+      <button class="btn btn-ghost btn-sm" onclick="checkApi()">🔄 연결 확인</button>
+      <a href="/SETUP_GUIDE.txt" target="_blank" class="btn btn-ghost btn-sm">📋 설정 가이드 보기</a>
+    </div>
+  </div>
+
+  <!-- 관리자 비밀번호 변경 -->
+  <div class="card">
+    <div class="card-title">🔒 관리자 비밀번호 변경</div>
+    <div style="background:rgba(249,199,79,.1);border:1.5px solid rgba(249,199,79,.3);border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#F9C74F;font-weight:700;">
+      ⚠️ 비밀번호 변경 후 admin.js 파일의 ADMIN_PW 값을 직접 수정하고 재배포해야 해요.
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label class="form-label">현재 비밀번호</label>
+        <input class="form-input" type="password" id="curPw" placeholder="현재 비밀번호">
+      </div>
+      <div class="form-group">
+        <label class="form-label">새 비밀번호</label>
+        <input class="form-input" type="password" id="newPw" placeholder="새 비밀번호 (8자 이상)">
+      </div>
+    </div>
+    <button class="btn btn-primary" onclick="changePw()">🔒 비밀번호 변경</button>
+    <div id="pwResult" style="margin-top:10px;font-size:13px;font-weight:700;min-height:20px;"></div>
+  </div>
+
+  <!-- 데이터 초기화 -->
+  <div class="card" style="border-color:rgba(226,75,74,.3);">
+    <div class="card-title" style="color:#E24B4A;">⚠️ 위험 구역</div>
+    <div style="font-size:13px;color:var(--sub);margin-bottom:16px;line-height:1.7;">
+      아래 작업은 되돌릴 수 없어요. 신중하게 사용해주세요.
+    </div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;">
+      <button class="btn btn-danger btn-sm" onclick="clearAdminSession()">🚪 Admin 세션 초기화</button>
+    </div>
+  </div>
+
+</main>
+
+<div id="adminLoading"><div class="al-spinner"></div><div class="al-msg">처리 중...</div></div>
+
+<script>
+AdminAuth.guard();
+function doLogout(){ AdminAuth.logout(); window.location.replace('/admin.html'); }
+
+document.getElementById('bannerActive').addEventListener('change', function(){
+  var lbl = document.getElementById('bannerActiveLabel');
+  lbl.textContent = this.checked ? '활성화됨' : '비활성';
+  lbl.style.color = this.checked ? '#52B788' : 'var(--sub)';
+});
+
+function checkApi(){
+  var el = document.getElementById('apiStatus');
+  el.innerHTML = '<div style="font-size:13px;color:var(--sub)">확인 중...</div>';
+
+  var checks = [
+    { label:'Sheets ID', value: AdminCfg.SHEET_ID !== 'YOUR_SHEET_ID_HERE' },
+    { label:'API Key',   value: AdminCfg.API_KEY  !== 'YOUR_GOOGLE_API_KEY_HERE' },
+    { label:'GAS URL',   value: AdminCfg.GAS_URL  !== 'YOUR_GAS_URL_HERE' },
+  ];
+
+  var html = checks.map(function(c){
+    var icon  = c.value ? '✅' : '❌';
+    var color = c.value ? '#52B788' : '#E24B4A';
+    var msg   = c.value ? '설정됨' : '미설정 — SETUP_GUIDE.txt 참고';
+    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);">'
+      + '<span style="font-size:13px;font-weight:700;color:#fff">'+c.label+'</span>'
+      + '<span style="font-size:13px;font-weight:700;color:'+color+'">'+icon+' '+msg+'</span>'
+      + '</div>';
+  }).join('');
+
+  // 실제 Sheets 연결 테스트
+  if(checks[0].value && checks[1].value){
+    SheetsRead.getStudents(function(err){
+      var connOk = !err;
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;">'
+        + '<span style="font-size:13px;font-weight:700;color:#fff">Sheets 연결 테스트</span>'
+        + '<span style="font-size:13px;font-weight:700;color:'+(connOk?'#52B788':'#E24B4A')+';">'
+        + (connOk ? '✅ 연결 성공!' : '❌ 연결 실패: '+err)
+        + '</span></div>';
+      el.innerHTML = html;
+    });
+  } else {
+    el.innerHTML = html;
+  }
+}
+
+function saveSetting(type){
+  var data = {};
+  if(type === 'banner'){
+    data = {
+      key:'banner',
+      value: JSON.stringify({
+        active:  document.getElementById('bannerActive').checked,
+        msg:     document.getElementById('bannerMsg').value,
+        color:   document.getElementById('bannerColor').value,
+        link:    document.getElementById('bannerLink').value,
+      })
+    };
+  } else if(type === 'contact'){
+    data = {
+      key:'contact',
+      value: JSON.stringify({
+        kakao:  document.getElementById('kakaoChannel').value,
+        email:  document.getElementById('contactEmail').value,
+        insta:  document.getElementById('instagram').value,
+      })
+    };
+  }
+  AdminUtil.showLoading('저장 중...');
+  SheetsWrite.updateSetting(data, function(err){
+    AdminUtil.hideLoading();
+    if(err){ AdminUtil.toast('저장 오류: '+err,'error'); return; }
+    AdminUtil.toast('저장됐어요! ✅','success');
+  });
+}
+
+function changePw(){
+  var cur = document.getElementById('curPw').value;
+  var nw  = document.getElementById('newPw').value;
+  var res = document.getElementById('pwResult');
+  if(!AdminAuth.login(cur)){ res.style.color='#E24B4A'; res.textContent='현재 비밀번호가 틀려요.'; return; }
+  if(nw.length < 8){ res.style.color='#E24B4A'; res.textContent='새 비밀번호는 8자 이상이어야 해요.'; return; }
+  res.style.color='#F9C74F';
+  res.innerHTML='✅ 확인됐어요! <code style="background:rgba(255,255,255,.1);padding:2px 8px;border-radius:6px">'+nw+'</code> 를 admin.js의 ADMIN_PW에 복사해서 재배포해주세요.';
+}
+
+function clearAdminSession(){
+  if(!confirm('Admin 세션을 초기화할까요? 로그아웃됩니다.')) return;
+  AdminAuth.logout();
+  window.location.replace('/admin.html');
+}
+
+// 페이지 로드
+checkApi();
+SheetsRead.getSettings(function(err, settings){
+  if(err || !settings) return;
+  try {
+    if(settings.banner){
+      var b = JSON.parse(settings.banner.value);
+      document.getElementById('bannerActive').checked = b.active;
+      document.getElementById('bannerMsg').value   = b.msg || '';
+      document.getElementById('bannerColor').value = b.color || 'green';
+      document.getElementById('bannerLink').value  = b.link || '';
+      document.getElementById('bannerActiveLabel').textContent = b.active ? '활성화됨' : '비활성';
+      document.getElementById('bannerActiveLabel').style.color = b.active ? '#52B788' : 'var(--sub)';
+    }
+    if(settings.contact){
+      var c = JSON.parse(settings.contact.value);
+      document.getElementById('kakaoChannel').value = c.kakao || '';
+      document.getElementById('contactEmail').value = c.email || '';
+      document.getElementById('instagram').value    = c.insta || '';
+    }
+  } catch(e){}
+});
+</script>
+</body>
+</html>

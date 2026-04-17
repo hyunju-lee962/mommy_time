@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 6: Decodable Story — ai, ay (장모음 a) | G3 U1 | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.95);backdrop-filter:blur(14px);border-bottom:2px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:700;padding:6px 14px;border:1.5px solid var(--soft);border-radius:10px;background:#fff;}
+.wrap{max-width:720px;margin:0 auto;padding:82px 36px 80px;}
+.card{background:#fff;border:2px solid #9B72CF44;border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:0 2px 8px rgba(0,0,0,.05);}
+.card-title{font-size:15px;font-weight:800;color:#9B72CF;margin-bottom:12px;display:flex;align-items:center;gap:6px;padding-bottom:10px;border-bottom:1.5px solid var(--soft);}
+/* 스토리 탭 */
+.story-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.story-tab{padding:7px 14px;border-radius:10px;border:2px solid #9B72CF44;background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--br);transition:all .2s;}
+.story-tab.active{background:#9B72CF;color:#fff;border-color:#9B72CF;}
+.story-tab.done{border-color:var(--g);color:var(--g);}
+.story-tab.done.active{background:var(--g);color:#fff;border-color:var(--g);}
+/* 미션 배너 */
+.mission{background:linear-gradient(135deg,#9B72CF,#5A28A0);border-radius:14px;padding:12px 16px;margin-bottom:16px;color:#fff;}
+.mission-label{font-size:11px;font-weight:700;opacity:.8;text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.mission-text{font-size:13px;font-weight:700;line-height:1.6;}
+/* 진행 카운터 */
+.counter{display:flex;align-items:center;justify-content:space-between;background:#fff;border:2px solid #9B72CF44;border-radius:10px;padding:10px 14px;margin-bottom:14px;}
+/* 스토리 */
+.story-box{background:#fff;border:2px solid #9B72CF44;border-radius:18px;overflow:hidden;margin-bottom:14px;}
+.story-header{background:#F3EEFF;padding:12px 16px;border-bottom:1.5px solid #9B72CF44;text-align:center;font-size:13px;font-weight:700;color:#5A28A0;}
+.story-body{padding:16px;}
+/* 단어 칩 */
+.target-chips{background:var(--yl);border:2px solid var(--y);border-radius:12px;padding:12px 14px;margin-bottom:14px;}
+.chip-label{font-size:11px;font-weight:800;color:#8B6F00;margin-bottom:8px;text-transform:uppercase;letter-spacing:.06em;}
+.chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{padding:5px 14px;background:#fff;border-radius:10px;font-size:13px;font-weight:700;color:#8B6F00;border:2px solid var(--y);transition:all .3s;}
+.chip.found{background:#9B72CF;color:#fff;border-color:#9B72CF;}
+/* 완료 배너 */
+.complete-banner{display:none;background:#F3EEFF;border:2px solid #9B72CF;border-radius:14px;padding:20px;text-align:center;margin-bottom:14px;}
+.complete-banner.show{display:block;}
+/* 전체 완료 */
+.all-done{display:none;background:linear-gradient(135deg,#F3EEFF,var(--gl));border-radius:16px;padding:24px;text-align:center;margin-bottom:14px;}
+.all-done.show{display:block;}
+/* 완료/네비 버튼 */
+.done-btn{width:100%;padding:15px;border-radius:16px;color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;background:#9B72CF;}
+.done-msg{display:none;background:#F3EEFF;border:1.5px solid #9B72CF88;border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:14px;font-weight:700;color:#5A28A0;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:14px;padding-top:14px;border-top:1.5px solid var(--soft);}
+.nav-btn{flex:1;padding:11px;border-radius:12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:1.5px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{color:#fff;border:none;background:#9B72CF;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G3');
+MommyAuth.checkLock('G3-U1-S06');</script>
+<nav><a href="../../../../index.html" class="logo">Mommy<span>Time</span></a>
+<a href="jp-g3-u1-index.html" class="back">← Unit 1</a></nav>
+
+<div class="wrap">
+  <div style="display:inline-flex;align-items:center;gap:6px;background:#F3EEFF;color:#9B72CF;border:1.5px solid #9B72CF88;border-radius:20px;padding:6px 16px;font-size:13px;font-weight:700;margin-bottom:14px;">📚 Step 6 / 10</div>
+  <h1 style="font-size:24px;font-weight:800;margin-bottom:8px;">Decodable Stories</h1>
+  <p style="font-size:14px;color:var(--br);margin-bottom:18px;line-height:1.7;">ai · ay 소리가 담긴 이야기 5편! 탭해서 단어를 찾아봐요 🔍</p>
+
+  <!-- 스토리 탭 -->
+  <div class="story-tabs" id="storyTabs"></div>
+
+  <!-- 미션 배너 -->
+  <div class="mission">
+    <div class="mission-label">🎯 미션</div>
+    <div class="mission-text" id="missionText">이야기에서 타겟 단어를 모두 찾아요!</div>
+  </div>
+
+  <!-- 진행 카운터 -->
+  <div class="counter">
+    <span style="font-size:13px;font-weight:700;color:var(--br)">찾은 단어</span>
+    <span style="font-size:20px;font-weight:800;color:#9B72CF"><span id="foundCount">0</span> / <span id="totalCount">0</span></span>
+  </div>
+
+  <!-- 스토리 본문 -->
+  <div class="story-box">
+    <div class="story-header" id="storyHeader">📖 스토리 제목</div>
+    <div class="story-body" id="storyBody"></div>
+  </div>
+
+  <!-- 타겟 단어 칩 -->
+  <div class="target-chips">
+    <div class="chip-label">🎯 찾아야 할 단어들</div>
+    <div class="chips" id="targetChips"></div>
+  </div>
+
+  <!-- 스토리 완료 배너 -->
+  <div class="complete-banner" id="completeBanner">
+    <div style="font-size:36px;margin-bottom:8px">🎉</div>
+    <div style="font-size:16px;font-weight:800;color:#5A28A0" id="completeMsg">모두 찾았어요!</div>
+    <button id="nextStoryBtn" onclick="nextStory()" style="display:none;margin-top:12px;padding:11px 24px;border-radius:12px;background:#9B72CF;color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;">다음 스토리 →</button>
+  </div>
+
+  <!-- 전체 완료 -->
+  <div class="all-done" id="allDone">
+    <div style="font-size:44px;margin-bottom:8px">📚</div>
+    <div style="font-size:17px;font-weight:800;margin-bottom:6px;">5편 모두 읽었어요! 🏆</div>
+    <div style="font-size:13px;color:var(--br);margin-bottom:14px;">정말 대단해요! 독서왕이에요 📖✨</div>
+  </div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 6 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 완료! ⭐ Tricky Words로 가요!</div>
+  <div class="nav-btns">
+    <a href="jp-g3-u1-step05.html" class="nav-btn sec">← 🔤 Blending</a>
+    <a href="jp-g3-u1-step07.html" class="nav-btn pri">⭐ Tricky Words →</a>
+  </div>
+</div>
+
+<script>
+var STORIES=[
+  {"title":"A Cat at the Hill","lines":[{"text":"A cat ran to the hill.","ko":"cat이 hill으로 달려갔어요."},{"text":"Sam saw the cat.","ko":"Sam이 cat을 봤어요."},{"text":"The cat had a rain.","ko":"cat이 rain을 가졌어요."},{"text":"Sam and the cat sat down.","ko":"Sam와 cat이 함께 앉았어요."},{"text":"What a fun hill!","ko":"정말 즐거운 hill이에요!"}],"targets":["rain", "tail", "sail", "train"]},
+  {"title":"Pip and the Dog","lines":[{"text":"Pip went to the pond.","ko":"Pip이 pond에 갔어요."},{"text":"A dog was at the pond.","ko":"pond에 dog이 있었어요."},{"text":"The dog had a train sail.","ko":"dog이 sail을 가졌어요."},{"text":"Pip ran to the dog.","ko":"Pip이 dog에게 달려갔어요."},{"text":"They had fun at the pond.","ko":"pond에서 즐거운 시간을 보냈어요."}],"targets":["sail", "train", "stay", "play"]},
+  {"title":"Fun at the Garden","lines":[{"text":"It was a good at the garden.","ko":"garden에서 좋은 날이에요."},{"text":"Tom ran and ran.","ko":"Tom이 달리고 또 달렸어요."},{"text":"A frog sat in the sun.","ko":"frog이 햇볕에 앉았어요."},{"text":"Tom saw a clay.","ko":"Tom이 clay를 봤어요."},{"text":"What a day day!","ko":"정말 멋진 날이에요!"}],"targets":["stay", "play", "clay", "day"]},
+  {"title":"The Big Clay","lines":[{"text":"It is a big clay.","ko":"정말 큰 clay이에요."},{"text":"Ben and Duck ran to see it.","ko":"Ben와 duck이 보러 달려갔어요."},{"text":"The clay was at the park.","ko":"park에 clay이 있었어요."},{"text":"They sat and looked.","ko":"그들은 앉아서 바라봤어요."},{"text":"It was a good day!","ko":"정말 좋은 day이에요!"}],"targets":["clay", "day", "mail", "snail"]},
+  {"title":"Ann Finds a Snail","lines":[{"text":"Ann went for a walk.","ko":"Ann이 산책을 나갔어요."},{"text":"Ann found a snail.","ko":"Ann이 snail를 발견했어요."},{"text":"The snail was near the farm.","ko":"farm근처에 snail가 있었어요."},{"text":"Ann took it back to the farm.","ko":"Ann이 farm으로 가져갔어요."},{"text":"What a good mail!","ko":"정말 좋은 mail이에요!"}],"targets":["mail", "snail"]},
+];
+var curIdx=0;
+var storyDone=[];
+var storiesProgress=JSON.parse(localStorage.getItem('jp_g3_u1_s6')||'[]');
+
+function speak(t){
+  window.speechSynthesis.cancel();
+  var u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=0.78;
+  var vs=window.speechSynthesis.getVoices();
+  var v=vs.find(function(v){return v.lang==='en-GB';})||vs.find(function(v){return v.lang.startsWith('en');})||null;
+  if(v)u.voice=v;
+  window.speechSynthesis.speak(u);
+}
+
+function buildTabs(){
+  var tabs=document.getElementById('storyTabs');tabs.innerHTML='';
+  STORIES.forEach(function(s,i){
+    var btn=document.createElement('button');
+    btn.className='story-tab'+(i===curIdx?' active':'')+(storiesProgress.indexOf(i)>=0?' done':'');
+    btn.textContent=(storiesProgress.indexOf(i)>=0?'✓ ':'')+'Story '+(i+1)+': '+s.title.split(' ').slice(0,3).join(' ')+'...';
+    btn.onclick=(function(idx){return function(){loadStory(idx);};})(i);
+    tabs.appendChild(btn);
+  });
+}
+
+function loadStory(idx){
+  curIdx=idx;
+  var s=STORIES[idx];
+  var found=new Set();
+  var tgts=new Set(s.targets.map(function(w){return w.toLowerCase();}));
+
+  // 헤더
+  document.getElementById('storyHeader').textContent='📖 Story '+(idx+1)+': '+s.title;
+  document.getElementById('missionText').innerHTML='<strong>'+s.targets.join(' · ')+'</strong> 를 모두 찾아요!';
+
+  // 카운터
+  document.getElementById('totalCount').textContent=s.targets.length;
+  document.getElementById('foundCount').textContent='0';
+
+  // 칩
+  var chips=document.getElementById('targetChips');chips.innerHTML='';
+  s.targets.forEach(function(w){
+    var c=document.createElement('div');
+    c.className='chip';c.id='chip-'+idx+'-'+w;c.textContent=w;
+    chips.appendChild(c);
+  });
+
+  // 완료 배너 숨기기
+  document.getElementById('completeBanner').classList.remove('show');
+  document.getElementById('nextStoryBtn').style.display='none';
+
+  // 스토리 본문 렌더링
+  var body=document.getElementById('storyBody');body.innerHTML='';
+  s.lines.forEach(function(line){
+    var div=document.createElement('div');div.style.marginBottom='14px';
+
+    // 읽기 버튼
+    var btn=document.createElement('button');
+    btn.style.cssText='display:inline-flex;align-items:center;gap:4px;background:#9B72CF;color:#fff;border:none;border-radius:8px;padding:5px 12px;font-family:Nunito,sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-bottom:6px;';
+    btn.innerHTML='🔊 읽기';
+    btn.onclick=(function(txt,b){return function(){
+      b.style.background='var(--o)';speak(txt);
+      setTimeout(function(){b.style.background='#9B72CF';},2000);
+    };})( line.text,btn);
+    div.appendChild(btn);
+
+    // 문장 — 단어별로 클릭 가능
+    var sent=document.createElement('div');
+    sent.style.cssText='font-size:17px;font-weight:700;line-height:2.4;';
+    line.text.split(' ').forEach(function(word){
+      var clean=word.replace(/[.,!?']/g,'').toLowerCase();
+      var isTgt=tgts.has(clean);
+      var span=document.createElement('span');
+      span.style.cssText='cursor:pointer;padding:1px 4px;border-radius:4px;transition:all .2s;display:inline-block;'+(isTgt?'border-bottom:2px dashed #9B72CF88;':'');
+      span.textContent=word;
+      if(isTgt){
+        span.onclick=function(){
+          if(span.dataset.m)return;
+          span.dataset.m='1';
+          span.style.background='#9B72CF';span.style.color='#fff';span.style.borderBottom='none';
+          speak(clean);
+          found.add(clean);
+          var chip=document.getElementById('chip-'+idx+'-'+clean);
+          if(chip)chip.classList.add('found');
+          document.getElementById('foundCount').textContent=found.size;
+          if(found.size>=s.targets.length){
+            document.getElementById('completeBanner').classList.add('show');
+            var msg='🎉 Story '+(idx+1)+' 완료! ';
+            if(idx<STORIES.length-1){
+              msg+='다음 스토리로 가볼까요?';
+              document.getElementById('nextStoryBtn').style.display='inline-block';
+            }else{
+              msg+='5편 모두 읽었어요! 🏆';
+              document.getElementById('allDone').classList.add('show');
+            }
+            document.getElementById('completeMsg').textContent=msg;
+            if(storiesProgress.indexOf(idx)<0){
+              storiesProgress.push(idx);
+              localStorage.setItem('jp_g3_u1_s6',JSON.stringify(storiesProgress));
+            }
+            buildTabs();
+          }
+        };
+      }else{
+        span.onclick=function(){span.style.background='#FCEBEB';setTimeout(function(){span.style.background='';},350);};
+      }
+      sent.appendChild(span);
+      sent.appendChild(document.createTextNode(' '));
+    });
+    div.appendChild(sent);
+
+    // 한국어 번역
+    var ko=document.createElement('div');
+    ko.style.cssText='font-size:12px;color:var(--br);margin-top:2px;';
+    ko.textContent=line.ko;
+    div.appendChild(ko);
+    body.appendChild(div);
+  });
+
+  buildTabs();
+}
+
+function nextStory(){
+  if(curIdx<STORIES.length-1)loadStory(curIdx+1);
+}
+
+function markDone(){
+  var done=new Set(JSON.parse(localStorage.getItem('jp_g3_u1_done')||'[]'));
+  done.add(6);localStorage.setItem('jp_g3_u1_done',JSON.stringify([...done]));
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;
+  document.querySelector('.done-btn').style.opacity='.6';
+  MommyAuth.logProgress('G3-U1-S06');
+}
+var _d=new Set(JSON.parse(localStorage.getItem('jp_g3_u1_done')||'[]'));
+if(_d.has(6)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+
+loadStory(0);
+window.speechSynthesis.onvoiceschanged=function(){window.speechSynthesis.getVoices();};
+</script>
+<script src="jp-g3-u1-lnb.js"></script>
+</body></html>

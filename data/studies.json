@@ -1,0 +1,17 @@
+{
+  "studies": [
+    {
+      "id": "magic-school-bus",
+      "title": "매직스쿨버스",
+      "titleEn": "The Magic School Bus",
+      "description": "과학을 신나게 배우는 최고의 시리즈!",
+      "ageRange": "7-10세",
+      "level": "초급",
+      "totalWeeks": 20,
+      "currentWeek": 1,
+      "price": 29000,
+      "emoji": "🚌",
+      "status": "active"
+    }
+  ]
+}

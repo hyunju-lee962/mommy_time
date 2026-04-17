@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Worksheets — Plant Seeds | Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --g:#52B788;--gl:#E8F8EF;
+  --y:#F9C74F;--yl:#FFFBEC;
+  --o:#F4845F;--ol:#FFF0EB;
+  --b:#5BA4CF;--bl:#EBF4FF;
+  --p:#9B72CF;--pl:#F3EEFF;
+  --cream:#FFFDF8;--warm:#F5EDE0;
+  --dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}
+.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+
+.hd{padding:82px 36px 20px;text-align:center;}
+.hd h1{font-size:24px;font-weight:800;margin-bottom:6px;}
+.hd p{font-size:13px;color:var(--br);}
+
+/* 탭 */
+.tabs{display:flex;gap:8px;padding:0 36px 20px;overflow-x:auto;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{flex-shrink:0;padding:8px 16px;border-radius:24px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--br);transition:all .18s;white-space:nowrap;}
+.tab.on{background:var(--o);color:#fff;border-color:var(--o);}
+
+/* 진행 */
+.prog-wrap{max-width:700px;margin:0 auto;padding:0 36px 16px;}
+.prog-row{display:flex;justify-content:space-between;font-size:11px;color:var(--br);font-weight:700;margin-bottom:5px;}
+.prog-track{background:var(--soft);border-radius:8px;height:6px;overflow:hidden;}
+.prog-fill{height:100%;background:var(--o);border-radius:8px;transition:width .4s;}
+
+/* 공통 섹션 */
+.ws{max-width:700px;margin:0 auto;padding:0 36px 80px;display:none;}
+.ws.active{display:block;}
+
+.ws-header{background:var(--ol);border-radius:16px;padding:16px 20px;margin-bottom:24px;display:flex;gap:12px;align-items:center;}
+.ws-header-icon{font-size:32px;}
+.ws-header-title{font-size:16px;font-weight:800;color:#5a2800;}
+.ws-header-sub{font-size:12px;color:#8B5E3C;margin-top:3px;line-height:1.5;}
+
+/* 체크/결과 */
+.check-btn{display:flex;align-items:center;justify-content:center;gap:6px;width:100%;padding:13px;border-radius:14px;background:var(--o);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:20px;transition:all .2s;}
+.check-btn:hover{background:#e06e48;}
+.result-box{margin-top:14px;border-radius:14px;padding:16px 18px;display:none;}
+.result-box.show{display:block;animation:slideUp .3s ease;}
+.result-box.perfect{background:var(--gl);border:2px solid var(--g);}
+.result-box.good{background:var(--yl);border:2px solid var(--y);}
+.result-box.try{background:var(--ol);border:2px solid var(--o);}
+.result-score{font-size:20px;font-weight:800;margin-bottom:4px;}
+.result-msg{font-size:13px;line-height:1.6;}
+.reset-btn{margin-top:10px;padding:7px 16px;border-radius:10px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--br);}
+
+/* 입력 공통 */
+.blank{display:inline-block;border:none;border-bottom:2.5px solid var(--o);background:transparent;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--dark);outline:none;min-width:100px;padding:2px 4px;text-align:center;transition:border-color .2s;}
+.blank:focus{border-color:var(--b);}
+.blank.correct{border-color:var(--g);color:var(--g);}
+.blank.wrong{border-color:#E24B4A;color:#E24B4A;}
+
+/* ── WS1: 꽃 부위 라벨 ── */
+.flower-wrap{position:relative;margin:0 auto 20px;max-width:440px;}
+.flower-svg-container{width:100%;aspect-ratio:1;position:relative;}
+.flower-svg-container svg{width:100%;height:100%;}
+.label-group{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;}
+.label-item{display:flex;flex-direction:column;gap:4px;}
+.label-num{font-size:10px;font-weight:700;color:var(--o);}
+.label-input{border:2px solid var(--soft);border-radius:10px;padding:8px 12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--dark);outline:none;background:#fff;transition:border-color .2s;}
+.label-input:focus{border-color:var(--b);}
+.label-input.correct{border-color:var(--g);background:var(--gl);color:#1a5c3a;}
+.label-input.wrong{border-color:#E24B4A;background:#FCEBEB;}
+.word-bank{background:var(--bl);border-radius:12px;padding:12px 16px;margin-bottom:16px;}
+.word-bank-title{font-size:11px;font-weight:700;color:#0a3d6b;margin-bottom:8px;}
+.word-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{background:#fff;border:1.5px solid var(--b);color:var(--b);padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;user-select:none;}
+.chip:hover{background:var(--bl);}
+.chip.used{opacity:.4;pointer-events:none;text-decoration:line-through;}
+
+/* ── WS2: 빈칸 채우기 ── */
+.sentence-list{display:flex;flex-direction:column;gap:16px;}
+.sentence-item{background:#fff;border:2px solid var(--soft);border-radius:14px;padding:16px 18px;}
+.sentence-num{font-size:11px;font-weight:700;color:var(--o);margin-bottom:6px;}
+.sentence-text{font-size:15px;font-weight:600;line-height:1.8;}
+
+/* ── WS3: 순서 맞추기 ── */
+.journey-list{display:flex;flex-direction:column;gap:10px;}
+.journey-item{background:#fff;border:2px solid var(--soft);border-radius:14px;padding:14px 16px;display:flex;gap:14px;align-items:center;}
+.journey-num-input{width:44px;height:44px;border:2px solid var(--soft);border-radius:10px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:800;text-align:center;color:var(--o);background:#fff;outline:none;flex-shrink:0;transition:all .2s;}
+.journey-num-input:focus{border-color:var(--o);}
+.journey-num-input.correct{border-color:var(--g);background:var(--gl);color:var(--g);}
+.journey-num-input.wrong{border-color:#E24B4A;background:#FCEBEB;color:#E24B4A;}
+.journey-emoji{font-size:28px;flex-shrink:0;}
+.journey-text{font-size:14px;font-weight:600;line-height:1.5;}
+
+/* ── WS4: 씨앗 구조 ── */
+.seed-diagram{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;margin-bottom:20px;}
+.seed-svg-wrap{flex-shrink:0;width:200px;}
+.seed-svg-wrap svg{width:100%;height:auto;}
+.seed-labels{flex:1;min-width:200px;display:flex;flex-direction:column;gap:10px;}
+.seed-label-item{display:flex;flex-direction:column;gap:3px;}
+.seed-label-num{font-size:10px;font-weight:700;color:var(--p);}
+.seed-label-input{border:2px solid var(--soft);border-radius:10px;padding:8px 12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--dark);outline:none;transition:border-color .2s;}
+.seed-label-input:focus{border-color:var(--p);}
+.seed-label-input.correct{border-color:var(--g);background:var(--gl);color:#1a5c3a;}
+.seed-label-input.wrong{border-color:#E24B4A;background:#FCEBEB;}
+.seed-questions{display:flex;flex-direction:column;gap:14px;margin-top:4px;}
+.seed-q{background:#fff;border:2px solid var(--soft);border-radius:12px;padding:14px 16px;}
+.seed-q-text{font-size:14px;font-weight:600;line-height:1.6;margin-bottom:8px;}
+
+/* ── WS5: Adventure Journal ── */
+.journal-card{background:#fff;border:2px solid var(--soft);border-radius:16px;padding:20px;margin-bottom:14px;}
+.journal-section{font-size:11px;font-weight:700;color:var(--o);letter-spacing:.08em;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:5px;}
+.journal-input{width:100%;border:none;border-bottom:2px solid var(--soft);padding:8px 2px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;color:var(--dark);background:transparent;outline:none;margin-bottom:10px;}
+.journal-input:focus{border-color:var(--o);}
+.journal-textarea{width:100%;border:2px solid var(--soft);border-radius:10px;padding:10px 12px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;color:var(--dark);background:var(--cream);outline:none;resize:vertical;min-height:70px;line-height:1.6;transition:border-color .2s;}
+.journal-textarea:focus{border-color:var(--o);}
+.num-item{display:flex;gap:8px;align-items:flex-start;margin-bottom:8px;}
+.num-badge{width:22px;height:22px;border-radius:50%;background:var(--ol);color:var(--o);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:6px;}
+.save-btn{width:100%;padding:13px;border-radius:14px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:6px;}
+.save-btn:hover{background:#3d9e6a;}
+.saved-msg{text-align:center;padding:14px;background:var(--gl);border-radius:12px;font-size:13px;font-weight:700;color:#1a5c3a;display:none;}
+.saved-msg.show{display:block;animation:slideUp .3s ease;}
+
+@keyframes slideUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@media(max-width:680px){
+  nav,.hd,.tabs,.prog-wrap{padding-left:20px;padding-right:20px;}
+  .ws{padding-left:20px;padding-right:20px;}
+  .seed-diagram{flex-direction:column;}
+  .seed-svg-wrap{width:100%;max-width:240px;margin:0 auto;}
+}
+
+<style>
+/* ── 출력 버튼 ── */
+.print-bar{
+  max-width:700px;margin:0 auto 8px;padding:0 36px;
+  display:flex;gap:10px;align-items:center;flex-wrap:wrap;
+}
+.print-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:10px 20px;border-radius:12px;
+  background:var(--dark);color:#fff;border:none;
+  font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;
+  cursor:pointer;transition:all .2s;
+}
+.print-btn:hover{background:#444;transform:translateY(-1px);}
+.print-btn.single{background:var(--b);}
+.print-hint{font-size:11px;color:var(--br);}
+
+/* ── 프린트 미디어 쿼리 ── */
+@media print {
+  @page { margin: 18mm 16mm; size: A4; }
+
+  nav, .tabs, .prog-wrap, .print-bar,
+  .check-btn, .reset-btn, .save-btn,
+  .word-chips, .word-bank-title,
+  .result-box { display: none !important; }
+
+  body { background: #fff !important; font-size: 13px; }
+
+  .ws { display: block !important; padding: 0 0 28px !important;
+        border-bottom: 2px dashed #ccc; margin-bottom: 24px; }
+
+  .ws-header { background: #f5f5f5 !important; border: 1.5px solid #ddd;
+               print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  .hd { padding: 0 0 12px !important; }
+  .hd h1 { font-size: 18px; }
+
+  /* 빈칸을 밑줄로 표시 */
+  .blank {
+    border: none !important;
+    border-bottom: 1.5px solid #333 !important;
+    min-width: 80px;
+    color: #fff !important;
+    background: transparent !important;
+  }
+
+  /* 입력칸 → 빈 박스로 */
+  .label-input, .seed-label-input, .journey-num-input {
+    border: 1.5px solid #333 !important;
+    background: #fff !important;
+    color: #fff !important;
+    min-height: 28px;
+  }
+
+  /* journal textarea */
+  .journal-textarea, .journal-input {
+    border: none !important;
+    border-bottom: 1.5px solid #333 !important;
+    background: transparent !important;
+    min-height: 40px;
+    color: #fff !important;
+  }
+
+  /* SVG 컬러 유지 */
+  svg { print-color-adjust: exact; -webkit-print-color-adjust: exact; }
+
+  /* 페이지 나눔 */
+  #ws0 { page-break-after: always; }
+  #ws1 { page-break-after: always; }
+  #ws2 { page-break-after: always; }
+  #ws3 { page-break-after: always; }
+  #ws4 { page-break-after: auto; }
+
+  /* 꽃 다이어그램 크기 */
+  .flower-wrap { max-width: 320px; margin: 0 auto 16px; }
+
+  /* 씨앗 다이어그램 */
+  .seed-svg-wrap { width: 160px; }
+
+  /* journey 번호칸 */
+  .journey-num-input {
+    width: 36px !important; height: 36px !important;
+    font-size: 15px !important;
+  }
+
+  /* 프린트 헤더 */
+  .print-header { display: block !important; }
+}
+
+.print-header {
+  display: none;
+  text-align: center;
+  margin-bottom: 12px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #333;
+}
+.print-header h2 { font-size: 16px; font-weight: 800; }
+.print-header p { font-size: 12px; color: #666; margin-top: 3px; }
+.print-name-line {
+  display: none;
+  font-size: 13px; margin-bottom: 20px;
+}
+@media print {
+  .print-name-line { display: flex !important; gap: 32px; }
+  .name-field { flex: 1; border-bottom: 1.5px solid #333; padding-bottom: 4px; font-size: 12px; }
+}
+</style>
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html" class="logo">Mommy<span>Time</span></a>
+  <a href="index.html" class="back">← Week 1</a>
+</nav>
+
+
+<!-- 출력 버튼 바 -->
+<div class="print-bar" id="printBar">
+  <button class="print-btn" onclick="printAll()">🖨️ Print All Worksheets</button>
+  <button class="print-btn single" onclick="printCurrent()">📄 Print This Sheet Only</button>
+  <span class="print-hint">* Answers will be hidden for clean printing</span>
+</div>
+
+<div class="hd">
+  <h1>✏️ Plant Seeds — Worksheets</h1>
+  <p>5 activities · Check your answers · Learn by doing!</p>
+</div>
+
+<div class="tabs">
+  <button class="tab on" onclick="goTab(0,this)">🌸 1. Flower Parts</button>
+  <button class="tab" onclick="goTab(1,this)">📝 2. Fill the Blank</button>
+  <button class="tab" onclick="goTab(2,this)">🌱 3. Seed Journey</button>
+  <button class="tab" onclick="goTab(3,this)">🌰 4. Seed Structure</button>
+  <button class="tab" onclick="goTab(4,this)">📔 5. My Journal</button>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-row"><span>Progress</span><span id="progText">0 / 5 complete</span></div>
+  <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
+</div>
+
+<!-- ── WS1: Name the parts of a flower ── -->
+<div class="ws active" id="ws0">
+  <div class="ws-header">
+    <div class="ws-header-icon">🌸</div>
+    <div>
+      <div class="ws-header-title">Name the Parts of a Flower</div>
+      <div class="ws-header-sub">Click a word from the Word Bank, then click the matching box!</div>
+    </div>
+  </div>
+
+  <div class="word-bank">
+    <div class="word-bank-title">📦 Word Bank</div>
+    <div class="word-chips" id="chips1">
+      <div class="chip" onclick="selectChip(this,'stigma')">stigma</div>
+      <div class="chip" onclick="selectChip(this,'anther')">anther</div>
+      <div class="chip" onclick="selectChip(this,'petal')">petal</div>
+      <div class="chip" onclick="selectChip(this,'ovary')">ovary</div>
+      <div class="chip" onclick="selectChip(this,'ovule')">ovule</div>
+    </div>
+  </div>
+
+  <!-- 꽃 SVG 다이어그램 -->
+  <div class="flower-wrap">
+    <svg viewBox="0 0 320 300" xmlns="http://www.w3.org/2000/svg">
+      <!-- 꽃잎 -->
+      <ellipse cx="160" cy="80" rx="30" ry="50" fill="#F4845F" opacity=".7"/>
+      <ellipse cx="160" cy="220" rx="30" ry="50" fill="#F4845F" opacity=".7"/>
+      <ellipse cx="90" cy="150" rx="50" ry="30" fill="#F9C74F" opacity=".7"/>
+      <ellipse cx="230" cy="150" rx="50" ry="30" fill="#F9C74F" opacity=".7"/>
+      <ellipse cx="108" cy="98" rx="30" ry="50" fill="#F4845F" opacity=".5" transform="rotate(-45 108 98)"/>
+      <ellipse cx="212" cy="98" rx="30" ry="50" fill="#F9C74F" opacity=".5" transform="rotate(45 212 98)"/>
+      <ellipse cx="108" cy="202" rx="30" ry="50" fill="#F4845F" opacity=".5" transform="rotate(45 108 202)"/>
+      <ellipse cx="212" cy="202" rx="30" ry="50" fill="#F9C74F" opacity=".5" transform="rotate(-45 212 202)"/>
+      <!-- 줄기 -->
+      <rect x="153" y="240" width="14" height="50" rx="7" fill="#52B788"/>
+      <!-- 수술 (stamen) -->
+      <rect x="138" y="130" width="6" height="40" rx="3" fill="#8B6F5E"/>
+      <ellipse cx="141" cy="128" rx="8" ry="6" fill="#F9C74F"/>
+      <rect x="155" y="120" width="6" height="48" rx="3" fill="#8B6F5E"/>
+      <ellipse cx="158" cy="118" rx="8" ry="6" fill="#F9C74F"/>
+      <rect x="172" y="130" width="6" height="40" rx="3" fill="#8B6F5E"/>
+      <ellipse cx="175" cy="128" rx="8" ry="6" fill="#F9C74F"/>
+      <!-- 암술 -->
+      <rect x="155" y="140" width="10" height="60" rx="5" fill="#52B788" opacity=".9"/>
+      <!-- stigma (꼭대기) -->
+      <ellipse cx="160" cy="138" rx="12" ry="8" fill="#9B72CF"/>
+      <!-- ovary -->
+      <ellipse cx="160" cy="210" rx="18" ry="14" fill="#F4845F" opacity=".8"/>
+      <!-- ovule (안) -->
+      <ellipse cx="160" cy="210" rx="8" ry="6" fill="#F9C74F"/>
+
+      <!-- 라벨 선 & 번호 -->
+      <!-- 1: stigma -->
+      <line x1="172" y1="136" x2="220" y2="110" stroke="#9B72CF" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="220" cy="108" r="10" fill="#9B72CF"/>
+      <text x="220" y="112" text-anchor="middle" font-size="11" fill="white" font-family="Nunito,sans-serif" font-weight="700">1</text>
+      <!-- 2: anther -->
+      <line x1="141" y1="122" x2="90" y2="100" stroke="#F9C74F" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="88" cy="98" r="10" fill="#F9C74F"/>
+      <text x="88" y="102" text-anchor="middle" font-size="11" fill="white" font-family="Nunito,sans-serif" font-weight="700">2</text>
+      <!-- 3: petal -->
+      <line x1="185" y1="150" x2="240" y2="160" stroke="#F4845F" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="242" cy="162" r="10" fill="#F4845F"/>
+      <text x="242" y="166" text-anchor="middle" font-size="11" fill="white" font-family="Nunito,sans-serif" font-weight="700">3</text>
+      <!-- 4: ovary -->
+      <line x1="178" y1="212" x2="220" y2="230" stroke="#F4845F" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="222" cy="232" r="10" fill="#F4845F" opacity=".8"/>
+      <text x="222" y="236" text-anchor="middle" font-size="11" fill="white" font-family="Nunito,sans-serif" font-weight="700">4</text>
+      <!-- 5: ovule -->
+      <line x1="152" y1="214" x2="106" y2="235" stroke="#F9C74F" stroke-width="1.5" stroke-dasharray="4,3"/>
+      <circle cx="104" cy="237" r="10" fill="#8B6F5E"/>
+      <text x="104" y="241" text-anchor="middle" font-size="11" fill="white" font-family="Nunito,sans-serif" font-weight="700">5</text>
+    </svg>
+  </div>
+
+  <div class="label-group">
+    <div class="label-item">
+      <div class="label-num">① Purple top — sticky!</div>
+      <input class="label-input" id="fl1" placeholder="Click word bank →" readonly onclick="fillLabel('fl1','stigma')" data-answer="stigma">
+    </div>
+    <div class="label-item">
+      <div class="label-num">② Makes pollen</div>
+      <input class="label-input" id="fl2" placeholder="Click word bank →" readonly onclick="fillLabel('fl2','anther')" data-answer="anther">
+    </div>
+    <div class="label-item">
+      <div class="label-num">③ Colorful — attracts insects</div>
+      <input class="label-input" id="fl3" placeholder="Click word bank →" readonly onclick="fillLabel('fl3','petal')" data-answer="petal">
+    </div>
+    <div class="label-item">
+      <div class="label-num">④ Becomes the fruit!</div>
+      <input class="label-input" id="fl4" placeholder="Click word bank →" readonly onclick="fillLabel('fl4','ovary')" data-answer="ovary">
+    </div>
+    <div class="label-item">
+      <div class="label-num">⑤ Inside ovary — future seed</div>
+      <input class="label-input" id="fl5" placeholder="Click word bank →" readonly onclick="fillLabel('fl5','ovule')" data-answer="ovule">
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkWS1()">✅ Check My Answers!</button>
+  <div class="result-box" id="res1"></div>
+</div>
+
+<!-- ── WS2: Fill the Blank ── -->
+<div class="ws" id="ws1">
+  <div class="ws-header">
+    <div class="ws-header-icon">📝</div>
+    <div>
+      <div class="ws-header-title">Fill in the Blank</div>
+      <div class="ws-header-sub">Use the words below to complete each sentence!</div>
+    </div>
+  </div>
+
+  <div class="word-bank">
+    <div class="word-bank-title">📦 Word Bank</div>
+    <div class="word-chips">
+      <span class="chip">proboscis</span>
+      <span class="chip">nectar</span>
+      <span class="chip">flowers</span>
+      <span class="chip">insects</span>
+      <span class="chip">tube</span>
+      <span class="chip">anther</span>
+      <span class="chip">seed</span>
+      <span class="chip">light</span>
+      <span class="chip">sprouts</span>
+    </div>
+  </div>
+
+  <div class="sentence-list">
+    <div class="sentence-item">
+      <div class="sentence-num">1</div>
+      <div class="sentence-text">Bees use a <input class="blank" id="b1" data-answer="proboscis" placeholder="______"> to drink the nectar from flowers.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">2</div>
+      <div class="sentence-text">Plants make <input class="blank" id="b2" data-answer="nectar" placeholder="______"> for insects and then use <input class="blank" id="b3" data-answer="flowers" placeholder="______"> to show them where it is.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">3</div>
+      <div class="sentence-text"><input class="blank" id="b4" data-answer="insects" placeholder="______"> bring nectar from one flower to another.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">4</div>
+      <div class="sentence-text">Pollen grows a <input class="blank" id="b5" data-answer="tube" placeholder="______"> down into the flower where the eggs are.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">5</div>
+      <div class="sentence-text">Pollen can be found on the <input class="blank" id="b6" data-answer="anther" placeholder="______"> of a flower.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">6</div>
+      <div class="sentence-text">A <input class="blank" id="b7" data-answer="seed" placeholder="______"> is a plant waiting to grow.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">7</div>
+      <div class="sentence-text">A seed needs soil, water, <input class="blank" id="b8" data-answer="light" placeholder="______">, and time to grow.</div>
+    </div>
+    <div class="sentence-item">
+      <div class="sentence-num">8</div>
+      <div class="sentence-text">A seed <input class="blank" id="b9" data-answer="sprouts" placeholder="______"> when it first comes out of the soil.</div>
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkWS2()">✅ Check My Answers!</button>
+  <div class="result-box" id="res2"></div>
+</div>
+
+<!-- ── WS3: Journey of a Seed ── -->
+<div class="ws" id="ws2">
+  <div class="ws-header">
+    <div class="ws-header-icon">🌱</div>
+    <div>
+      <div class="ws-header-title">The Journey of a Seed</div>
+      <div class="ws-header-sub">Number the events in order from 1 to 5!</div>
+    </div>
+  </div>
+
+  <div class="journey-list">
+    <div class="journey-item">
+      <input class="journey-num-input" id="j1" type="number" min="1" max="5" placeholder="?" data-answer="5">
+      <div class="journey-emoji">🌿</div>
+      <div class="journey-text">A new plant grows from the seed.</div>
+    </div>
+    <div class="journey-item">
+      <input class="journey-num-input" id="j2" type="number" min="1" max="5" placeholder="?" data-answer="1">
+      <div class="journey-emoji">🐝</div>
+      <div class="journey-text">Bees visit a flower and get nectar and pollen on their bodies.</div>
+    </div>
+    <div class="journey-item">
+      <input class="journey-num-input" id="j3" type="number" min="1" max="5" placeholder="?" data-answer="4">
+      <div class="journey-emoji">💨</div>
+      <div class="journey-text">The seeds travel away by wind or animals and land in new places.</div>
+    </div>
+    <div class="journey-item">
+      <input class="journey-num-input" id="j4" type="number" min="1" max="5" placeholder="?" data-answer="3">
+      <div class="journey-emoji">🌸</div>
+      <div class="journey-text">The pollen goes inside the flower and helps make a seed.</div>
+    </div>
+    <div class="journey-item">
+      <input class="journey-num-input" id="j5" type="number" min="1" max="5" placeholder="?" data-answer="2">
+      <div class="journey-emoji">🌼</div>
+      <div class="journey-text">The bees move to another flower and drop some pollen.</div>
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkWS3()">✅ Check My Answers!</button>
+  <div class="result-box" id="res3"></div>
+</div>
+
+<!-- ── WS4: Seed Structure ── -->
+<div class="ws" id="ws3">
+  <div class="ws-header">
+    <div class="ws-header-icon">🌰</div>
+    <div>
+      <div class="ws-header-title">Seeds and Plant Growth</div>
+      <div class="ws-header-sub">Label the seed and answer the questions!</div>
+    </div>
+  </div>
+
+  <div class="seed-diagram">
+    <div class="seed-svg-wrap">
+      <svg viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+        <!-- 씨앗 외피 -->
+        <ellipse cx="100" cy="130" rx="75" ry="90" fill="#8B6F5E" opacity=".8"/>
+        <!-- 배유 (food store) -->
+        <ellipse cx="100" cy="135" rx="60" ry="72" fill="#F9C74F" opacity=".9"/>
+        <!-- 배아 -->
+        <path d="M85 110 Q90 90 100 80 Q115 70 120 90 Q125 110 110 125 Q95 135 85 125 Z" fill="#52B788" opacity=".9"/>
+        <!-- 첫 잎 -->
+        <path d="M105 82 Q118 65 128 55 Q135 48 130 58 Q125 68 115 78 Z" fill="#52B788"/>
+        <!-- 라벨 선 -->
+        <!-- 1: seed coat -->
+        <line x1="30" y1="90" x2="55" y2="110" stroke="#8B6F5E" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="28" cy="88" r="9" fill="#8B6F5E"/>
+        <text x="28" y="92" text-anchor="middle" font-size="10" fill="white" font-family="Nunito" font-weight="700">A</text>
+        <!-- 2: embryo -->
+        <line x1="170" y1="95" x2="145" y2="105" stroke="#52B788" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="172" cy="93" r="9" fill="#52B788"/>
+        <text x="172" y="97" text-anchor="middle" font-size="10" fill="white" font-family="Nunito" font-weight="700">B</text>
+        <!-- 3: food store -->
+        <line x1="170" y1="170" x2="148" y2="155" stroke="#F9C74F" stroke-width="1.5" stroke-dasharray="4,3"/>
+        <circle cx="172" cy="172" r="9" fill="#F9C74F"/>
+        <text x="172" y="176" text-anchor="middle" font-size="10" fill="#5a4000" font-family="Nunito" font-weight="700">C</text>
+      </svg>
+    </div>
+
+    <div class="seed-labels">
+      <div class="word-bank" style="margin-bottom:10px">
+        <div class="word-bank-title">📦 Word Bank</div>
+        <div class="word-chips">
+          <span class="chip">seed coat</span>
+          <span class="chip">embryo</span>
+          <span class="chip">food store</span>
+        </div>
+      </div>
+      <div class="seed-label-item">
+        <div class="seed-label-num">A — outer brown layer</div>
+        <input class="seed-label-input" id="sl1" data-answer="seed coat" placeholder="Type your answer...">
+      </div>
+      <div class="seed-label-item">
+        <div class="seed-label-num">B — the baby plant inside</div>
+        <input class="seed-label-input" id="sl2" data-answer="embryo" placeholder="Type your answer...">
+      </div>
+      <div class="seed-label-item">
+        <div class="seed-label-num">C — stored nutrients (yellow)</div>
+        <input class="seed-label-input" id="sl3" data-answer="food store" placeholder="Type your answer...">
+      </div>
+    </div>
+  </div>
+
+  <div class="seed-questions">
+    <div class="seed-q">
+      <div class="seed-q-text">1. Pollen and <input class="blank" id="sq1" data-answer="ovules" placeholder="______"> make seeds inside a flower.</div>
+    </div>
+    <div class="seed-q">
+      <div class="seed-q-text">2. <input class="blank" id="sq2" data-answer="wind" placeholder="______"> is one way for a seed to move to a new location.</div>
+    </div>
+    <div class="seed-q">
+      <div class="seed-q-text">3. What are 4 things a plant needs to grow?<br>
+        <input class="blank" id="sq3a" data-answer="soil" placeholder="______"> &nbsp;
+        <input class="blank" id="sq3b" data-answer="water" placeholder="______"> &nbsp;
+        <input class="blank" id="sq3c" data-answer="sunlight" placeholder="______"> &nbsp;
+        <input class="blank" id="sq3d" data-answer="air" placeholder="______">
+      </div>
+    </div>
+  </div>
+
+  <button class="check-btn" onclick="checkWS4()">✅ Check My Answers!</button>
+  <div class="result-box" id="res4"></div>
+</div>
+
+<!-- ── WS5: My Adventure Journal ── -->
+<div class="ws" id="ws4">
+  <div class="ws-header">
+    <div class="ws-header-icon">📔</div>
+    <div>
+      <div class="ws-header-title">My Adventure Journal</div>
+      <div class="ws-header-sub">Write about what you learned today — in your own words!</div>
+    </div>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">📖 Book Title</div>
+    <input class="journal-input" id="jTitle" placeholder="The Magic School Bus — Plants Seeds">
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">🎯 Today's Topic</div>
+    <textarea class="journal-textarea" id="jTopic" placeholder="Write the main topic in one sentence or keywords..."></textarea>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">💡 What I Learned — 3 new things</div>
+    <div class="num-item"><div class="num-badge">1</div><textarea class="journal-textarea" id="jL1" placeholder="I learned that..."></textarea></div>
+    <div class="num-item"><div class="num-badge">2</div><textarea class="journal-textarea" id="jL2" placeholder="I also learned..."></textarea></div>
+    <div class="num-item"><div class="num-badge">3</div><textarea class="journal-textarea" id="jL3" placeholder="And I discovered..."></textarea></div>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">⭐ My Favourite Part</div>
+    <textarea class="journal-textarea" id="jFav" placeholder="My favourite part was... because..."></textarea>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">📝 Words to Remember — 3 words</div>
+    <div class="num-item"><div class="num-badge">1</div><textarea class="journal-textarea" id="jW1" placeholder="Word: ______  Meaning: ______"></textarea></div>
+    <div class="num-item"><div class="num-badge">2</div><textarea class="journal-textarea" id="jW2" placeholder="Word: ______  Meaning: ______"></textarea></div>
+    <div class="num-item"><div class="num-badge">3</div><textarea class="journal-textarea" id="jW3" placeholder="Word: ______  Meaning: ______"></textarea></div>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">🤔 Big Questions — things I want to know more about</div>
+    <div class="num-item"><div class="num-badge">1</div><textarea class="journal-textarea" id="jQ1" placeholder="I wonder why..."></textarea></div>
+    <div class="num-item"><div class="num-badge">2</div><textarea class="journal-textarea" id="jQ2" placeholder="I want to find out..."></textarea></div>
+  </div>
+
+  <div class="journal-card">
+    <div class="journal-section">💛 How I Felt</div>
+    <textarea class="journal-textarea" id="jFeel" placeholder="Reading this book made me feel... because..."></textarea>
+  </div>
+
+  <button class="save-btn" onclick="saveJournal()">💾 Save My Journal!</button>
+  <div class="saved-msg" id="savedMsg">
+    🎉 Journal saved! Great work today! You're a real scientist! 🌱
+  </div>
+</div>
+
+<script>
+let completed = new Set();
+
+// ── 탭 전환 ──
+function goTab(i, btn){
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.ws').forEach((w,idx)=>w.classList.toggle('active', idx===i));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ── WS1: 꽃 부위 ──
+let selectedChip = null;
+
+function selectChip(el, word){
+  // 이미 선택된 칩 해제
+  document.querySelectorAll('.chip').forEach(c=>c.style.background='');
+  selectedChip = word;
+  el.style.background = '#FFF0EB';
+  el.style.borderColor = 'var(--o)';
+}
+
+function fillLabel(inputId, expectedWord){
+  if(!selectedChip) { alert('First click a word from the Word Bank! 📦'); return; }
+  const input = document.getElementById(inputId);
+  input.value = selectedChip;
+  // 칩 used 표시
+  document.querySelectorAll('.chip').forEach(c=>{
+    if(c.textContent === selectedChip) c.classList.add('used');
+  });
+  selectedChip = null;
+  document.querySelectorAll('.chip').forEach(c=>{c.style.background='';c.style.borderColor='';});
+}
+
+function checkWS1(){
+  const inputs = ['fl1','fl2','fl3','fl4','fl5'];
+  let score = 0;
+  inputs.forEach(id=>{
+    const el = document.getElementById(id);
+    const correct = el.dataset.answer;
+    if(el.value.trim().toLowerCase() === correct){
+      el.classList.add('correct'); el.classList.remove('wrong'); score++;
+    } else {
+      el.classList.add('wrong'); el.classList.remove('correct');
+    }
+  });
+  showResult('res1', score, inputs.length, 0);
+  if(score===inputs.length) completed.add(0), updateProg();
+}
+
+// ── WS2: 빈칸 채우기 ──
+function checkWS2(){
+  const ids = ['b1','b2','b3','b4','b5','b6','b7','b8','b9'];
+  let score = 0;
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(el.value.trim().toLowerCase() === el.dataset.answer){
+      el.classList.add('correct'); el.classList.remove('wrong'); score++;
+    } else {
+      el.classList.add('wrong'); el.classList.remove('correct');
+    }
+  });
+  showResult('res2', score, ids.length, 1);
+  if(score===ids.length) completed.add(1), updateProg();
+}
+
+// ── WS3: 순서 ──
+function checkWS3(){
+  const ids = ['j1','j2','j3','j4','j5'];
+  let score = 0;
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(String(el.value).trim() === el.dataset.answer){
+      el.classList.add('correct'); el.classList.remove('wrong'); score++;
+    } else {
+      el.classList.add('wrong'); el.classList.remove('correct');
+    }
+  });
+  showResult('res3', score, ids.length, 2);
+  if(score===ids.length) completed.add(2), updateProg();
+}
+
+// ── WS4: 씨앗 구조 ──
+function checkWS4(){
+  const checks = [
+    {id:'sl1', ans:'seed coat'},
+    {id:'sl2', ans:'embryo'},
+    {id:'sl3', ans:'food store'},
+    {id:'sq1', ans:'ovules'},
+    {id:'sq2', ans:'wind'},
+    {id:'sq3a', ans:'soil'},
+    {id:'sq3b', ans:'water'},
+    {id:'sq3c', ans:'sunlight'},
+    {id:'sq3d', ans:'air'},
+  ];
+  let score = 0;
+  checks.forEach(c=>{
+    const el = document.getElementById(c.id);
+    if(el.value.trim().toLowerCase() === c.ans){
+      el.classList.add('correct'); el.classList.remove('wrong'); score++;
+    } else {
+      el.classList.add('wrong'); el.classList.remove('correct');
+    }
+  });
+  showResult('res4', score, checks.length, 3);
+  if(score>=7) completed.add(3), updateProg();
+}
+
+// ── WS5: Journal 저장 ──
+function saveJournal(){
+  completed.add(4);
+  updateProg();
+  document.getElementById('savedMsg').classList.add('show');
+}
+
+// ── 결과 표시 ──
+function showResult(resId, score, total, wsIdx){
+  const box = document.getElementById(resId);
+  const pct = score / total;
+  let cls, emoji, msg;
+  if(pct === 1){ cls='perfect'; emoji='🏆'; msg=`Perfect score! ${score}/${total} — Amazing work! You're a plant scientist! 🌱`; }
+  else if(pct >= 0.6){ cls='good'; emoji='⭐'; msg=`Great job! ${score}/${total} — So close! Check the wrong ones and try again!`; }
+  else { cls='try'; emoji='💪'; msg=`Keep trying! ${score}/${total} — Look back at the story and try again. You can do it!`; }
+  box.className = `result-box show ${cls}`;
+  box.innerHTML = `
+    <div class="result-score">${emoji} ${score} / ${total}</div>
+    <div class="result-msg">${msg}</div>
+    <button class="reset-btn" onclick="resetWS(${wsIdx})">🔄 Try Again</button>`;
+}
+
+function resetWS(wsIdx){
+  const wsEl = document.getElementById('ws'+wsIdx);
+  // 모든 입력 초기화
+  wsEl.querySelectorAll('input, textarea').forEach(el=>{
+    if(el.type!=='button') el.value='';
+    el.classList.remove('correct','wrong');
+  });
+  wsEl.querySelectorAll('.chip').forEach(c=>c.classList.remove('used'));
+  wsEl.querySelectorAll('.label-input').forEach(el=>el.value='');
+  const resEl = document.getElementById('res'+wsIdx);
+  if(resEl){ resEl.className='result-box'; resEl.innerHTML=''; }
+  selectedChip = null;
+}
+
+function updateProg(){
+  const pct = (completed.size / 5 * 100).toFixed(0);
+  document.getElementById('progFill').style.width = pct + '%';
+  document.getElementById('progText').textContent = completed.size + ' / 5 complete';
+}
+</script>
+
+<script>
+function printAll(){
+  // 모든 ws 보이게
+  document.querySelectorAll('.ws').forEach(w=>w.style.display='block');
+  window.print();
+  // 원래대로
+  setTimeout(()=>{
+    document.querySelectorAll('.ws').forEach((w,i)=>{
+      w.style.display = w.classList.contains('active') ? 'block' : 'none';
+    });
+  }, 500);
+}
+
+function printCurrent(){
+  window.print();
+}
+</script>
+
+</body>
+</html>

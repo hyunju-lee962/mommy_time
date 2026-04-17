@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>엄마시간 — 아이와 함께 만드는 시간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/common.css">
+<style>
+body { padding-top: 64px; }
+
+/* 히어로 */
+.hero {
+  min-height: calc(100vh - 64px);
+  display: flex; align-items: center; justify-content: center;
+  padding: 80px 40px 60px;
+  position: relative; overflow: hidden; text-align: center;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse at 25% 40%, rgba(212,132,90,.08) 0%, transparent 55%),
+    radial-gradient(ellipse at 80% 70%, rgba(123,174,212,.07) 0%, transparent 55%);
+}
+.hero-inner { max-width: 620px; position: relative; z-index: 1; }
+.hero-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(30px, 5.5vw, 52px);
+  font-weight: 300; line-height: 1.5;
+  letter-spacing: -0.02em; margin-bottom: 24px;
+  animation: fadeUp .9s ease both;
+}
+.hero-title strong { font-weight: 600; color: var(--accent); }
+.hero-desc {
+  font-size: clamp(14px, 2vw, 16px);
+  color: var(--brown); line-height: 2.1;
+  animation: fadeUp .9s .15s ease both;
+}
+.hero-divider {
+  width: 36px; height: 1px; background: var(--peach);
+  margin: 36px auto;
+  animation: fadeUp .9s .2s ease both;
+}
+.hero-tags {
+  display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp .9s .25s ease both;
+}
+.hero-tag {
+  background: var(--white); border: 1px solid var(--soft);
+  border-radius: 20px; padding: 7px 16px;
+  font-size: 13px; color: var(--brown);
+}
+
+/* 섹션 공통 */
+.section { padding: 96px 40px; }
+.section-inner { max-width: 960px; margin: 0 auto; }
+.section-label {
+  font-size: 11px; letter-spacing: .14em;
+  color: var(--accent); text-transform: uppercase; margin-bottom: 14px;
+}
+.section-title {
+  font-family: 'Noto Serif KR', serif;
+  font-size: clamp(24px, 3.5vw, 36px);
+  font-weight: 300; line-height: 1.5; margin-bottom: 14px;
+}
+.section-title strong { font-weight: 600; }
+.section-desc { font-size: 15px; color: var(--brown); line-height: 1.9; }
+
+/* 가치 섹션 */
+.value-section { background: var(--warm); }
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 14px; margin-top: 52px;
+}
+.value-item {
+  background: var(--white); border-radius: 20px;
+  padding: 26px 22px; border: 1px solid var(--soft);
+}
+.value-emoji { font-size: 28px; margin-bottom: 12px; }
+.value-title { font-size: 15px; font-weight: 500; margin-bottom: 8px; }
+.value-desc { font-size: 13px; color: var(--brown); line-height: 1.8; }
+
+/* 어떻게 함께하나요 */
+.intro-lines { margin-top: 56px; }
+.intro-line {
+  padding: 28px 0; border-bottom: 1px solid var(--soft);
+  display: grid; grid-template-columns: 80px 1fr;
+  gap: 24px; align-items: start;
+}
+.intro-line:last-child { border-bottom: none; }
+.intro-num {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 13px; color: var(--accent); padding-top: 4px;
+}
+.intro-text { font-size: 15px; color: var(--dark); line-height: 1.9; }
+.intro-text strong { font-weight: 500; color: var(--accent); }
+
+/* 대화 섹션 */
+.chat-section { background: #2C1F14; }
+.chat-section .section-label { color: var(--accent2); }
+.chat-section .section-title { color: var(--cream); }
+.chat-section .section-desc { color: rgba(253,249,244,.55); }
+.chat-wrap {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 56px; align-items: center; margin-top: 52px;
+}
+.chat-msgs { display: flex; flex-direction: column; gap: 14px; }
+.chat-row { display: flex; gap: 10px; align-items: flex-end; }
+.chat-row.r { flex-direction: row-reverse; }
+.chat-av {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: rgba(255,255,255,.08);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.chat-bubble {
+  background: rgba(255,255,255,.08);
+  border-radius: 16px 16px 16px 4px;
+  padding: 11px 15px; font-size: 13px;
+  color: rgba(253,249,244,.88);
+  max-width: 220px; line-height: 1.65;
+}
+.chat-row.r .chat-bubble {
+  border-radius: 16px 16px 4px 16px;
+  background: rgba(212,132,90,.28);
+}
+.chat-points { display: flex; flex-direction: column; gap: 12px; }
+.chat-point {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 14px; padding: 15px;
+}
+.chat-point-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+.chat-point-title { font-size: 13px; font-weight: 500; color: var(--cream); margin-bottom: 3px; }
+.chat-point-sub { font-size: 12px; color: rgba(253,249,244,.45); line-height: 1.6; }
+
+/* 푸터 */
+.site-footer { padding: 36px 40px; border-top: 1px solid var(--soft); }
+.footer-inner {
+  max-width: 960px; margin: 0 auto;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 10px;
+}
+.footer-logo { font-family: 'Noto Serif KR', serif; font-size: 16px; font-weight: 600; color: var(--brown); }
+.footer-logo span { color: var(--accent); }
+.footer-copy { font-size: 12px; color: var(--brown); opacity: .55; }
+
+@media (max-width: 768px) {
+  .hero { padding: 56px 24px 48px; }
+  .section { padding: 72px 24px; }
+  .intro-line { grid-template-columns: 1fr; gap: 6px; }
+  .intro-num { padding-top: 0; }
+  .chat-wrap { grid-template-columns: 1fr; gap: 36px; }
+  .site-footer { padding: 28px 24px; }
+}
+</style>
+</head>
+<body>
+
+<!-- 히어로 -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-inner">
+    <h1 class="hero-title">
+      아이와 함께하는 시간,<br>
+      그 안에서 <strong>함께 자라요</strong>
+    </h1>
+    <p class="hero-desc">
+      가르치는 시간이 아니에요.<br>
+      같이 읽고, 이야기하고, 웃는 시간이에요.<br>
+      그 사이에 영어도, 문해력도, 추억도 자라나요.
+    </p>
+    <div class="hero-divider"></div>
+    <div class="hero-tags">
+      <span class="hero-tag">📚 파닉스</span>
+      <span class="hero-tag">📖 원서 읽기</span>
+      <span class="hero-tag">🎭 문해력 놀이</span>
+      <span class="hero-tag">🌱 몬테소리</span>
+    </div>
+  </div>
+</section>
+
+<!-- 가치 -->
+<section class="section value-section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">Why Mommy Time</p>
+      <h2 class="section-title">엄마시간이 추구하는 것</h2>
+      <p class="section-desc">
+        아이의 성장은 교재가 아니라<br>
+        엄마와 함께하는 순간에서 시작돼요.
+      </p>
+    </div>
+    <div class="value-grid">
+      <div class="value-item reveal">
+        <div class="value-emoji">💛</div>
+        <div class="value-title">함께하는 시간</div>
+        <div class="value-desc">엄마가 옆에 있다는 것만으로 아이에게는 세상이 달라져요.</div>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-emoji">💬</div>
+        <div class="value-title">대화가 생겨요</div>
+        <div class="value-desc">책 한 권이 오늘 저녁 밥상에서의 이야기 거리가 돼요.</div>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-emoji">🌱</div>
+        <div class="value-title">자연스럽게 자라요</div>
+        <div class="value-desc">영어와 문해력은 즐거운 경험 속에서 저절로 스며들어요.</div>
+      </div>
+      <div class="value-item reveal">
+        <div class="value-emoji">📸</div>
+        <div class="value-title">추억이 쌓여요</div>
+        <div class="value-desc">함께한 시간들이 모여 아이가 평생 기억하는 장면이 돼요.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 어떻게 함께하나요 -->
+<section class="section">
+  <div class="section-inner">
+    <div class="reveal">
+      <p class="section-label">How we spend time</p>
+      <h2 class="section-title">이렇게 함께해요</h2>
+    </div>
+    <div class="intro-lines">
+      <div class="intro-line reveal">
+        <div class="intro-num">01</div>
+        <div class="intro-text">
+          <strong>읽어요</strong> — 파닉스부터 원서까지, 엄마와 아이가 함께 소리 내서 읽어요.
+          발음이 틀려도 괜찮아요, 같이 웃으면 그게 추억이에요.
+        </div>
+      </div>
+      <div class="intro-line reveal">
+        <div class="intro-num">02</div>
+        <div class="intro-text">
+          <strong>이야기해요</strong> — 읽은 것에 대해 자유롭게 이야기 나눠요.
+          정답이 없는 질문들로 아이의 생각을 들어봐요.
+        </div>
+      </div>
+      <div class="intro-line reveal">
+        <div class="intro-num">03</div>
+        <div class="intro-text">
+          <strong>놀아요</strong> — 퀴즈 대결, 만들기, 탐구 활동.
+          배움이 놀이가 되는 순간이에요.
+        </div>
+      </div>
+      <div class="intro-line reveal">
+        <div class="intro-num">04</div>
+        <div class="intro-text">
+          <strong>기억해요</strong> — 오늘 함께한 시간이
+          아이의 언어가 되고, 엄마의 추억이 돼요.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 대화 장면 -->
+<section class="section chat-section">
+  <div class="section-inner">
+    <div class="chat-wrap">
+      <div class="chat-msgs reveal">
+        <div class="chat-row">
+          <div class="chat-av">👧</div>
+          <div class="chat-bubble">엄마! "gravity"가 뭔지 알아? 내가 가르쳐줄게 🚀</div>
+        </div>
+        <div class="chat-row r">
+          <div class="chat-av">👩</div>
+          <div class="chat-bubble">어머, 몰라~ 뭐야뭐야?</div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av">👧</div>
+          <div class="chat-bubble">"중력"이야! 우리를 땅에 붙잡아주는 힘 🍎</div>
+        </div>
+        <div class="chat-row r">
+          <div class="chat-av">👩</div>
+          <div class="chat-bubble">우와~ 영어로도 말해줄 수 있어? ✨</div>
+        </div>
+        <div class="chat-row">
+          <div class="chat-av">👧</div>
+          <div class="chat-bubble">"Gravity pulls everything down!" 어때? 😄</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <p class="section-label">Real moments</p>
+        <h2 class="section-title" style="color:var(--cream);">
+          이런 순간들이<br>
+          <strong style="color:var(--accent2);">생겨나요</strong>
+        </h2>
+        <p class="section-desc" style="margin-bottom:28px;">
+          책에서 배운 단어로 저녁 밥상에서 대화하고,<br>
+          자기 전에 오늘 읽은 이야기가 떠오르는 하루요.
+        </p>
+        <div class="chat-points">
+          <div class="chat-point">
+            <div class="chat-point-icon">🔊</div>
+            <div>
+              <div class="chat-point-title">원어민 발음 듣기</div>
+              <div class="chat-point-sub">버튼 하나로 언제든지</div>
+            </div>
+          </div>
+          <div class="chat-point">
+            <div class="chat-point-icon">🎯</div>
+            <div>
+              <div class="chat-point-title">엄마 vs 아이 퀴즈 대결</div>
+              <div class="chat-point-sub">아이가 이기면 두 배로 기뻐요</div>
+            </div>
+          </div>
+          <div class="chat-point">
+            <div class="chat-point-icon">💬</div>
+            <div>
+              <div class="chat-point-title">하브루타 대화 카드</div>
+              <div class="chat-point-sub">정답 없이 함께 생각해요</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 푸터 -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-logo">엄마<span>시간</span></div>
+    <div class="footer-copy">© 2025 엄마시간 · 아이와 함께 만드는 시간</div>
+  </div>
+</footer>
+
+<script src="assets/js/auth.js"></script>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>

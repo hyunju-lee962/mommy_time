@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 7: Tricky Words — s,a,t</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.wrap{max-width:780px;margin:0 auto;padding:82px 40px 80px;}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--bl);color:var(--b);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
+h1{font-size:26px;font-weight:800;margin-bottom:8px;}
+.sub{font-size:15px;color:var(--br);margin-bottom:20px;line-height:1.7;}
+
+/* 트리키워드 설명 */
+.info-banner{background:var(--yl);border-radius:14px;padding:14px 16px;margin-bottom:20px;}
+.ib-title{font-size:13px;font-weight:800;color:#5a4000;margin-bottom:6px;}
+.ib-text{font-size:12px;color:#7a5a00;line-height:1.7;}
+
+/* 모드 탭 */
+.mode-tabs{display:flex;gap:8px;margin-bottom:20px;}
+.mtab{flex:1;padding:9px;border-radius:14px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--br);transition:all .18s;text-align:center;}
+.mtab.on{background:var(--b);color:#fff;border-color:var(--b);}
+
+/* Look-Say-Cover-Write-Check */
+#mLSCWC{}
+.lscwc-card{background:#fff;border:2px solid var(--soft);border-radius:18px;padding:20px;margin-bottom:12px;}
+.lscwc-word-row{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+.lscwc-word{font-size:48px;font-weight:800;color:var(--b);transition:all .3s;}
+.lscwc-word.covered{opacity:0;}
+.lscwc-ko{font-size:16px;color:var(--br);font-weight:700;}
+.lscwc-sentence{font-size:15px;color:var(--dark);line-height:1.6;background:var(--warm);border-radius:10px;padding:8px 12px;margin-bottom:12px;}
+.lscwc-sentence strong{color:var(--b);}
+.lscwc-steps{display:flex;gap:6px;flex-wrap:wrap;}
+.ls-btn{padding:10px 18px;border-radius:12px;border:none;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:all .2s;}
+.ls-look{background:var(--bl);color:var(--b);}
+.ls-say{background:var(--gl);color:var(--g);}
+.ls-cover{background:var(--yl);color:#8B6F00;}
+.ls-write-wrap{display:flex;align-items:center;gap:6px;}
+.ls-write{border:2px solid var(--b);border-radius:12px;padding:10px 14px;font-family:'Nunito',sans-serif;font-size:18px;font-weight:700;width:140px;outline:none;}
+.ls-check{background:var(--p);color:#fff;}
+.ls-result{font-size:13px;font-weight:700;margin-top:6px;min-height:20px;}
+.ls-result.ok{color:var(--g);}
+.ls-result.ng{color:#E24B4A;}
+
+/* 문장 속 찾기 */
+#mHunt{display:none;}
+.hunt-card{background:#fff;border:2px solid var(--soft);border-radius:18px;padding:20px;margin-bottom:12px;}
+.hunt-sentence{font-size:18px;font-weight:700;line-height:2;margin-bottom:8px;}
+.hunt-word{cursor:pointer;padding:2px 4px;border-radius:6px;transition:all .2s;}
+.hunt-word:hover{background:var(--yl);}
+.hunt-word.found-tw{background:var(--b);color:#fff;border-radius:6px;}
+.hunt-word.wrong-tap{background:#FCEBEB;animation:shake .3s ease;}
+.hunt-target{font-size:12px;color:var(--br);margin-bottom:8px;}
+.hunt-target strong{color:var(--b);}
+.hunt-score{font-size:13px;font-weight:700;color:var(--b);margin-top:6px;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.done-btn{width:100%;padding:15px;border-radius:16px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.done-msg{display:none;background:var(--gl);border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:13px;font-weight:700;color:#1a5c3a;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:12px;}
+.nav-btn{flex:1;padding:12px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:2px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{background:var(--p);color:#fff;border:none;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G1');
+MommyAuth.checkLock('G1-U1-S07');</script>
+<nav><a href="../../jp-index.html" class="logo">Mommy<span>Time</span></a><a href="../../jp-index.html" class="back">← Unit 1</a></nav>
+<div class="wrap">
+  <div class="step-badge">⭐ Step 7 / 10</div>
+  <h1>Tricky Words</h1>
+  <p class="sub">파닉스 규칙으로 읽을 수 없는 특별한 단어들이에요. 눈으로 외워요! 👀</p>
+
+  <div class="info-banner">
+    <div class="ib-title">⭐ Tricky Words란?</div>
+    <div class="ib-text">
+      파닉스 규칙을 따르지 않아서 소리로 유추하기 어려운 단어들이에요.<br>
+      예를 들어 <strong>the</strong>는 "더" 또는 "디"로 읽어요 — t-h-e 소리대로 읽으면 안 돼요!<br>
+      <strong>눈으로 보고, 소리내고, 통째로 외우는 게 포인트예요 ✨</strong>
+    </div>
+  </div>
+
+  <div class="mode-tabs">
+    <button class="mtab on" onclick="setMode('LSCWC',this)">👁 Look-Say-Cover-Write</button>
+    <button class="mtab" onclick="setMode('Hunt',this)">🔍 문장 속 찾기</button>
+  </div>
+
+  <div id="mLSCWC"></div>
+  <div id="mHunt"></div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 7 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 Tricky Words 완료! Step 8로 가요!</div>
+    <div class="nav-btns">
+    <a href="../../group-02/unit-01/jp-g2-u1-step06.html" class="nav-btn sec">← 📚 Decodable Story</a>
+    <a href="../../group-02/unit-01/jp-g2-u1-step08.html" class="nav-btn pri">🎮 Games →</a>
+  </div>
+</div>
+<script>
+const TRICKY=[
+  {word:'the', ko:'그/그것의', sentence:'The cat sat on the mat.', explanation:'"더" 또는 "디"로 읽어요'},
+  {word:'I', ko:'나는', sentence:'I sat on a mat.', explanation:'항상 대문자로 써요'},
+  {word:'go', ko:'가다', sentence:'I go to the mat.', explanation:'"고우"처럼 읽어요'},
+  {word:'to', ko:'~에/~로', sentence:'I go to school.', explanation:'"tuh-oo"가 아닌 "투"로 읽어요. o가 긴 소리예요!'},
+  {word:'no', ko:'아니요', sentence:'No, the cat sat.', explanation:'"노우"처럼 읽어요'},
+  {word:'into', ko:'~안으로', sentence:'The cat sat into a box.', explanation:'"in"+"to" 합친 거예요'},
+];
+
+function buildLSCWC(){
+  const container=document.getElementById('mLSCWC');
+  container.innerHTML='';
+  TRICKY.forEach((tw,i)=>{
+    const card=document.createElement('div');
+    card.className='lscwc-card';
+    card.innerHTML=`
+      <div class="lscwc-word-row">
+        <div class="lscwc-word" id="tw${i}">${tw.word}</div>
+        <div>
+          <div class="lscwc-ko">${tw.ko}</div>
+          <div style="font-size:11px;color:var(--p);font-weight:600">${tw.explanation}</div>
+        </div>
+      </div>
+      <div class="lscwc-sentence">예문: <strong>${tw.sentence.replace(new RegExp('\\b'+tw.word+'\\b','gi'),`<span style="color:var(--b);text-decoration:underline">${tw.word}</span>`)}</strong></div>
+      <div class="lscwc-steps">
+        <button class="ls-btn ls-look" onclick="stepLook(${i})">👁 Look (보기)</button>
+        <button class="ls-btn ls-say" onclick="stepSay('${tw.word}')">🔊 Say (소리내기)</button>
+        <button class="ls-btn ls-cover" onclick="stepCover(${i})">🙈 Cover (가리기)</button>
+        <div class="ls-write-wrap">
+          <input class="ls-write" id="tw-input${i}" placeholder="써봐요..." autocomplete="off" spellcheck="false">
+          <button class="ls-btn ls-check" onclick="stepCheck(${i},'${tw.word}')">✅ Check</button>
+        </div>
+      </div>
+      <div class="ls-result" id="tw-result${i}"></div>`;
+    container.appendChild(card);
+  });
+}
+
+function stepLook(i){
+  const el=document.getElementById('tw'+i);
+  el.classList.remove('covered');
+}
+function stepSay(word){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(word);u.lang='en-GB';u.rate=0.8;
+  const vs=window.speechSynthesis.getVoices();const v=vs.find(v=>v.lang.startsWith('en'))||null;
+  if(v)u.voice=v;window.speechSynthesis.speak(u);
+}
+function stepCover(i){
+  document.getElementById('tw'+i).classList.add('covered');
+  document.getElementById('tw-input'+i).focus();
+}
+function stepCheck(i,word){
+  const input=document.getElementById('tw-input'+i);
+  const result=document.getElementById('tw-result'+i);
+  if(input.value.trim().toLowerCase()===word.toLowerCase()){
+    result.textContent='🎉 완벽해요!';result.className='ls-result ok';
+    document.getElementById('tw'+i).classList.remove('covered');
+  } else {
+    result.textContent='🤔 다시 해봐요! 정답: '+word;result.className='ls-result ng';
+    document.getElementById('tw'+i).classList.remove('covered');
+  }
+  input.value='';
+}
+
+// 문장 속 찾기
+const HUNT_SENTENCES=[
+  {text:'The cat sat on the mat.', targets:['The','the']},
+  {text:'I go to school every day.', targets:['I','go','to']},
+  {text:'No, I do not want to go into the box.', targets:['No','I','to','go','into','the']},
+  {text:'She said go into the room.', targets:['go','into','the']},
+];
+
+function buildHunt(){
+  const container=document.getElementById('mHunt');
+  container.innerHTML='';
+  HUNT_SENTENCES.forEach((hs,si)=>{
+    const card=document.createElement('div');
+    card.className='hunt-card';
+    const target=document.createElement('div');
+    target.className='hunt-target';
+    target.innerHTML='찾을 단어: '+hs.targets.map(t=>`<strong>${t}</strong>`).join(', ');
+    card.appendChild(target);
+    const sentDiv=document.createElement('div');sentDiv.className='hunt-sentence';
+    const words=hs.text.replace(/[.,!?]/g,' $& ').split(' ').filter(w=>w.trim());
+    words.forEach(w=>{
+      const clean=w.replace(/[.,!?]/g,'');
+      const punct=w.replace(/[a-zA-Z]/g,'');
+      const isTw=hs.targets.includes(clean);
+      const span=document.createElement('span');
+      span.className='hunt-word';
+      span.dataset.isTw=isTw?'1':'0';
+      span.textContent=clean+(punct?punct:'');
+      if(isTw) span.onclick=()=>{
+        span.classList.add('found-tw');
+        span.onclick=null;
+        const found=card.querySelectorAll('.found-tw').length;
+        card.querySelector('.hunt-score').textContent='찾은 개수: '+found+' / '+hs.targets.length;
+      };
+      else span.onclick=()=>{
+        span.classList.add('wrong-tap');
+        setTimeout(()=>span.classList.remove('wrong-tap'),400);
+      };
+      sentDiv.appendChild(span);sentDiv.appendChild(document.createTextNode(' '));
+    });
+    card.appendChild(sentDiv);
+    const score=document.createElement('div');score.className='hunt-score';score.textContent='찾은 개수: 0 / '+hs.targets.length;
+    card.appendChild(score);
+    container.appendChild(card);
+  });
+}
+
+function setMode(mode,btn){
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('mLSCWC').style.display=mode==='LSCWC'?'block':'none';
+  document.getElementById('mHunt').style.display=mode==='Hunt'?'block':'none';
+  if(mode==='Hunt')buildHunt();
+}
+
+buildLSCWC();
+window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+
+function markDone(){
+  const done=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+  done.add(7);localStorage.setItem('jp_g1_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G1-U1-S07');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';
+}
+const d=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+if(d.has(7)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+</script>
+<script>
+// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g1_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #FEFCFF;
+      border-right: 2px solid #D8C8F0;
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 16px; font-weight: 800; color: #7040B8;
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: #E0D0FF; border-radius: 6px; height: 6px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: #7040B8; border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: #F5EEFF; border-left-color: #C0A0EE;
+    }
+    .lnb-item.active {
+      background: #E8D8FF;
+      border-left-color: #7040B8;
+      color: #5A28A0;
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: #EDE0FF; color: #7040B8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: #7040B8; color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: #2D9E68; color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--p); color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 1 · Unit 1</div>
+      <div class="lnb-unit-title">s, a, t</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+
+</script>
+</body>
+</html>

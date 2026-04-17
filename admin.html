@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>관리자 로그인 — Mommy Time</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="/assets/js/admin.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{min-height:100vh;background:linear-gradient(160deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);display:flex;align-items:center;justify-content:center;font-family:'Nunito',sans-serif;padding:20px;}
+.card{background:#fff;border-radius:28px;padding:48px 44px;width:100%;max-width:400px;box-shadow:0 20px 60px rgba(0,0,0,.3);text-align:center;animation:fadeUp .4s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.logo{font-size:42px;margin-bottom:10px;}
+.title{font-size:20px;font-weight:900;color:#2C2016;margin-bottom:4px;}
+.title span{color:#F4845F;}
+.sub{font-size:13px;color:#8B6F5E;margin-bottom:32px;}
+.badge{display:inline-block;background:#FFF0EB;color:#F4845F;border:1.5px solid #F4845F;border-radius:10px;padding:4px 14px;font-size:12px;font-weight:700;margin-bottom:24px;}
+.input-wrap{position:relative;margin-bottom:12px;}
+input[type=password]{width:100%;padding:15px 44px 15px 18px;border:2.5px solid #EAE0D5;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;outline:none;transition:border .2s;text-align:center;letter-spacing:.1em;}
+input[type=password]:focus{border-color:#F4845F;}
+.toggle{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;font-size:16px;}
+.err{display:none;background:#FFF0F0;border:1.5px solid #F4A0A0;border-radius:10px;padding:10px 14px;font-size:13px;font-weight:700;color:#C03030;margin-bottom:10px;animation:shake .3s ease;}
+.err.show{display:block;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.btn{width:100%;padding:15px;background:#F4845F;color:#fff;border:none;border-radius:14px;font-family:'Nunito',sans-serif;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;margin-top:4px;}
+.btn:hover{background:#E07040;transform:translateY(-1px);}
+.back{display:block;margin-top:20px;font-size:13px;color:#B0A090;text-decoration:none;}
+.back:hover{color:#8B6F5E;}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">⚙️</div>
+  <div class="title">Mommy<span>Time</span></div>
+  <div class="sub">관리자 페이지</div>
+  <div class="badge">🔒 관리자 전용</div>
+
+  <div class="input-wrap">
+    <input type="password" id="pw" placeholder="관리자 비밀번호" autocomplete="off">
+    <button class="toggle" onclick="togglePw()">👁</button>
+  </div>
+  <div class="err" id="err">비밀번호가 올바르지 않아요.</div>
+  <button class="btn" onclick="doLogin()">관리자 입장 →</button>
+  <a href="/" class="back">← 메인으로 돌아가기</a>
+</div>
+<script>
+// 이미 로그인된 경우
+if (AdminAuth.isLoggedIn()) window.location.replace('/admin/index.html');
+
+function togglePw(){var i=document.getElementById('pw');i.type=i.type==='password'?'text':'password';}
+document.getElementById('pw').addEventListener('keydown',function(e){if(e.key==='Enter')doLogin();});
+
+function doLogin(){
+  var pw=document.getElementById('pw').value;
+  var err=document.getElementById('err');
+  err.classList.remove('show');
+  if(!pw){err.textContent='비밀번호를 입력해주세요.';err.classList.add('show');return;}
+  if(AdminAuth.login(pw)){
+    window.location.replace('/admin/index.html');
+  } else {
+    err.textContent='비밀번호가 올바르지 않아요.';
+    err.classList.add('show');
+    document.getElementById('pw').value='';
+  }
+}
+</script>
+</body>
+</html>

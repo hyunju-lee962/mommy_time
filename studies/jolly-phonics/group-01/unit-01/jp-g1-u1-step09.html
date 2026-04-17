@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 9: Talk Together — s,a,t</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.wrap{max-width:680px;margin:0 auto;padding:82px 36px 80px;}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--yl);color:#8B6F00;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{font-size:13px;color:var(--br);margin-bottom:20px;line-height:1.6;}
+
+/* 대화 카드 */
+.talk-card{background:#fff;border:2px solid var(--soft);border-radius:20px;padding:20px;margin-bottom:12px;cursor:pointer;transition:all .2s;}
+.talk-card:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.08);}
+.talk-card.open{border-color:var(--y);}
+.tc-header{display:flex;align-items:center;gap:12px;}
+.tc-num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;flex-shrink:0;}
+.tc-type{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;opacity:.7;margin-bottom:2px;}
+.tc-q{font-size:15px;font-weight:800;line-height:1.4;}
+.tc-body{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--soft);}
+.talk-card.open .tc-body{display:block;}
+.tc-q-en{font-size:13px;color:var(--br);font-style:italic;margin-bottom:10px;}
+.tc-tip-title{font-size:11px;font-weight:700;color:var(--o);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.tc-tips{display:flex;flex-direction:column;gap:6px;}
+.tc-tip{font-size:13px;color:var(--dark);background:var(--warm);border-radius:10px;padding:8px 12px;line-height:1.6;}
+.tc-tip::before{content:'💡 ';}
+
+/* 상상력 질문 */
+.imagine-section{background:linear-gradient(135deg,var(--pl),var(--bl));border-radius:20px;padding:20px;margin-bottom:16px;}
+.is-title{font-size:14px;font-weight:800;color:var(--p);margin-bottom:14px;}
+.imagine-cards{display:flex;flex-direction:column;gap:10px;}
+.ic{background:rgba(255,255,255,.85);border-radius:14px;padding:14px 16px;}
+.ic-q{font-size:14px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.ic-sub{font-size:11px;color:var(--br);}
+
+/* 오늘의 미션 */
+.mission-section{background:var(--gl);border-radius:16px;padding:18px 20px;margin-bottom:20px;}
+.ms-title{font-size:13px;font-weight:800;color:#1a5c3a;margin-bottom:12px;}
+.missions{display:flex;flex-direction:column;gap:8px;}
+.mission-item{display:flex;gap:10px;align-items:flex-start;background:#fff;border-radius:12px;padding:12px 14px;}
+.mi-check{width:24px;height:24px;border-radius:6px;border:2px solid var(--g);flex-shrink:0;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all .2s;}
+.mi-check.checked{background:var(--g);border-color:var(--g);}
+.mi-text{font-size:13px;font-weight:600;line-height:1.5;}
+
+.done-btn{width:100%;padding:15px;border-radius:16px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.done-msg{display:none;background:var(--gl);border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:13px;font-weight:700;color:#1a5c3a;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:12px;}
+.nav-btn{flex:1;padding:12px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:2px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{background:var(--p);color:#fff;border:none;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G1');
+MommyAuth.checkLock('G1-U1-S09');</script>
+<nav><a href="../../jp-index.html" class="logo">Mommy<span>Time</span></a><a href="../../jp-index.html" class="back">← Unit 1</a></nav>
+<div class="wrap">
+  <div class="step-badge">💬 Step 9 / 10</div>
+  <h1>Talk Together</h1>
+  <p class="sub">엄마와 아이가 함께 이야기 나눠요! 카드를 탭해서 대화 팁을 확인해봐요 💛</p>
+
+  <!-- 하부르타 대화 카드 -->
+  <div style="font-size:11px;font-weight:700;color:var(--br);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">💬 대화 카드 — 탭해서 열기</div>
+
+  <div class="talk-card" onclick="this.classList.toggle('open')">
+    <div class="tc-header">
+      <div class="tc-num" style="background:var(--p)">1</div>
+      <div><div class="tc-type">찾기 활동</div><div class="tc-q">집 안에서 s 소리로 시작하는 것을 찾아봐요!</div></div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-q-en">Find things in the house that start with the "s" sound!</div>
+      <div class="tc-tip-title">엄마 가이드</div>
+      <div class="tc-tips">
+        <div class="tc-tip">같이 집 안을 돌아다니며 s로 시작하는 것을 찾아보세요. sink(싱크대), sofa(소파), shoe(신발) 등을 찾으면 함께 "ssss-ofa!" 처럼 소리내봐요.</div>
+        <div class="tc-tip">아이가 찾은 것을 작은 노트에 적어주면 성취감을 느낄 수 있어요!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk-card" onclick="this.classList.toggle('open')">
+    <div class="tc-header">
+      <div class="tc-num" style="background:var(--o)">2</div>
+      <div><div class="tc-type">연결하기</div><div class="tc-q">오늘 배운 단어 중 가장 재미있었던 건 뭐야?</div></div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-q-en">Which word did you enjoy the most today? Why?</div>
+      <div class="tc-tip-title">엄마 가이드</div>
+      <div class="tc-tips">
+        <div class="tc-tip">아이의 답변에 "왜?"를 추가로 물어봐요. "sat가 재미있어요!" → "왜 sat가 재미있어?" → 생각의 깊이가 생겨요!</div>
+        <div class="tc-tip">엄마도 자신의 대답을 공유해주세요. 서로의 생각을 나누는 것이 하부르타의 핵심이에요!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk-card" onclick="this.classList.toggle('open')">
+    <div class="tc-header">
+      <div class="tc-num" style="background:var(--g)">3</div>
+      <div><div class="tc-type">단어 만들기</div><div class="tc-q">s, a, t로 새로운 단어를 만들 수 있을까?</div></div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-q-en">Can you make new words using s, a, t?</div>
+      <div class="tc-tip-title">엄마 가이드</div>
+      <div class="tc-tips">
+        <div class="tc-tip">sat → tat? tas? 말이 안 되는 단어도 괜찮아요! 소리를 조합하는 것 자체가 연습이에요.</div>
+        <div class="tc-tip">정답이 없는 활동이에요. 아이가 창의적으로 생각하도록 격려해주세요!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk-card" onclick="this.classList.toggle('open')">
+    <div class="tc-header">
+      <div class="tc-num" style="background:var(--b)">4</div>
+      <div><div class="tc-type">일상 연결</div><div class="tc-q">Sam이랑 고양이처럼 엄마/아이가 함께 하는 것은?</div></div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-q-en">Like Sam and the cat in the story, what do you and mom do together?</div>
+      <div class="tc-tip-title">엄마 가이드</div>
+      <div class="tc-tips">
+        <div class="tc-tip">스토리와 실제 생활을 연결해봐요. "Sam이 고양이랑 낮잠 잤는데, 우리는 어떨 때 함께 쉬어?"</div>
+        <div class="tc-tip">아이가 말한 내용을 s, a, t 소리와 연결해봐요. "우리 같이 nap(낮잠) 자요!" "nap에 a 소리가 있네!"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="talk-card" onclick="this.classList.toggle('open')">
+    <div class="tc-header">
+      <div class="tc-num" style="background:var(--y);color:#5a4000">5</div>
+      <div><div class="tc-type">몸으로 표현</div><div class="tc-q">s, a, t 손동작을 거꾸로 보여주면 엄마가 맞혀볼게!</div></div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-q-en">Show mom the actions for s, a, t — can mom guess which sound it is?</div>
+      <div class="tc-tip-title">엄마 가이드</div>
+      <div class="tc-tips">
+        <div class="tc-tip">역할을 바꿔봐요! 아이가 손동작을 하면 엄마가 맞히고, 엄마가 하면 아이가 맞혀요.</div>
+        <div class="tc-tip">일부러 틀려봐요. 아이가 정정해주면서 더 확실하게 기억해요!</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 상상력 질문 -->
+  <div class="imagine-section">
+    <div class="is-title">✨ 상상력 질문 (Imagination Questions)</div>
+    <div class="imagine-cards">
+      <div class="ic">
+        <div class="ic-q">만약 Sam의 고양이 이름을 내가 지어준다면 뭐라고 할까? (s, a, t 소리가 들어가면 더 좋아!)</div>
+        <div class="ic-sub">If you could name Sam's cat, what would you call it? Bonus if it has s, a, or t!</div>
+      </div>
+      <div class="ic">
+        <div class="ic-q">고양이가 mat 위에 앉은 것 말고 어디에 앉으면 재미있을까?</div>
+        <div class="ic-sub">Besides the mat, where else could the cat sit? (on a hat? on a tap?)</div>
+      </div>
+      <div class="ic">
+        <div class="ic-q">s 소리가 사라진다면 세상이 어떻게 될까? "sun"도 없고, "snake"도 없고...</div>
+        <div class="ic-sub">What would the world be like without the "s" sound?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 오늘의 미션 체크리스트 -->
+  <div class="mission-section">
+    <div class="ms-title">✅ 오늘의 미션 체크리스트</div>
+    <div class="missions">
+      <div class="mission-item">
+        <div class="mi-check" onclick="toggleCheck(this)"></div>
+        <div class="mi-text">집에서 s 소리로 시작하는 것 3개 찾기</div>
+      </div>
+      <div class="mission-item">
+        <div class="mi-check" onclick="toggleCheck(this)"></div>
+        <div class="mi-text">s, a, t 손동작을 가족에게 가르쳐주기</div>
+      </div>
+      <div class="mission-item">
+        <div class="mi-check" onclick="toggleCheck(this)"></div>
+        <div class="mi-text">"The cat sat on a mat" 혼자 읽어보기</div>
+      </div>
+      <div class="mission-item">
+        <div class="mi-check" onclick="toggleCheck(this)"></div>
+        <div class="mi-text">오늘 배운 Tricky Word "the"를 문장에서 찾기</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 9 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 잘 이야기했어요! 마지막 Step 10으로 가요!</div>
+    <div class="nav-btns">
+    <a href="../../group-02/unit-01/jp-g2-u1-step08.html" class="nav-btn sec">← 🎮 Games</a>
+    <a href="../../group-02/unit-01/jp-g2-u1-step10.html" class="nav-btn pri">📔 My Journal →</a>
+  </div>
+</div>
+<script>
+function toggleCheck(el){el.classList.toggle('checked');el.textContent=el.classList.contains('checked')?'✓':'';}
+
+function markDone(){
+  const done=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+  done.add(9);localStorage.setItem('jp_g1_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G1-U1-S09');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';
+}
+const d=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+if(d.has(9)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+</script>
+<script>
+// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g1_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #FEFCFF;
+      border-right: 2px solid #D8C8F0;
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 16px; font-weight: 800; color: #7040B8;
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: #E0D0FF; border-radius: 6px; height: 6px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: #7040B8; border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: #F5EEFF; border-left-color: #C0A0EE;
+    }
+    .lnb-item.active {
+      background: #E8D8FF;
+      border-left-color: #7040B8;
+      color: #5A28A0;
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: #EDE0FF; color: #7040B8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: #7040B8; color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: #2D9E68; color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--p); color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 1 · Unit 1</div>
+      <div class="lnb-unit-title">s, a, t</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+
+</script>
+</body>
+</html>

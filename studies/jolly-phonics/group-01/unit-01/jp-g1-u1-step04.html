@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../../../../assets/js/auth.js"></script>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Step 4: Word Cards — s,a,t</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--g:#52B788;--gl:#E8F8EF;--y:#F9C74F;--yl:#FFFBEC;--o:#F4845F;--ol:#FFF0EB;--b:#5BA4CF;--bl:#EBF4FF;--p:#9B72CF;--pl:#F3EEFF;--cream:#FFFDF8;--warm:#F5EDE0;--dark:#2C2016;--br:#8B6F5E;--soft:#EAE0D5;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--cream);color:var(--dark);font-family:'Nunito',sans-serif;}
+nav{position:fixed;top:0;width:100%;z-index:100;padding:13px 36px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,253,248,.94);backdrop-filter:blur(14px);border-bottom:1px solid var(--soft);}
+.logo{font-size:16px;font-weight:800;color:var(--dark);text-decoration:none;}.logo span{color:var(--o);}
+.back{font-size:13px;color:var(--br);text-decoration:none;font-weight:600;}
+.wrap{max-width:680px;margin:0 auto;padding:82px 36px 80px;}
+.step-badge{display:inline-flex;align-items:center;gap:6px;background:var(--ol);color:var(--o);border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;margin-bottom:12px;}
+h1{font-size:22px;font-weight:800;margin-bottom:6px;}
+.sub{font-size:13px;color:var(--br);margin-bottom:20px;}
+
+/* 모드 탭 */
+.mode-tabs{display:flex;gap:8px;margin-bottom:20px;}
+.mtab{flex:1;padding:9px;border-radius:14px;border:2px solid var(--soft);background:#fff;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;color:var(--br);transition:all .18s;text-align:center;}
+.mtab.on{background:var(--o);color:#fff;border-color:var(--o);}
+
+/* Study 모드 */
+#mStudy{}
+.word-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+.wcard{background:#fff;border:2px solid var(--soft);border-radius:18px;padding:16px;text-align:center;transition:all .2s;}
+.wcard:hover{border-color:var(--o);transform:translateY(-2px);}
+.wcard-emoji{font-size:44px;margin-bottom:8px;}
+.wcard-word{font-size:22px;font-weight:800;margin-bottom:4px;}
+.wcard-word .hl{color:var(--o);}
+.wcard-ko{font-size:12px;color:var(--br);margin-bottom:8px;}
+.wcard-phonics{font-size:11px;color:var(--p);font-weight:700;margin-bottom:8px;background:var(--pl);padding:3px 10px;border-radius:8px;display:inline-block;}
+.tts-sm{background:var(--b);color:#fff;border:none;border-radius:10px;padding:6px 14px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;}
+.tts-sm.playing{background:var(--o);}
+
+/* Flashcard 모드 */
+#mFlash{display:none;}
+.flash-wrap{position:relative;height:280px;perspective:600px;margin-bottom:16px;}
+.flash-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s;cursor:pointer;}
+.flash-card.flipped{transform:rotateY(180deg);}
+.flash-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:20px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:2px solid var(--soft);}
+.flash-front{background:#fff;}
+.flash-back{background:var(--ol);transform:rotateY(180deg);}
+.flash-emoji{font-size:72px;margin-bottom:12px;}
+.flash-word{font-size:36px;font-weight:800;}
+.flash-word .hl{color:var(--o);}
+.flash-ko{font-size:16px;color:var(--br);margin-top:6px;}
+.flash-hint{font-size:12px;color:var(--br);margin-top:8px;}
+.flash-nav{display:flex;gap:10px;align-items:center;justify-content:center;}
+.flash-btn{padding:10px 24px;border-radius:14px;background:var(--o);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+.flash-btn.sec{background:var(--soft);color:var(--br);}
+.flash-counter{font-size:13px;font-weight:700;color:var(--br);}
+
+/* Match 모드 — SVG 선 연결 */
+#mMatch{display:none;}
+.match-game-wrap{position:relative;margin-bottom:14px;}
+.match-cols{display:grid;grid-template-columns:1fr 40px 1fr;gap:0;align-items:start;}
+.match-col-title{font-size:12px;font-weight:700;color:var(--br);text-align:center;margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em;}
+.match-svg-col{position:relative;}
+.match-item{
+  padding:13px 10px;border-radius:14px;border:2.5px solid var(--soft);
+  background:#fff;text-align:center;cursor:pointer;font-weight:700;
+  font-size:15px;transition:all .2s;user-select:none;margin-bottom:10px;
+}
+.match-item:hover{border-color:var(--b);background:var(--bl);}
+.match-item.selected{border-color:var(--p);background:var(--pl);transform:scale(1.03);}
+.match-item.matched{background:var(--gl);border-color:var(--g);pointer-events:none;color:#1a5c3a;}
+.match-item.wrong{background:#FCEBEB;border-color:#E24B4A;animation:shake .35s ease;}
+.match-svg-layer{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;overflow:visible;}
+.match-line{stroke:var(--g);stroke-width:3;stroke-linecap:round;fill:none;stroke-dasharray:200;stroke-dashoffset:200;animation:drawLine .4s ease forwards;}
+.match-line.wrong-line{stroke:#E24B4A;animation:drawLine .2s ease forwards,fadeOut .4s ease .3s forwards;}
+@keyframes drawLine{to{stroke-dashoffset:0;}}
+@keyframes fadeOut{to{opacity:0;}}
+.match-score{text-align:center;font-size:15px;font-weight:800;color:var(--g);margin-bottom:12px;}
+.match-reset{display:block;margin:0 auto;padding:10px 24px;border-radius:14px;background:var(--soft);color:var(--br);border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.done-btn{width:100%;padding:15px;border-radius:16px;background:var(--g);color:#fff;border:none;font-family:'Nunito',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-top:8px;}
+.done-msg{display:none;background:var(--gl);border-radius:14px;padding:14px;text-align:center;margin-top:10px;font-size:13px;font-weight:700;color:#1a5c3a;}
+.done-msg.show{display:block;}
+.nav-btns{display:flex;gap:10px;margin-top:12px;}
+.nav-btn{flex:1;padding:12px;border-radius:14px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-align:center;text-decoration:none;}
+.nav-btn.sec{border:2px solid var(--soft);background:#fff;color:var(--br);}
+.nav-btn.pri{background:var(--p);color:#fff;border:none;}
+@media(max-width:680px){.wrap{padding-left:20px;padding-right:20px;}.word-grid{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<script>MommyAuth.guard('G1');
+MommyAuth.checkLock('G1-U1-S04');</script>
+<nav><a href="../../jp-index.html" class="logo">Mommy<span>Time</span></a><a href="../../jp-index.html" class="back">← Unit 1</a></nav>
+<div class="wrap">
+  <div class="step-badge">📖 Step 4 / 10</div>
+  <h1>Word Cards</h1>
+  <p class="sub">s, a, t 소리가 들어있는 단어들을 배워봐요! 🃏</p>
+
+  <div class="mode-tabs">
+    <button class="mtab on" onclick="setMode('Study',this)">📖 Study</button>
+    <button class="mtab" onclick="setMode('Flash',this)">🃏 Flashcard</button>
+    <button class="mtab" onclick="setMode('Match',this)">🎯 Match</button>
+  </div>
+
+  <!-- Study 모드 -->
+  <div id="mStudy">
+    <div class="word-grid" id="wordGrid"></div>
+  </div>
+
+  <!-- Flashcard 모드 -->
+  <div id="mFlash">
+    <div class="flash-wrap">
+      <div class="flash-card" id="flashCard" onclick="flipCard()">
+        <div class="flash-face flash-front" id="flashFront"></div>
+        <div class="flash-face flash-back" id="flashBack"></div>
+      </div>
+    </div>
+    <div class="flash-nav">
+      <button class="flash-btn sec" onclick="prevCard()">← 이전</button>
+      <span class="flash-counter" id="flashCounter">1 / 12</span>
+      <button class="flash-btn" onclick="nextCard()">다음 →</button>
+    </div>
+  </div>
+
+  <!-- Match 모드 -->
+  <div id="mMatch">
+    <div class="match-score" id="matchScore">단어와 뜻을 연결해봐요!</div>
+    <div class="match-game-wrap" id="matchWrap">
+      <div class="match-cols">
+        <!-- 왼쪽: 단어 -->
+        <div>
+          <div class="match-col-title">단어</div>
+          <div id="matchWords"></div>
+        </div>
+        <!-- 가운데: SVG 선 -->
+        <div class="match-svg-col">
+          <svg id="matchSvg" class="match-svg-layer" style="position:relative;width:40px;" height="400"></svg>
+        </div>
+        <!-- 오른쪽: 뜻 -->
+        <div>
+          <div class="match-col-title">뜻</div>
+          <div id="matchMeans"></div>
+        </div>
+      </div>
+    </div>
+    <button class="match-reset" onclick="buildMatch()">🔄 다시하기</button>
+  </div>
+
+  <button class="done-btn" onclick="markDone()">✅ Step 4 완료!</button>
+  <div class="done-msg" id="doneMsg">🎉 단어 마스터! Step 5로 가요!</div>
+    <div class="nav-btns">
+    <a href="../../group-02/unit-01/jp-g2-u1-step03.html" class="nav-btn sec">← 👂 Sound Discrimination</a>
+    <a href="../../group-02/unit-01/jp-g2-u1-step05.html" class="nav-btn pri">🔤 Blending →</a>
+  </div>
+</div>
+<script>
+const WORDS=[
+  {word:'sat',hl:'s',ko:'앉았다',emoji:'🪑',phonics:'s-a-t'},
+  {word:'ant',hl:'a',ko:'개미',emoji:'🐜',phonics:'a-n-t'},
+  {word:'tap',hl:'t',ko:'탭/수도꼭지',emoji:'🚿',phonics:'t-a-p'},
+  {word:'nap',hl:'a',ko:'낮잠',emoji:'😴',phonics:'n-a-p'},
+  {word:'tan',hl:'t',ko:'황갈색',emoji:'🏖️',phonics:'t-a-n'},
+  {word:'sap',hl:'s',ko:'나무 수액',emoji:'🌲',phonics:'s-a-p'},
+  {word:'nat',hl:'t',ko:'작은 파리',emoji:'🦟',phonics:'n-a-t'},
+  {word:'at',hl:'a',ko:'~에서',emoji:'📍',phonics:'a-t'},
+  {word:'mat',hl:'t',ko:'매트',emoji:'🛏️',phonics:'m-a-t'},
+  {word:'cat',hl:'a',ko:'고양이',emoji:'🐱',phonics:'c-a-t'},
+  {word:'hat',hl:'a',ko:'모자',emoji:'🎩',phonics:'h-a-t'},
+  {word:'sat',hl:'s',ko:'앉았다',emoji:'🧘',phonics:'s-a-t'},
+];
+
+function hlWord(word, hl){
+  const idx=word.indexOf(hl);
+  if(idx<0)return word;
+  return word.slice(0,idx)+`<span class="hl">${hl}</span>`+word.slice(idx+1);
+}
+
+function speak(text){
+  window.speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='en-US';u.rate=0.8;
+  const vs=window.speechSynthesis.getVoices();
+  const v=vs.find(v=>v.lang.startsWith('en'))||null;
+  if(v)u.voice=v;
+  window.speechSynthesis.speak(u);
+}
+
+// Study 모드
+function buildStudy(){
+  const grid=document.getElementById('wordGrid');
+  grid.innerHTML='';
+  WORDS.forEach((w,i)=>{
+    const card=document.createElement('div');
+    card.className='wcard';
+    card.innerHTML=`
+      <div class="wcard-emoji">${w.emoji}</div>
+      <div class="wcard-word">${hlWord(w.word,w.hl)}</div>
+      <div class="wcard-ko">${w.ko}</div>
+      <div class="wcard-phonics">${w.phonics}</div>
+      <button class="tts-sm" id="tts${i}" onclick="speakWord(${i})">🔊 듣기</button>`;
+    grid.appendChild(card);
+  });
+}
+
+function speakWord(i){
+  const btn=document.getElementById('tts'+i);
+  document.querySelectorAll('.tts-sm').forEach(b=>b.classList.remove('playing'));
+  btn.classList.add('playing');
+  speak(WORDS[i].word);
+  setTimeout(()=>btn.classList.remove('playing'),800);
+}
+
+// Flashcard 모드
+let fIdx=0, flipped=false;
+function buildFlash(){fIdx=0;flipped=false;showFlash();}
+function showFlash(){
+  const w=WORDS[fIdx];
+  flipped=false;
+  document.getElementById('flashCard').classList.remove('flipped');
+  document.getElementById('flashFront').innerHTML=`<div class="flash-emoji">${w.emoji}</div><div class="flash-hint">탭해서 단어 확인!</div>`;
+  document.getElementById('flashBack').innerHTML=`<div class="flash-word">${hlWord(w.word,w.hl)}</div><div class="flash-ko">${w.ko}</div><div class="flash-phonics" style="font-size:14px;color:var(--p);font-weight:700;margin-top:8px;">${w.phonics}</div>`;
+  document.getElementById('flashCounter').textContent=(fIdx+1)+' / '+WORDS.length;
+  speak(w.word);
+}
+function flipCard(){
+  flipped=!flipped;
+  document.getElementById('flashCard').classList.toggle('flipped',flipped);
+}
+function nextCard(){fIdx=(fIdx+1)%WORDS.length;showFlash();}
+function prevCard(){fIdx=(fIdx-1+WORDS.length)%WORDS.length;showFlash();}
+
+// Match 모드 — SVG 선 연결
+const MATCH_WORDS=WORDS.slice(0,6);
+let mSelected=null, mMatched=0, mLines=[];
+
+function buildMatch(){
+  mSelected=null; mMatched=0; mLines=[];
+  document.getElementById('matchScore').textContent='단어와 뜻을 연결해봐요!';
+  const wContainer=document.getElementById('matchWords');
+  const mContainer=document.getElementById('matchMeans');
+  const svg=document.getElementById('matchSvg');
+  wContainer.innerHTML=''; mContainer.innerHTML=''; svg.innerHTML='';
+
+  const shuffledMeans=[...MATCH_WORDS].sort(()=>Math.random()-.5);
+
+  MATCH_WORDS.forEach((w,i)=>{
+    const wd=document.createElement('div');
+    wd.className='match-item'; wd.dataset.id=String(i); wd.dataset.side='left';
+    wd.textContent=w.word;
+    wd.onclick=()=>matchClick(wd);
+    wContainer.appendChild(wd);
+  });
+
+  shuffledMeans.forEach((w)=>{
+    const origIdx=MATCH_WORDS.indexOf(w);
+    const md=document.createElement('div');
+    md.className='match-item'; md.dataset.id=String(origIdx); md.dataset.side='right';
+    md.innerHTML=`${w.emoji} ${w.ko}`;
+    md.onclick=()=>matchClick(md);
+    mContainer.appendChild(md);
+  });
+
+  // SVG 높이 맞추기
+  setTimeout(()=>{
+    const wrap=document.getElementById('matchWrap');
+    svg.setAttribute('height', wrap.offsetHeight||400);
+  },100);
+}
+
+function getItemCenter(el){
+  const wrap=document.getElementById('matchWrap');
+  const wRect=wrap.getBoundingClientRect();
+  const eRect=el.getBoundingClientRect();
+  return {
+    x: el.dataset.side==='left' ? 30 : 10,
+    y: (eRect.top - wRect.top) + eRect.height/2
+  };
+}
+
+function drawLine(el1, el2, color){
+  const svg=document.getElementById('matchSvg');
+  const p1=getItemCenter(el1);
+  const p2=getItemCenter(el2);
+  const line=document.createElementNS('http://www.w3.org/2000/svg','line');
+  line.setAttribute('x1', el1.dataset.side==='left'?30:10);
+  line.setAttribute('y1', p1.y);
+  line.setAttribute('x2', el2.dataset.side==='left'?30:10);
+  line.setAttribute('y2', p2.y);
+  line.setAttribute('stroke', color||'var(--g)');
+  line.setAttribute('stroke-width','3');
+  line.setAttribute('stroke-linecap','round');
+  line.setAttribute('class', 'match-line');
+  svg.appendChild(line);
+  return line;
+}
+
+function matchClick(el){
+  if(el.classList.contains('matched')) return;
+  if(mSelected){
+    if(mSelected===el){
+      mSelected.classList.remove('selected'); mSelected=null; return;
+    }
+    // 같은 쪽 선택 시 교체
+    if(mSelected.dataset.side===el.dataset.side){
+      mSelected.classList.remove('selected'); mSelected=el; el.classList.add('selected'); return;
+    }
+    // 매칭 시도
+    if(mSelected.dataset.id===el.dataset.id){
+      // 정답!
+      mSelected.classList.remove('selected');
+      [mSelected,el].forEach(e=>e.classList.add('matched'));
+      drawLine(mSelected, el, 'var(--g)');
+      mMatched++;
+      document.getElementById('matchScore').textContent=
+        mMatched===MATCH_WORDS.length ? '🎉 모두 연결 완료!' : mMatched+' / '+MATCH_WORDS.length+' 연결됨!';
+      mSelected=null;
+    } else {
+      // 오답
+      const wrongLine=drawLine(mSelected, el, '#E24B4A');
+      [mSelected,el].forEach(e=>{e.classList.add('wrong'); setTimeout(()=>e.classList.remove('wrong','selected'),600);});
+      setTimeout(()=>wrongLine.remove(), 700);
+      mSelected=null;
+    }
+  } else {
+    mSelected=el; el.classList.add('selected');
+  }
+}
+
+function setMode(mode,btn){
+  document.querySelectorAll('.mtab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('mStudy').style.display=mode==='Study'?'block':'none';
+  document.getElementById('mFlash').style.display=mode==='Flash'?'block':'none';
+  document.getElementById('mMatch').style.display=mode==='Match'?'block':'none';
+  if(mode==='Flash')buildFlash();
+  if(mode==='Match')buildMatch();
+}
+
+buildStudy();
+window.speechSynthesis.onvoiceschanged=()=>window.speechSynthesis.getVoices();
+
+function markDone(){
+  const done=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+  done.add(4);localStorage.setItem('jp_g1_u1_done',JSON.stringify([...done]));
+  MommyAuth.logProgress('G1-U1-S04');
+  document.getElementById('doneMsg').classList.add('show');
+  document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';
+}
+const d=new Set(JSON.parse(localStorage.getItem('jp_g1_u1_done')||'[]'));
+if(d.has(4)){document.getElementById('doneMsg').classList.add('show');document.querySelector('.done-btn').disabled=true;document.querySelector('.done-btn').style.opacity='.6';}
+</script>
+<script>
+// ══════════════════════════════════════════
+//  Unit LNB (Left Navigation Bar)
+//  모든 Step 파일에서 공통으로 사용
+// ══════════════════════════════════════════
+
+const LNB_STEPS = [
+  { num:1,  icon:'🔊', title:'Sound Intro',       short:'소리 만나기' },
+  { num:2,  icon:'✍️', title:'Letter Formation',  short:'글자 쓰기' },
+  { num:3,  icon:'👂', title:'Sound Discrimination', short:'소리 구별' },
+  { num:4,  icon:'📖', title:'Word Cards',         short:'단어 카드' },
+  { num:5,  icon:'🔤', title:'Blending',           short:'소리 합치기' },
+  { num:6,  icon:'📚', title:'Decodable Story',    short:'스토리 읽기' },
+  { num:7,  icon:'⭐', title:'Tricky Words',       short:'트리키 워드' },
+  { num:8,  icon:'🎮', title:'Games',              short:'게임' },
+  { num:9,  icon:'💬', title:'Talk Together',      short:'함께 대화' },
+  { num:10, icon:'📔', title:'My Journal',         short:'나의 저널' },
+];
+
+const DONE_KEY = 'jp_g1_u1_done';
+
+function getLNBDone() {
+  return new Set(JSON.parse(localStorage.getItem(DONE_KEY) || '[]'));
+}
+
+// 현재 step 번호 파악
+function getCurrentStep() {
+  const path = window.location.pathname;
+  const match = path.match(/step-(\d+)\.html/);
+  return match ? parseInt(match[1]) : 0;
+}
+
+// LNB CSS 주입
+function injectLNBStyle() {
+  const style = document.createElement('style');
+  style.textContent = `
+    /* ── LNB 레이아웃 ── */
+    body { overflow-x: hidden; }
+
+    /* 기존 nav 조정 */
+    nav { left: 0; z-index: 200; }
+
+    /* LNB 사이드바 */
+    #unitLNB {
+      position: fixed;
+      top: 56px; /* nav 높이 */
+      left: 0;
+      width: 220px;
+      height: calc(100vh - 56px);
+      background: #FEFCFF;
+      border-right: 2px solid #D8C8F0;
+      overflow-y: auto;
+      z-index: 150;
+      padding: 16px 0 32px;
+      transition: transform .3s ease;
+    }
+
+    /* LNB 헤더 */
+    .lnb-header {
+      padding: 0 16px 12px;
+      border-bottom: 1px solid var(--soft);
+      margin-bottom: 8px;
+    }
+    .lnb-unit-label {
+      font-size: 10px; font-weight: 700; color: var(--br);
+      text-transform: uppercase; letter-spacing: .08em; margin-bottom: 4px;
+    }
+    .lnb-unit-title {
+      font-size: 16px; font-weight: 800; color: #7040B8;
+    }
+    .lnb-progress {
+      margin-top: 8px;
+    }
+    .lnb-prog-track {
+      background: #E0D0FF; border-radius: 6px; height: 6px; overflow: hidden;
+    }
+    .lnb-prog-fill {
+      height: 100%; background: #7040B8; border-radius: 6px; transition: width .4s;
+    }
+    .lnb-prog-txt {
+      font-size: 10px; color: var(--br); font-weight: 700; margin-top: 3px;
+    }
+
+    /* LNB 아이템 */
+    .lnb-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 16px; cursor: pointer;
+      text-decoration: none; color: var(--dark);
+      border-left: 3px solid transparent;
+      transition: all .15s;
+      font-size: 13px; font-weight: 600;
+      position: relative;
+    }
+    .lnb-item:hover {
+      background: #F5EEFF; border-left-color: #C0A0EE;
+    }
+    .lnb-item.active {
+      background: #E8D8FF;
+      border-left-color: #7040B8;
+      color: #5A28A0;
+      font-weight: 800;
+    }
+    .lnb-item.done {
+      color: var(--g);
+    }
+    .lnb-item.done .lnb-check {
+      display: flex;
+    }
+    .lnb-num {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: #EDE0FF; color: #7040B8;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 800; flex-shrink: 0;
+      transition: all .15s;
+    }
+    .lnb-item.active .lnb-num {
+      background: #7040B8; color: #fff;
+    }
+    .lnb-item.done .lnb-num {
+      background: #2D9E68; color: #fff;
+    }
+    .lnb-icon { font-size: 14px; flex-shrink: 0; }
+    .lnb-text { flex: 1; }
+    .lnb-title { display: block; font-size: 12px; font-weight: 700; line-height: 1.2; }
+    .lnb-short { display: block; font-size: 10px; opacity: .65; margin-top: 1px; }
+    .lnb-check {
+      display: none; width: 18px; height: 18px; border-radius: 50%;
+      background: var(--g); color: #fff;
+      align-items: center; justify-content: center; font-size: 10px; flex-shrink: 0;
+    }
+
+    /* 콘텐츠 영역 밀기 */
+    #lnbContentShift {
+      margin-left: 220px;
+      transition: margin-left .3s;
+    }
+
+    /* 모바일 토글 버튼 */
+    #lnbToggle {
+      display: none;
+      position: fixed;
+      bottom: 20px; right: 20px;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--p); color: #fff;
+      border: none; font-size: 20px;
+      cursor: pointer; z-index: 300;
+      box-shadow: 0 4px 16px rgba(155,114,207,.4);
+    }
+
+    /* 모바일 오버레이 */
+    #lnbOverlay {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.3);
+      z-index: 140;
+    }
+    #lnbOverlay.show { display: block; }
+
+    /* 모바일 */
+    @media (max-width: 768px) {
+      #unitLNB {
+        transform: translateX(-100%);
+        top: 0; height: 100vh;
+        padding-top: 72px;
+        box-shadow: 4px 0 24px rgba(0,0,0,.12);
+      }
+      #unitLNB.open { transform: translateX(0); }
+      #lnbContentShift { margin-left: 0 !important; }
+      #lnbToggle { display: flex; align-items: center; justify-content: center; }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// LNB HTML 생성
+function buildLNB() {
+  const currentStep = getCurrentStep();
+  const done = getLNBDone();
+
+  // LNB 사이드바
+  const lnb = document.createElement('div');
+  lnb.id = 'unitLNB';
+
+  // 헤더
+  const pct = Math.round(done.size / LNB_STEPS.length * 100);
+  lnb.innerHTML = `
+    <div class="lnb-header">
+      <div class="lnb-unit-label">Group 1 · Unit 1</div>
+      <div class="lnb-unit-title">s, a, t</div>
+      <div class="lnb-progress">
+        <div class="lnb-prog-track">
+          <div class="lnb-prog-fill" style="width:${pct}%"></div>
+        </div>
+        <div class="lnb-prog-txt">${done.size} / ${LNB_STEPS.length} 완료</div>
+      </div>
+    </div>`;
+
+  // Step 목록
+  LNB_STEPS.forEach(s => {
+    const isDone = done.has(s.num);
+    const isActive = s.num === currentStep;
+    const a = document.createElement('a');
+    a.href = `step-${String(s.num).padStart(2,'0')}.html`;
+    a.className = 'lnb-item' + (isActive ? ' active' : '') + (isDone ? ' done' : '');
+    a.innerHTML = `
+      <div class="lnb-num">${isDone ? '✓' : s.num}</div>
+      <span class="lnb-icon">${s.icon}</span>
+      <span class="lnb-text">
+        <span class="lnb-title">${s.title}</span>
+        <span class="lnb-short">${s.short}</span>
+      </span>
+      <div class="lnb-check">✓</div>`;
+    lnb.appendChild(a);
+  });
+
+  document.body.appendChild(lnb);
+
+  // 오버레이 (모바일)
+  const overlay = document.createElement('div');
+  overlay.id = 'lnbOverlay';
+  overlay.onclick = closeLNB;
+  document.body.appendChild(overlay);
+
+  // 토글 버튼 (모바일)
+  const toggle = document.createElement('button');
+  toggle.id = 'lnbToggle';
+  toggle.innerHTML = '☰';
+  toggle.onclick = toggleLNB;
+  document.body.appendChild(toggle);
+}
+
+// 기존 콘텐츠에 margin-left 적용
+function shiftContent() {
+  // nav는 이미 fixed라 영향 없음
+  // wrap 또는 body의 직접 자식 div들에 margin 적용
+  const wrap = document.querySelector('.wrap') || document.querySelector('main');
+  if (wrap) {
+    wrap.id = wrap.id || 'lnbContentShift';
+    wrap.style.marginLeft = '220px';
+    wrap.style.transition = 'margin-left .3s';
+  }
+
+  // 모바일에서는 margin 제거
+  function applyMobile() {
+    if (window.innerWidth <= 768) {
+      if (wrap) wrap.style.marginLeft = '0';
+    } else {
+      if (wrap) wrap.style.marginLeft = '220px';
+    }
+  }
+  applyMobile();
+  window.addEventListener('resize', applyMobile);
+}
+
+function toggleLNB() {
+  const lnb = document.getElementById('unitLNB');
+  const overlay = document.getElementById('lnbOverlay');
+  const toggle = document.getElementById('lnbToggle');
+  const isOpen = lnb.classList.contains('open');
+  lnb.classList.toggle('open', !isOpen);
+  overlay.classList.toggle('show', !isOpen);
+  toggle.innerHTML = isOpen ? '☰' : '✕';
+}
+
+function closeLNB() {
+  document.getElementById('unitLNB')?.classList.remove('open');
+  document.getElementById('lnbOverlay')?.classList.remove('show');
+  document.getElementById('lnbToggle').innerHTML = '☰';
+}
+
+// 초기화
+function initLNB() {
+  injectLNBStyle();
+  buildLNB();
+  shiftContent();
+}
+
+// DOM 준비 후 실행
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initLNB);
+} else {
+  initLNB();
+}
+
+</script>
+</body>
+</html>

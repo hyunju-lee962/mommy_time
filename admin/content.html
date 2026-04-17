@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>콘텐츠 잠금 — Mommy Time Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/admin.css">
+<script src="/assets/js/admin.js"></script>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sb-logo"><div class="sb-logo-text">Mommy<span>Time</span></div><div class="sb-sub">⚙️ 관리자 패널</div></div>
+  <div class="sb-section">메뉴</div>
+  <a href="/admin/index.html"    class="sb-link"><span class="icon">📊</span>대시보드</a>
+  <a href="/admin/students.html" class="sb-link"><span class="icon">👩‍👧</span>수강생 관리</a>
+  <a href="/admin/content.html"  class="sb-link active"><span class="icon">📚</span>콘텐츠 잠금</a>
+  <a href="/admin/stats.html"    class="sb-link"><span class="icon">📈</span>학습 현황</a>
+  <a href="/admin/settings.html" class="sb-link"><span class="icon">⚙️</span>사이트 설정</a>
+  <div class="sb-bottom"><button class="sb-logout" onclick="doLogout()">🚪 로그아웃</button></div>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-title">📚 콘텐츠 잠금/공개</div>
+    <div class="page-sub">Group · Unit · Step 단위로 공개 여부를 관리해요</div>
+  </div>
+
+  <!-- 안내 -->
+  <div style="background:rgba(91,164,207,.1);border:1.5px solid rgba(91,164,207,.3);border-radius:14px;padding:16px 20px;margin-bottom:24px;">
+    <div style="font-size:13px;font-weight:700;color:#5BA4CF;margin-bottom:6px;">💡 잠금 설명</div>
+    <div style="font-size:13px;color:var(--sub);line-height:1.7;">
+      🔒 <strong>잠김</strong> → 수강생이 해당 콘텐츠에 접근하면 잠금 안내 페이지로 이동해요.<br>
+      🔓 <strong>공개</strong> → 수강생의 코드 그룹 권한에 따라 접근 가능해요.<br>
+      <strong>상위 단위가 잠기면 하위 단위도 자동으로 잠겨요.</strong> (Group 잠금 → 모든 Unit/Step 잠금)
+    </div>
+  </div>
+
+  <!-- Group 탭 -->
+  <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+    <button class="btn btn-primary" id="tabAll" onclick="setTab('all',this)">전체 보기</button>
+    <button class="btn btn-ghost" id="tabG1" onclick="setTab('G1',this)">Group 1</button>
+    <button class="btn btn-ghost" id="tabG2" onclick="setTab('G2',this)">Group 2</button>
+    <button class="btn btn-ghost" id="tabG3" onclick="setTab('G3',this)">Group 3</button>
+    <button class="btn btn-ghost" id="tabG4" onclick="setTab('G4',this)">Group 4</button>
+    <button class="btn btn-ghost" id="tabG5" onclick="setTab('G5',this)">Group 5</button>
+    <button class="btn btn-ghost" id="tabG6" onclick="setTab('G6',this)">Group 6</button>
+    <button class="btn btn-ghost" id="tabG7" onclick="setTab('G7',this)">Group 7</button>
+  </div>
+
+  <!-- 일괄 잠금/공개 -->
+  <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+    <button class="btn btn-danger btn-sm" onclick="lockAll()">🔒 전체 잠금</button>
+    <button class="btn btn-success btn-sm" onclick="unlockAll()">🔓 전체 공개</button>
+    <button class="btn btn-ghost btn-sm" onclick="loadContent()">🔄 새로고침</button>
+  </div>
+
+  <!-- 콘텐츠 트리 -->
+  <div id="contentTree">
+    <div style="text-align:center;color:var(--sub);padding:40px">불러오는 중...</div>
+  </div>
+</main>
+
+<div id="adminLoading"><div class="al-spinner"></div><div class="al-msg">처리 중...</div></div>
+
+<script>
+AdminAuth.guard();
+function doLogout(){ AdminAuth.logout(); window.location.replace('/admin.html'); }
+
+var contentData = [];
+var curTab = 'all';
+
+// 커리큘럼 구조 정의
+var CURRICULUM = {
+  G1: {label:'Group 1 — 기초 음가', color:'#9B72CF', units:{1:'s,a,t',2:'i,p,n',3:'c/k,e,h',4:'r,m,d',5:'g,o,u',6:'l,f,b'}},
+  G2: {label:'Group 2 — 이중자음', color:'#38B2AC', units:{1:'Floss Rule',2:'nd,nt,nk',3:'L blends',4:'R blends',5:'S blends'}},
+  G3: {label:'Group 3 — 장모음', color:'#9B72CF', units:{1:'ai,ay',2:'ee,ea',3:'oa,ow',4:'oo',5:'igh,ie',6:'Review'}},
+  G4: {label:'Group 4 — r-통제모음', color:'#F4845F', units:{1:'ar',2:'er,ir,ur',3:'or,aw,au',4:'ou,ow',5:'oi,oy',6:'Review'}},
+  G5: {label:'Group 5 — 변형모음', color:'#52B788', units:{1:'wh',2:'ph,gh',3:'kn,wr,gn',4:'tion,sion',5:'soft c&g',6:'Review'}},
+  G6: {label:'Group 6 — 접미사', color:'#5BA4CF', units:{1:'-ing,-ed',2:'-s,-es,-ies',3:'un-,re-',4:'-ful,-less',5:'Compound',6:'Review'}},
+  G7: {label:'Group 7 — 고급패턴', color:'#E8737A', units:{1:'ch,tch',2:'sh,th',3:'Silent letters',4:'Multisyllabic',5:'Strategies',6:'Review'}},
+};
+
+function getContentItem(id){
+  return contentData.find(function(c){ return c.id === id; }) || {id:id, locked:false};
+}
+
+function isLocked(id){
+  // 상위 잠금 체크
+  var parts = id.split('-'); // G1, G1-U1, G1-U1-S01
+  if(parts.length >= 2){
+    var parent = parts.slice(0,parts.length-1).join('-');
+    if(isLocked(parent)) return true;
+  }
+  return getContentItem(id).locked;
+}
+
+function setTab(tab, btn){
+  curTab = tab;
+  document.querySelectorAll('.main > div:nth-child(4) button').forEach(function(b){
+    b.className='btn btn-ghost';
+  });
+  if(btn) btn.className='btn btn-primary';
+  renderTree();
+}
+
+function renderTree(){
+  var tree = document.getElementById('contentTree');
+  var groups = curTab === 'all' ? Object.keys(CURRICULUM) : [curTab];
+  var html = '';
+
+  groups.forEach(function(g){
+    var gInfo = CURRICULUM[g];
+    var gItem = getContentItem(g);
+    var locked = isLocked(g);
+
+    html += '<div class="card" style="margin-bottom:16px">';
+    // Group 헤더
+    html += '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">';
+    html += '<div style="display:flex;align-items:center;gap:12px;">';
+    html += '<div style="width:40px;height:40px;border-radius:10px;background:'+gInfo.color+';display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;font-size:13px">'+g+'</div>';
+    html += '<div><div style="font-size:15px;font-weight:800;color:#fff">'+gInfo.label+'</div>';
+    html += '<div style="font-size:12px;color:var(--sub)">Group 전체 잠금/공개</div></div></div>';
+    html += '<div style="display:flex;align-items:center;gap:10px;">';
+    html += '<span style="font-size:12px;font-weight:700;color:'+(locked?'#E24B4A':'#52B788')+'">'+(locked?'🔒 잠김':'🔓 공개')+'</span>';
+    html += '<label class="toggle-switch"><input type="checkbox" '+(gItem.locked?'checked':'')+' onchange="toggleLock(\''+g+'\',this)"><span class="toggle-slider"></span></label>';
+    html += '</div></div>';
+
+    // Unit 목록
+    html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px;">';
+    Object.keys(gInfo.units).forEach(function(un){
+      var uid = g+'-U'+un;
+      var uItem = getContentItem(uid);
+      var uLocked = isLocked(uid);
+      var steps = [1,2,3,4,5,6,7,8,9,10];
+
+      html += '<div style="background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;overflow:hidden;">';
+      // Unit 헤더
+      html += '<div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--border);">';
+      html += '<div>';
+      html += '<div style="font-size:13px;font-weight:800;color:'+(uLocked?'var(--sub)':'#fff')+'">Unit '+un+' — '+gInfo.units[un]+'</div>';
+      html += '</div>';
+      html += '<label class="toggle-switch"><input type="checkbox" '+(uItem.locked?'checked':'')+' '+(gItem.locked?'disabled':'')+' onchange="toggleLock(\''+uid+'\',this)"><span class="toggle-slider"></span></label>';
+      html += '</div>';
+
+      // Step 목록
+      html += '<div style="padding:10px 14px;display:flex;flex-wrap:wrap;gap:6px;">';
+      steps.forEach(function(s){
+        var sid = uid+'-S'+String(s).padStart(2,'0');
+        var sItem = getContentItem(sid);
+        var sLocked = isLocked(sid);
+        var sIcons = ['🔊','✍️','👂','📖','🔤','📚','⭐','🎮','💬','📔'];
+        html += '<label style="display:flex;align-items:center;gap:4px;cursor:pointer;'+(uLocked||gItem.locked?'opacity:.4':'')+';">';
+        html += '<input type="checkbox" style="width:14px;height:14px;accent-color:#F4845F;cursor:pointer" ';
+        html += sItem.locked ? 'checked ' : '';
+        html += (uLocked || gItem.locked) ? 'disabled ' : '';
+        html += 'onchange="toggleLock(\''+sid+'\',this)">';
+        html += '<span style="font-size:11px;font-weight:700;color:'+(sLocked?'#E24B4A':'var(--sub)')+'">'+sIcons[s-1]+s+'</span>';
+        html += '</label>';
+      });
+      html += '</div></div>';
+    });
+    html += '</div></div>';
+  });
+
+  tree.innerHTML = html;
+}
+
+function toggleLock(id, checkbox){
+  var locked = checkbox.checked;
+  AdminUtil.showLoading((locked?'잠금':'공개')+' 적용 중...');
+
+  SheetsWrite.updateContent({
+    id:     id,
+    locked: locked ? 'TRUE' : 'FALSE',
+    label:  id,
+    type:   id.includes('-S') ? 'step' : id.includes('-U') ? 'unit' : 'group',
+  }, function(err){
+    AdminUtil.hideLoading();
+    if(err){ AdminUtil.toast('오류: '+err, 'error'); checkbox.checked=!locked; return; }
+    // 로컬 업데이트
+    var existing = contentData.find(function(c){ return c.id===id; });
+    if(existing) existing.locked = locked;
+    else contentData.push({id:id, locked:locked, type:'', label:id, memo:''});
+    AdminUtil.toast((locked?'🔒 잠겼어요':'🔓 공개됐어요'), locked?'warn':'success');
+    renderTree();
+  });
+}
+
+function lockAll(){
+  if(!confirm('전체 콘텐츠를 잠글까요?')) return;
+  AdminUtil.showLoading('전체 잠금 중...');
+  var items = [];
+  Object.keys(CURRICULUM).forEach(function(g){
+    items.push({id:g, locked:'TRUE', type:'group', label:g, memo:''});
+  });
+  // 순차 처리
+  var i = 0;
+  function next(){
+    if(i >= items.length){ AdminUtil.hideLoading(); AdminUtil.toast('🔒 전체 잠금 완료!', 'warn'); loadContent(); return; }
+    SheetsWrite.updateContent(items[i++], function(){ next(); });
+  }
+  next();
+}
+
+function unlockAll(){
+  if(!confirm('전체 콘텐츠를 공개할까요?')) return;
+  AdminUtil.showLoading('전체 공개 중...');
+  var items = [];
+  Object.keys(CURRICULUM).forEach(function(g){
+    items.push({id:g, locked:'FALSE', type:'group', label:g, memo:''});
+  });
+  var i = 0;
+  function next(){
+    if(i >= items.length){ AdminUtil.hideLoading(); AdminUtil.toast('🔓 전체 공개 완료!', 'success'); loadContent(); return; }
+    SheetsWrite.updateContent(items[i++], function(){ next(); });
+  }
+  next();
+}
+
+function loadContent(){
+  AdminUtil.showLoading('콘텐츠 정보 불러오는 중...');
+  SheetsRead.getContent(function(err, data){
+    AdminUtil.hideLoading();
+    if(err){ AdminUtil.toast('콘텐츠 데이터 오류: '+err, 'error'); contentData=[]; }
+    else { contentData = data; }
+    renderTree();
+  });
+}
+
+loadContent();
+</script>
+</body>
+</html>
