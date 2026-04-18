@@ -1,6 +1,15 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
   📋 Mommy Time — github 로컬 소스 내용 반영 가이드
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+# 기본 
+1. 변경상태 확인 
+   git status
+2. 변경 파일 모두 반영 
+   git add . 
+3. commit
+   git commit -m "변경내용" 
+4. GitHub에 푸시 
+   git push origin main
 
 cd c:\0_myApp\mommy_time
 git add .
@@ -37,4 +46,23 @@ https://app.netlify.com/projects/with-mommy/overview 열기
 
 4. 자동 배포가 안 되면
 Netlify 대시보드에서 Trigger deploy 또는 Deploy site 버튼을 클릭하세요.
+
+
+
+########### 줄바꿈 관련 경고 ###################3
+git config --global core.autocrlf true
+
+위 명령어에 대한 설명
+Windows에서 작업할 때 로컬은 CRLF
+Git 저장소에는 LF
+Windows + 다른 운영체제 혼용 시 가장 무난
+
+Windows에서 Git은 기본적으로 LF(Unix 줄바꿈)를 CRLF(Windows 줄바꿈)로 바꿀 수 있어요.
+지금 메시지는 Git이 해당 파일들을 다음에 처리할 때 줄바꿈을 CRLF로 바꿀 거라는 안내입니다.
+커밋 자체는 가능하고, 보통은 큰 문제는 아닙니다.
+
+git config --global core.autocrlf true
+git add --renormalize .
+git commit -m "Normalize line endings"
+
 
