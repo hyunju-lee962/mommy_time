@@ -10,7 +10,7 @@
  *  5. 배포 URL을 admin.js의 GAS_URL에 붙여넣기
  */
 
-var SHEET_ID = 'YOUR_SHEET_ID_HERE';  // ← 여기 교체!
+var SHEET_ID = '19QbpmskE5-BJTMAgHF9hbUtG5iVqltiJP2nhN1WqkyM';
 
 var TABS = {
   STUDENTS: 'students',

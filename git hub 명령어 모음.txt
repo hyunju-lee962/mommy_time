@@ -1,0 +1,40 @@
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+  📋 Mommy Time — github 로컬 소스 내용 반영 가이드
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+cd c:\0_myApp\mommy_time
+git add .
+git commit -m "변경 내용 간단 설명"
+git push origin main
+
+#########################
+git add . : 현재 폴더의 변경된 파일 + 새 파일 모두 스테이징
+git commit -m "..." : 커밋 생성
+git push origin main : GitHub으로 업로드
+#################3#####3
+
+
+
+현재 로컬 저장소 상태를 확인해서 정확한 푸시 방법을 알려드립니다.
+git status --short --branch
+
+지금 해야 할 일
+1. 변경 내용만 커밋
+cd c:\0_myApp\mommy_time> 
+git add GAS_Code.gs SETUP_GUID.txt assets/js/auth.js
+git commit -m "Update auth config, GAS script, and setup guide"
+git hub 명령어 모음.txt도 같이 올리려면:
+
+2. GitHub에 푸시: 이 명령을 실행하면 로컬 커밋이 GitHub 저장소에 올라갑니다.
+git push origin main
+
+
+3. Netlify 배포하기 자동 배포 확인
+Netlify는 GitHub 저장소와 연결되어 있으면, main 브랜치에 푸시될 때 자동으로 배포를 시작합니다.
+https://app.netlify.com/projects/with-mommy/overview 열기
+최신 커밋이 들어왔는지 확인
+배포 로그에 에러가 있는지 확인
+
+4. 자동 배포가 안 되면
+Netlify 대시보드에서 Trigger deploy 또는 Deploy site 버튼을 클릭하세요.
+

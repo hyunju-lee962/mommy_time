@@ -14,7 +14,7 @@
   window.MT_CONFIG = {
     SHEET_ID: '1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms',
     API_KEY:  'AIzaSyAXJD6JGwpbujmeGqvQnkXWCpThIdS1KBY',
-    GAS_URL:  'https://with-mommy.netlify.app/',
+    GAS_URL:  'https://script.google.com/macros/s/AKfycbxKqtDRMEoRXhjWi7ko-_fyaTHlGAgcTwgozZR3KUnV_Y9oB4ZL_UxOK8PukZBb5zaH/exec',
   };
 
   window.MommyAuth = {

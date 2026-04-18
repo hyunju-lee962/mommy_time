@@ -78,8 +78,25 @@
    → Netlify 도메인 입력: https://your-site.netlify.app/*
 https://with-mommy.netlify.app/
 
+
 ────────────────────────────────────────
- STEP 4. auth.js 설정값 교체
+ STEP 4. GAS_URL 설정값 교체
+────────────────────────────────────────
+
+1. https://script.google.com 접속
+2. 새 프로젝트 클릭
+3. 프로젝트 이름: mommy-time-gas
+4. GAS_Code.gs 파일 내용 전체 복사해서 붙여넣기
+   GAS_Code.gs 코드 안에 YOUR_SHEET_ID_HERE → 19QbpmskE5-BJTMAgHF9hbUtG5iVqltiJP2nhN1WqkyM 로 교체
+5. 배포 → 새 배포 → 웹앱 선택
+6. 액세스: 모든 사용자 로 설정
+7. 배포 클릭 → URL 복사 https://script.google.com/macros/s/AKfycbxKqtDRMEoRXhjWi7ko-_fyaTHlGAgcTwgozZR3KUnV_Y9oB4ZL_UxOK8PukZBb5zaH/exec
+
+
+
+
+────────────────────────────────────────
+ STEP 5. auth.js 설정값 교체
 ────────────────────────────────────────
 
 파일 위치: assets/js/auth.js
