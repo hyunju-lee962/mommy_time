@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logic Phonics — 엄마시간</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@300;400;600&family=Noto+Sans+KR:wght@300;400;500&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../assets/css/common.css">
+<style>
+body { padding-top: 64px; font-family: 'Nunito', 'Noto Sans KR', sans-serif; }
+
+/* 히어로 */
+.hero {
+  padding: 56px 40px 40px;
+  background: linear-gradient(160deg, #F3EEFF 0%, #FFFDF8 70%);
+  border-bottom: 1px solid var(--soft);
+}
+.hero-inner { max-width: 720px; margin: 0 auto; }
+.breadcrumb {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 12px; color: var(--brown); margin-bottom: 16px; flex-wrap: wrap;
+}
+.breadcrumb a { color: var(--brown); text-decoration: none; }
+.breadcrumb a:hover { color: var(--accent); }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: #F3EEFF; color: #7B4FBF;
+  border-radius: 20px; padding: 5px 14px;
+  font-size: 12px; font-weight: 700; margin-bottom: 12px;
+}
+.hero h1 { font-size: 28px; font-weight: 800; margin-bottom: 8px; color: var(--dark); }
+.hero h1 span { color: #9B72CF; }
+.hero-desc { font-size: 14px; color: var(--brown); line-height: 1.8; max-width: 520px; }
+
+/* 마지막 학습 이어가기 */
+.continue-wrap { max-width: 720px; margin: 0 auto; padding: 20px 40px 0; }
+.continue-btn {
+  width: 100%; padding: 16px 24px;
+  background: linear-gradient(135deg, #9B72CF, #7B4FBF);
+  border: none; border-radius: 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; text-decoration: none;
+  transition: all .2s; box-shadow: 0 4px 16px rgba(155,114,207,.3);
+}
+.continue-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(155,114,207,.4); }
+.continue-btn.empty {
+  background: var(--warm); box-shadow: none;
+  border: 1.5px dashed var(--soft); cursor: default;
+}
+.continue-btn.empty:hover { transform: none; }
+.cb-left { display: flex; align-items: center; gap: 12px; }
+.cb-icon { font-size: 24px; }
+.cb-title { font-size: 13px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+.cb-sub { font-size: 11px; color: rgba(255,255,255,.75); }
+.cb-title.dark { color: var(--brown); }
+.cb-sub.dark { color: var(--brown); opacity: .6; }
+.cb-arrow { font-size: 18px; color: rgba(255,255,255,.8); }
+
+/* 커리큘럼 */
+.curriculum { max-width: 720px; margin: 0 auto; padding: 24px 40px 80px; }
+.curr-header {
+  font-size: 11px; font-weight: 700; color: var(--brown);
+  letter-spacing: .1em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+
+/* Phase 아코디언 */
+.phase-block { margin-bottom: 12px; border-radius: 18px; overflow: hidden; border: 1.5px solid var(--soft); background: #fff; }
+.phase-header {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 20px; cursor: pointer;
+  transition: background .2s; user-select: none;
+}
+.phase-header:hover { background: #FAFAFA; }
+.phase-num {
+  width: 40px; height: 40px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: #fff; flex-shrink: 0;
+}
+.phase-info { flex: 1; }
+.phase-title { font-size: 15px; font-weight: 800; margin-bottom: 3px; color: var(--dark); }
+.phase-sub { font-size: 12px; color: var(--brown); line-height: 1.5; }
+.phase-meta { display: flex; align-items: center; gap: 8px; }
+.phase-weeks { font-size: 11px; font-weight: 700; color: var(--brown); background: var(--warm); padding: 3px 10px; border-radius: 8px; }
+.phase-arrow { font-size: 12px; color: var(--brown); transition: transform .3s; }
+.phase-arrow.open { transform: rotate(180deg); }
+
+/* 아코디언 내용 */
+.phase-body { display: none; border-top: 1.5px solid var(--soft); }
+.phase-body.open { display: block; }
+
+/* Group 섹션 */
+.group-section { padding: 16px 20px; border-bottom: 1px solid var(--soft); }
+.group-section:last-child { border-bottom: none; }
+.group-label {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-size: 11px; font-weight: 800;
+  padding: 3px 10px; border-radius: 8px;
+  margin-bottom: 12px;
+}
+.group-name { font-size: 13px; font-weight: 700; color: var(--dark); margin-left: 4px; }
+
+/* 주차 카드 */
+.week-list { display: flex; flex-direction: column; gap: 8px; }
+.week-card {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 14px; border-radius: 12px;
+  border: 1.5px solid var(--soft); background: var(--cream);
+  text-decoration: none; color: var(--dark);
+  transition: all .2s;
+}
+.week-card:hover { border-color: #9B72CF; transform: translateX(3px); background: #fff; }
+.week-card.locked { opacity: .45; pointer-events: none; }
+.week-num {
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 800; flex-shrink: 0;
+}
+.week-info { flex: 1; }
+.week-title { font-size: 13px; font-weight: 700; margin-bottom: 3px; }
+.week-sounds { font-size: 11px; color: var(--brown); }
+.week-rule {
+  font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 6px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.week-status { font-size: 14px; flex-shrink: 0; }
+
+/* 진행률 */
+.phase-progress {
+  padding: 10px 20px 14px;
+  border-top: 1px solid var(--soft);
+  display: flex; align-items: center; gap: 10px;
+}
+.prog-track { flex: 1; background: var(--soft); border-radius: 6px; height: 5px; overflow: hidden; }
+.prog-fill { height: 100%; border-radius: 6px; transition: width .5s; }
+.prog-text { font-size: 11px; font-weight: 700; color: var(--brown); white-space: nowrap; }
+
+/* 반응형 */
+@media(max-width: 680px) {
+  .hero { padding: 48px 20px 32px; }
+  .continue-wrap { padding: 16px 20px 0; }
+  .curriculum { padding: 20px 20px 60px; }
+}
+</style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">
+      <a href="../../index.html">엄마시간</a>
+      <span>›</span>
+      <a href="../../pages/journey.html">배움 여정</a>
+      <span>›</span>
+      <span style="color:#9B72CF;font-weight:700">파닉스</span>
+    </div>
+    <div class="hero-badge">📚 Logic Phonics</div>
+    <h1>소리의 <span>논리</span>를 배워요</h1>
+    <p class="hero-desc">
+      외우지 않아도 돼요.<br>
+      소리의 규칙을 이해하면 처음 보는 단어도 읽고 쓸 수 있어요.<br>
+      6단계 · 24주 · 엄마와 함께하는 파닉스 여정이에요.
+    </p>
+  </div>
+</section>
+
+<!-- 마지막 학습 이어가기 -->
+<div class="continue-wrap">
+  <div id="continueBtn" class="continue-btn empty">
+    <div class="cb-left">
+      <div class="cb-icon">📖</div>
+      <div>
+        <div class="cb-title dark">아직 시작하지 않았어요</div>
+        <div class="cb-sub dark">아래에서 1주차부터 시작해보세요!</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 전체 커리큘럼 -->
+<div class="curriculum">
+  <div class="curr-header">📋 전체 커리큘럼 — 6단계 24주</div>
+
+  <!-- Phase 1 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#9B72CF,#7B4FBF)">P1</div>
+      <div class="phase-info">
+        <div class="phase-title">Foundation — 소리 조합의 원리</div>
+        <div class="phase-sub">자모음의 소리를 익히고 CVC 단어를 조합해요</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">1~4주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#F3EEFF;color:#7B4FBF">G1</span>
+          <span class="group-name">기본 음소</span>
+        </div>
+        <div class="week-list">
+          <a href="lp-p1.html#w1" class="week-card">
+            <div class="week-num" style="background:#F3EEFF;color:#7B4FBF">1주</div>
+            <div class="week-info">
+              <div class="week-title">s, a, t, i, p, n</div>
+              <div class="week-sounds">가장 많은 조합이 가능한 핵심 음소</div>
+            </div>
+            <span class="week-rule" style="background:#F3EEFF;color:#7B4FBF">Segmenting</span>
+            <span class="week-status">→</span>
+          </a>
+          <a href="lp-p1.html#w2" class="week-card">
+            <div class="week-num" style="background:#F3EEFF;color:#7B4FBF">2주</div>
+            <div class="week-info">
+              <div class="week-title">c/k, e, h, r, m, d</div>
+              <div class="week-sounds">자모음 확장</div>
+            </div>
+            <span class="week-rule" style="background:#F3EEFF;color:#7B4FBF">c vs k 규칙</span>
+            <span class="week-status">→</span>
+          </a>
+          <a href="lp-p1.html#w3" class="week-card">
+            <div class="week-num" style="background:#F3EEFF;color:#7B4FBF">3주</div>
+            <div class="week-info">
+              <div class="week-title">g, o, u, l, f, b</div>
+              <div class="week-sounds">단모음 5개 소리 완벽 구분</div>
+            </div>
+            <span class="week-rule" style="background:#F3EEFF;color:#7B4FBF">단모음 매핑</span>
+            <span class="week-status">→</span>
+          </a>
+          <a href="lp-p1.html#w4" class="week-card">
+            <div class="week-num" style="background:#F3EEFF;color:#7B4FBF">4주</div>
+            <div class="week-info">
+              <div class="week-title">j, v, w, x, y, z, qu</div>
+              <div class="week-sounds">알파벳 완성 + CVC 단어 조합</div>
+            </div>
+            <span class="week-rule" style="background:#F3EEFF;color:#7B4FBF">CVC 완성</span>
+            <span class="week-status">→</span>
+          </a>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" id="p1-prog" style="width:0%;background:#9B72CF"></div></div>
+        <span class="prog-text" id="p1-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#5BA4CF,#3A7DB8)">P2</div>
+      <div class="phase-info">
+        <div class="phase-title">Ending & Blends — 받침과 겹자음</div>
+        <div class="phase-sub">들리지만 놓치기 쉬운 받침과 연속 자음을 정확히 적어요</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">5~8주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#EBF4FF;color:#3A7DB8">G2</span>
+          <span class="group-name">종성 규칙</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#EBF4FF;color:#3A7DB8">5주</div>
+            <div class="week-info">
+              <div class="week-title">Floss Rule (ff, ll, ss, zz) / -ck</div>
+              <div class="week-sounds">단모음 뒤 1음절 단어의 철자 규칙</div>
+            </div>
+            <span class="week-rule" style="background:#EBF4FF;color:#3A7DB8">Floss Rule</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#EBF4FF;color:#3A7DB8">6주</div>
+            <div class="week-info">
+              <div class="week-title">Ending Blends (-st, -nd, -nt, -mp, -nk)</div>
+              <div class="week-sounds">끝소리 분리 훈련</div>
+            </div>
+            <span class="week-rule" style="background:#EBF4FF;color:#3A7DB8">Ending Blends</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#EBF4FF;color:#3A7DB8">G3</span>
+          <span class="group-name">연속 자음</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#EBF4FF;color:#3A7DB8">7주</div>
+            <div class="week-info">
+              <div class="week-title">Beginning Blends (bl, cl, br, cr, st, sp...)</div>
+              <div class="week-sounds">자음이 겹칠 때 소리 쪼개기</div>
+            </div>
+            <span class="week-rule" style="background:#EBF4FF;color:#3A7DB8">Blending</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#EBF4FF;color:#3A7DB8">8주</div>
+            <div class="week-info">
+              <div class="week-title">3-Letter Blends (str, spr, spl)</div>
+              <div class="week-sounds">복잡한 자음 군집 분석</div>
+            </div>
+            <span class="week-rule" style="background:#EBF4FF;color:#3A7DB8">3-Blends</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" style="width:0%;background:#5BA4CF"></div></div>
+        <span class="prog-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#F4845F,#D4643F)">P3</div>
+      <div class="phase-info">
+        <div class="phase-title">Digraphs & Magic E — 이중자음과 변신모음</div>
+        <div class="phase-sub">두 글자가 하나의 소리, 모음이 이름 소리로 변하는 원리</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">9~12주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFF0EB;color:#D4643F">G4</span>
+          <span class="group-name">이중 자음 (Digraphs)</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFF0EB;color:#D4643F">9주</div>
+            <div class="week-info">
+              <div class="week-title">sh, ch, th, wh, ph</div>
+              <div class="week-sounds">두 글자 한 소리 인지</div>
+            </div>
+            <span class="week-rule" style="background:#FFF0EB;color:#D4643F">Digraphs</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFF0EB;color:#D4643F">10주</div>
+            <div class="week-info">
+              <div class="week-title">-tch vs -ch / -dge vs -ge</div>
+              <div class="week-sounds">단모음 직후 규칙</div>
+            </div>
+            <span class="week-rule" style="background:#FFF0EB;color:#D4643F">tch/dge 규칙</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFF0EB;color:#D4643F">G5</span>
+          <span class="group-name">장모음 (Magic E)</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFF0EB;color:#D4643F">11주</div>
+            <div class="week-info">
+              <div class="week-title">Magic E 1 (a_e, i_e, o_e)</div>
+              <div class="week-sounds">소리 변화 원리 (Hop → Hope)</div>
+            </div>
+            <span class="week-rule" style="background:#FFF0EB;color:#D4643F">Magic E</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFF0EB;color:#D4643F">12주</div>
+            <div class="week-info">
+              <div class="week-title">Magic E 2 (u_e, e_e) & Open Syllables</div>
+              <div class="week-sounds">be, go, my — 모음으로 끝나는 음절</div>
+            </div>
+            <span class="week-rule" style="background:#FFF0EB;color:#D4643F">Open Syllable</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" style="width:0%;background:#F4845F"></div></div>
+        <span class="prog-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#F9C74F,#D4A020)">P4</div>
+      <div class="phase-info">
+        <div class="phase-title">Vowel Teams — 위치별 철자 선택</div>
+        <div class="phase-sub">소리는 같은데 철자가 다른 이유, 위치 규칙으로 해결해요</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">13~16주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFFBEC;color:#A07010">G6</span>
+          <span class="group-name">이중 모음 1</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFFBEC;color:#A07010">13주</div>
+            <div class="week-info">
+              <div class="week-title">Long A (ai / ay)</div>
+              <div class="week-sounds">중간엔 ai, 끝엔 ay (Rain vs Ray)</div>
+            </div>
+            <span class="week-rule" style="background:#FFFBEC;color:#A07010">위치 규칙</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFFBEC;color:#A07010">14주</div>
+            <div class="week-info">
+              <div class="week-title">Long E (ee, ea, -y) / Long O (oa, ow)</div>
+              <div class="week-sounds">위치에 따른 철자 선택 훈련</div>
+            </div>
+            <span class="week-rule" style="background:#FFFBEC;color:#A07010">ee/ea · oa/ow</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFFBEC;color:#A07010">15주</div>
+            <div class="week-info">
+              <div class="week-title">Long I (igh, -y, ie)</div>
+              <div class="week-sounds">묵음 포함 소리 덩어리 시각화</div>
+            </div>
+            <span class="week-rule" style="background:#FFFBEC;color:#A07010">igh/ie/-y</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFFBEC;color:#A07010">G7</span>
+          <span class="group-name">이중 모음 2 (Diphthongs)</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFFBEC;color:#A07010">16주</div>
+            <div class="week-info">
+              <div class="week-title">Diphthongs (oi/oy, ou/ow, au/aw)</div>
+              <div class="week-sounds">입 모양이 변하는 모음의 위치 규칙</div>
+            </div>
+            <span class="week-rule" style="background:#FFFBEC;color:#A07010">Diphthongs</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" style="width:0%;background:#F9C74F"></div></div>
+        <span class="prog-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 5 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#52B788,#2D8A5E)">P5</div>
+      <div class="phase-info">
+        <div class="phase-title">R-Controlled & Soft — 변이 소리와 묵음</div>
+        <div class="phase-sub">R의 영향력과 부드러운 자음 소리를 마스터해요</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">17~20주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#E8F8EF;color:#2D8A5E">G8</span>
+          <span class="group-name">R-모음 (Bossy R)</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#E8F8EF;color:#2D8A5E">17주</div>
+            <div class="week-info">
+              <div class="week-title">Bossy R 1 (ar, or)</div>
+              <div class="week-sounds">R의 영향으로 변하는 모음 소리</div>
+            </div>
+            <span class="week-rule" style="background:#E8F8EF;color:#2D8A5E">ar / or</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#E8F8EF;color:#2D8A5E">18주</div>
+            <div class="week-info">
+              <div class="week-title">Bossy R 2 (er, ir, ur)</div>
+              <div class="week-sounds">같은 소리(/er/)의 빈도수 학습</div>
+            </div>
+            <span class="week-rule" style="background:#E8F8EF;color:#2D8A5E">er/ir/ur</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#E8F8EF;color:#2D8A5E">G9</span>
+          <span class="group-name">특수 발음</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#E8F8EF;color:#2D8A5E">19주</div>
+            <div class="week-info">
+              <div class="week-title">Soft C & G (ce, ci, cy / ge, gi, gy)</div>
+              <div class="week-sounds">트리거 모음에 따라 달라지는 소리</div>
+            </div>
+            <span class="week-rule" style="background:#E8F8EF;color:#2D8A5E">Soft C/G</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#E8F8EF;color:#2D8A5E">20주</div>
+            <div class="week-info">
+              <div class="week-title">Silent Letters (kn, wr, gn, mb)</div>
+              <div class="week-sounds">역사적으로 남겨진 묵음 철자들</div>
+            </div>
+            <span class="week-rule" style="background:#E8F8EF;color:#2D8A5E">Silent</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" style="width:0%;background:#52B788"></div></div>
+        <span class="prog-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 6 -->
+  <div class="phase-block">
+    <div class="phase-header" onclick="togglePhase(this)">
+      <div class="phase-num" style="background:linear-gradient(135deg,#E8737A,#C04050)">P6</div>
+      <div class="phase-info">
+        <div class="phase-title">Advanced Logic — 다음절과 형태학</div>
+        <div class="phase-sub">긴 단어를 스스로 쪼개서 쓰고, 접사의 원리를 이해해요</div>
+      </div>
+      <div class="phase-meta">
+        <span class="phase-weeks">21~24주</span>
+        <span class="phase-arrow">▼</span>
+      </div>
+    </div>
+    <div class="phase-body">
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFEFF0;color:#C04050">G10</span>
+          <span class="group-name">음절 분석</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFEFF0;color:#C04050">21주</div>
+            <div class="week-info">
+              <div class="week-title">Syllable Division (VC/CV, V/CV)</div>
+              <div class="week-sounds">긴 단어 끊어 읽기/쓰기 (Nap-kin)</div>
+            </div>
+            <span class="week-rule" style="background:#FFEFF0;color:#C04050">음절 분리</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFEFF0;color:#C04050">22주</div>
+            <div class="week-info">
+              <div class="week-title">Schwa Sound (/ə/)</div>
+              <div class="week-sounds">강세 없는 모음의 소리 변화 (Banana)</div>
+            </div>
+            <span class="week-rule" style="background:#FFEFF0;color:#C04050">Schwa /ə/</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="group-section">
+        <div>
+          <span class="group-label" style="background:#FFEFF0;color:#C04050">G11</span>
+          <span class="group-name">형태소 (Morphology)</span>
+        </div>
+        <div class="week-list">
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFEFF0;color:#C04050">23주</div>
+            <div class="week-info">
+              <div class="week-title">Suffixes 1 (-ed, -ing, -s/es, -ly)</div>
+              <div class="week-sounds">-ed의 3가지 소리 (/t/, /d/, /id/)</div>
+            </div>
+            <span class="week-rule" style="background:#FFEFF0;color:#C04050">Suffixes</span>
+            <span class="week-status">🔒</span>
+          </div>
+          <div class="week-card locked">
+            <div class="week-num" style="background:#FFEFF0;color:#C04050">24주</div>
+            <div class="week-info">
+              <div class="week-title">Suffixes 2 (-tion, -sion, -able, -ful)</div>
+              <div class="week-sounds">어근과 접사 결합 + 최종 복습</div>
+            </div>
+            <span class="week-rule" style="background:#FFEFF0;color:#C04050">Advanced</span>
+            <span class="week-status">🔒</span>
+          </div>
+        </div>
+      </div>
+      <div class="phase-progress">
+        <div class="prog-track"><div class="prog-fill" style="width:0%;background:#E8737A"></div></div>
+        <span class="prog-text">0 / 4주 완료</span>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /curriculum -->
+
+<script src="../../assets/js/auth.js"></script>
+<script src="../../assets/js/nav.js"></script>
+<script>
+// 아코디언
+function togglePhase(header) {
+  var body = header.nextElementSibling;
+  var arrow = header.querySelector('.phase-arrow');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  arrow.classList.toggle('open', !isOpen);
+}
+
+// 진행률 불러오기
+var WEEK_KEYS = {
+  1:'lp_w1', 2:'lp_w2', 3:'lp_w3', 4:'lp_w4',
+  5:'lp_w5', 6:'lp_w6', 7:'lp_w7', 8:'lp_w8',
+  9:'lp_w9',10:'lp_w10',11:'lp_w11',12:'lp_w12',
+  13:'lp_w13',14:'lp_w14',15:'lp_w15',16:'lp_w16',
+  17:'lp_w17',18:'lp_w18',19:'lp_w19',20:'lp_w20',
+  21:'lp_w21',22:'lp_w22',23:'lp_w23',24:'lp_w24',
+};
+
+function isWeekDone(w) {
+  var done = JSON.parse(localStorage.getItem(WEEK_KEYS[w]) || '[]');
+  return done.length >= 10;
+}
+
+// 마지막 학습 이어가기
+function updateContinue() {
+  var last = null;
+  for (var w = 1; w <= 24; w++) {
+    var done = JSON.parse(localStorage.getItem(WEEK_KEYS[w]) || '[]');
+    if (done.length > 0 && done.length < 10) { last = {w:w, done:done.length}; break; }
+    if (done.length >= 10) last = {w:w, done:10, complete:true};
+  }
+  var btn = document.getElementById('continueBtn');
+  if (!last) return;
+  var nextStep = last.complete ? null : (last.done + 1);
+  if (last.complete && last.w < 24) {
+    var nw = last.w + 1;
+    btn.className = 'continue-btn';
+    btn.innerHTML = '<div class="cb-left"><div class="cb-icon">🚀</div><div><div class="cb-title">' + nw + '주차 시작하기</div><div class="cb-sub">다음 단계로 넘어갈 준비가 됐어요!</div></div></div><div class="cb-arrow">→</div>';
+  } else if (!last.complete) {
+    btn.className = 'continue-btn';
+    btn.innerHTML = '<div class="cb-left"><div class="cb-icon">📖</div><div><div class="cb-title">' + last.w + '주차 이어서 학습하기</div><div class="cb-sub">Step ' + nextStep + ' / 10 — 계속해봐요!</div></div></div><div class="cb-arrow">→</div>';
+  }
+}
+
+updateContinue();
+
+// Phase 1 기본으로 열기
+document.querySelector('.phase-body').classList.add('open');
+document.querySelector('.phase-arrow').classList.add('open');
+</script>
+</body>
+</html>
